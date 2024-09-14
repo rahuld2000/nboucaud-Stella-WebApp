@@ -2,18 +2,18 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {useIntl} from 'react-intl';
-import {useSelector} from 'react-redux';
+import { useIntl } from 'react-intl';
+import { useSelector } from 'react-redux';
 
-import {getConfig} from 'mattermost-redux/selectors/entities/general';
+import { getConfig } from 'mattermost-redux/selectors/entities/general';
 
 import './footer.scss';
 import ExternalLink from 'components/external_link';
 
 const Footer = () => {
-    const {formatMessage} = useIntl();
+    const { formatMessage } = useIntl();
 
-    const {AboutLink, PrivacyPolicyLink, TermsOfServiceLink, HelpLink} = useSelector(getConfig);
+    const { AboutLink, PrivacyPolicyLink, TermsOfServiceLink, HelpLink } = useSelector(getConfig);
 
     return (
         <div className='hfroute-footer'>
@@ -21,7 +21,7 @@ const Footer = () => {
                 key='footer-copyright'
                 className='footer-copyright'
             >
-                {`© ${new Date().getFullYear()} Mattermost Inc.`}
+                {`© ${new Date().getFullYear()}  Infogito.`}
             </span>
             {AboutLink && (
                 <ExternalLink
@@ -30,7 +30,7 @@ const Footer = () => {
                     href={AboutLink}
                     location='footer'
                 >
-                    {formatMessage({id: 'web.footer.about', defaultMessage: 'About'})}
+                    {formatMessage({ id: 'web.footer.about', defaultMessage: 'About' })}
                 </ExternalLink>
             )}
             {PrivacyPolicyLink && (
@@ -40,7 +40,7 @@ const Footer = () => {
                     href={PrivacyPolicyLink}
                     location='footer'
                 >
-                    {formatMessage({id: 'web.footer.privacy', defaultMessage: 'Privacy Policy'})}
+                    {formatMessage({ id: 'web.footer.privacy', defaultMessage: 'Privacy Policy' })}
                 </ExternalLink>
             )}
             {TermsOfServiceLink && (
@@ -50,7 +50,7 @@ const Footer = () => {
                     href={TermsOfServiceLink}
                     location='footer'
                 >
-                    {formatMessage({id: 'web.footer.terms', defaultMessage: 'Terms'})}
+                    {formatMessage({ id: 'web.footer.terms', defaultMessage: 'Terms' })}
                 </ExternalLink>
             )}
             {HelpLink && (
@@ -60,7 +60,7 @@ const Footer = () => {
                     href={HelpLink}
                     location='footer'
                 >
-                    {formatMessage({id: 'web.footer.help', defaultMessage: 'Help'})}
+                    {formatMessage({ id: 'web.footer.help', defaultMessage: 'Help' })}
                 </ExternalLink>
             )}
         </div>

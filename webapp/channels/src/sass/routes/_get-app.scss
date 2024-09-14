@@ -1,6 +1,22 @@
 .get-app {
     min-height: 100vh;
-    background-color: #fff;
+    background-image: url('images/deep-linking/Signin background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+.download_btn_icons {
+    margin-right: -4px;
+    margin-top: -4px;
+    width: 16px;
+    height: 16px;
+}
+
+.view_in_browser_btn {
+    background-color: #0EB7B4 !important;
+    color: #ffffff !important;
 }
 
 .get-app__header {
@@ -26,8 +42,8 @@
         align-self: center;
         margin-left: 40px;
 
-        > span {
-            color: #000;
+        >span {
+            color: #ffffff;
             font-family: "Open Sans";
             font-size: 40px;
             font-weight: bold;
@@ -36,39 +52,40 @@
         }
     }
 
-    .get-app__custom-logo + .get-app__custom-site-name {
+    .get-app__custom-logo+.get-app__custom-site-name {
         margin-left: 8px;
     }
 }
 
 .get-app__dialog {
     display: flex;
-    width: 1280px;
     justify-content: center;
-    margin: 80px auto;
+    height: 100dvh;
+    align-items: center;
 }
 
 .get-app__graphic {
-    flex: 0 0 600px;
-    background-color: var(--sidebar-bg);
+    flex: 0 0 1000px;
+    // background-color: var(--sidebar-bg);
 
     &.mobile {
         flex: 0 1 300px;
     }
 
-    > img {
+    >img {
         max-width: 100%;
     }
 }
 
 .get-app__dialog-body {
-    flex: 0 1 600px;
+    flex: 0 1 629px;
     margin-top: 60px;
-    margin-left: 60px;
+    color: #0EB7B4 !important;
+    margin-left: -60px;
 }
 
-.get-app__launching > span {
-    color: #000;
+.get-app__launching>span {
+    color: #0EB7B4 !important;
     font-family: "Open Sans";
     font-size: 32px;
     font-weight: 600;
@@ -86,20 +103,20 @@
         opacity: 0.8;
     }
 
-    > a {
+    >a {
         color: #145dbf;
         text-decoration: none;
     }
 
-    > span {
-        color: #000;
+    >span {
+        color: #ffffff;
     }
 
     &.redirect-page {
         margin-top: 24px;
         margin-bottom: 32px;
 
-        > br.mobile-only {
+        >br.mobile-only {
             display: none;
         }
     }
@@ -114,7 +131,7 @@
     margin-right: 20px;
     font-family: "Open Sans";
 
-    > a {
+    >a {
         padding: 13px 30px;
         border-radius: 4px;
         font-size: 16px;
@@ -128,9 +145,9 @@
     margin-top: 23px;
     cursor: pointer;
 
-    > span {
+    >span {
         margin-top: 1px;
-        color: #000;
+        color: #ffffff;
         font-family: "Open Sans";
         font-size: 16px;
         font-weight: normal;
@@ -148,18 +165,22 @@
 
 .get-app__download-link {
     margin-top: 40px;
-    color: #000;
+    color: #ffffff;
     font-family: "Open Sans";
     font-size: 16px;
     line-height: 22px;
     opacity: 0.8;
 
-    > span > a {
-        color: #145dbf;
+    >span>a {
+        color: #0EB7B4 !important;
         text-decoration: none;
     }
 
-    > br {
+    >a {
+        color: #0EB7B4 !important;
+    }
+
+    >br {
         display: none;
     }
 }
@@ -211,7 +232,7 @@
             flex: 0 1 347px;
         }
 
-        > img {
+        >img {
             max-height: 100%;
         }
     }
@@ -237,14 +258,14 @@
         .get-app__custom-site-name {
             margin-left: 0;
 
-            > span {
+            >span {
                 font-size: 24px;
                 font-weight: bold;
                 line-height: 24px;
             }
         }
 
-        .get-app__custom-logo + .get-app__custom-site-name {
+        .get-app__custom-logo+.get-app__custom-site-name {
             margin-left: 4px;
         }
     }
@@ -266,8 +287,13 @@
 
     .get-app__launching {
         padding: 0 24px;
+
         margin: 0 auto;
         text-align: center;
+    }
+
+    .get-app__launching>h1 {
+        color: #0EB7B4 !important;
     }
 
     .get-app__alternative {
@@ -281,7 +307,7 @@
         &.redirect-page {
             display: block;
 
-            > br.mobile-only {
+            >br.mobile-only {
                 display: block;
             }
         }
@@ -301,7 +327,7 @@
         margin-right: 0;
         margin-bottom: 20px;
 
-        > a {
+        >a {
             width: 219px;
         }
     }
@@ -309,7 +335,7 @@
     .get-app__download-link {
         padding: 0 24px;
 
-        > br {
+        >br {
             display: block;
         }
     }

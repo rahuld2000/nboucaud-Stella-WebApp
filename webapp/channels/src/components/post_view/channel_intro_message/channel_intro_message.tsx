@@ -2,15 +2,15 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {FormattedDate, FormattedMessage, defineMessages} from 'react-intl';
+import { FormattedDate, FormattedMessage, defineMessages } from 'react-intl';
 
-import {BellRingOutlineIcon, GlobeIcon, PencilOutlineIcon, StarOutlineIcon, LockOutlineIcon, StarIcon} from '@mattermost/compass-icons/components';
-import type {Channel, ChannelMembership} from '@mattermost/types/channels';
-import type {UserProfile as UserProfileType} from '@mattermost/types/users';
+import { BellRingOutlineIcon, GlobeIcon, PencilOutlineIcon, StarOutlineIcon, LockOutlineIcon, StarIcon } from '@mattermost/compass-icons/components';
+import type { Channel, ChannelMembership } from '@mattermost/types/channels';
+import type { UserProfile as UserProfileType } from '@mattermost/types/users';
 
-import {Permissions} from 'mattermost-redux/constants';
-import {NotificationLevel} from 'mattermost-redux/constants/channels';
-import {isChannelMuted} from 'mattermost-redux/utils/channel_utils';
+import { Permissions } from 'mattermost-redux/constants';
+import { NotificationLevel } from 'mattermost-redux/constants/channels';
+import { isChannelMuted } from 'mattermost-redux/utils/channel_utils';
 
 import AddGroupsToTeamModal from 'components/add_groups_to_team_modal';
 import ChannelNotificationsModal from 'components/channel_notifications_modal';
@@ -25,8 +25,8 @@ import ProfilePicture from 'components/profile_picture';
 import ToggleModalButton from 'components/toggle_modal_button';
 import UserProfile from 'components/user_profile';
 
-import {Constants, ModalIdentifiers} from 'utils/constants';
-import {getMonthLong} from 'utils/i18n';
+import { Constants, ModalIdentifiers } from 'utils/constants';
+import { getMonthLong } from 'utils/i18n';
 import * as Utils from 'utils/utils';
 
 import AddMembersButton from './add_members_button';
@@ -122,11 +122,11 @@ export default class ChannelIntroMessage extends React.PureComponent<Props> {
 }
 
 const gmIntroMessages = defineMessages({
-    muted: {id: 'intro_messages.GM.muted', defaultMessage: 'This group message is currently <b>muted</b>, so you will not be notified.'},
-    [NotificationLevel.ALL]: {id: 'intro_messages.GM.all', defaultMessage: 'You\'ll be notified <b>for all activity</b> in this group message.'},
-    [NotificationLevel.DEFAULT]: {id: 'intro_messages.GM.all', defaultMessage: 'You\'ll be notified <b>for all activity</b> in this group message.'},
-    [NotificationLevel.MENTION]: {id: 'intro_messages.GM.mention', defaultMessage: 'You have selected to be notified <b>only when mentioned</b> in this group message.'},
-    [NotificationLevel.NONE]: {id: 'intro_messages.GM.none', defaultMessage: 'You have selected to <b>never</b> be notified in this group message.'},
+    muted: { id: 'intro_messages.GM.muted', defaultMessage: 'This group message is currently <b>muted</b>, so you will not be notified.' },
+    [NotificationLevel.ALL]: { id: 'intro_messages.GM.all', defaultMessage: 'You\'ll be notified <b>for all activity</b> in this group message.' },
+    [NotificationLevel.DEFAULT]: { id: 'intro_messages.GM.all', defaultMessage: 'You\'ll be notified <b>for all activity</b> in this group message.' },
+    [NotificationLevel.MENTION]: { id: 'intro_messages.GM.mention', defaultMessage: 'You have selected to be notified <b>only when mentioned</b> in this group message.' },
+    [NotificationLevel.NONE]: { id: 'intro_messages.GM.none', defaultMessage: 'You have selected to <b>never</b> be notified in this group message.' },
 });
 
 const getGMIntroMessageSpecificPart = (userProfile: UserProfileType | undefined, membership: ChannelMembership | undefined) => {
@@ -194,7 +194,7 @@ function createGMIntroMessage(
                 {createFavoriteButton(isFavorite, toggleFavorite)}
                 {createSetHeaderButton(channel)}
                 {!isMobileView && createNotificationPreferencesButton(channel, currentUser)}
-                <PluggableIntroButtons channel={channel}/>
+                <PluggableIntroButtons channel={channel} />
             </div>
         );
 
@@ -253,7 +253,7 @@ function createDMIntroMessage(
         let pluggableButton = null;
         let setHeaderButton = null;
         if (!teammate?.is_bot) {
-            pluggableButton = <PluggableIntroButtons channel={channel}/>;
+            pluggableButton = <PluggableIntroButtons channel={channel} />;
             setHeaderButton = createSetHeaderButton(channel);
         }
 
@@ -348,7 +348,7 @@ function createOffTopicIntroMessage(
             totalUsers={totalUsers}
             usersLimit={usersLimit}
             channel={channel}
-            pluginButtons={<PluggableIntroButtons channel={channel}/>}
+            pluginButtons={<PluggableIntroButtons channel={channel} />}
         />
     );
 
@@ -373,7 +373,7 @@ function createOffTopicIntroMessage(
             id='channelIntro'
             className={'channel-intro ' + centeredIntro}
         >
-            <ChannelIntroPublicSvg/>
+            <ChannelIntroPublicSvg />
             <h2 className='channel-intro__title'>
                 {channel.display_name}
             </h2>
@@ -414,7 +414,7 @@ function createDefaultIntroMessage(
     let actionButtons = null;
 
     if (!isReadOnly) {
-        pluginButtons = <PluggableIntroButtons channel={channel}/>;
+        pluginButtons = <PluggableIntroButtons channel={channel} />;
         const children = createSetHeaderButton(channel);
         if (children) {
             setHeaderButton = (
@@ -448,20 +448,20 @@ function createDefaultIntroMessage(
                         />
                     }
                     {teamIsGroupConstrained &&
-                    <ToggleModalButton
-                        className='intro-links color--link'
-                        modalId={ModalIdentifiers.ADD_GROUPS_TO_TEAM}
-                        dialogType={AddGroupsToTeamModal}
-                        dialogProps={{channel}}
-                    >
-                        <i
-                            className='fa fa-user-plus'
-                        />
-                        <FormattedMessage
-                            id='intro_messages.addGroupsToTeam'
-                            defaultMessage='Add other groups to this team'
-                        />
-                    </ToggleModalButton>
+                        <ToggleModalButton
+                            className='intro-links color--link'
+                            modalId={ModalIdentifiers.ADD_GROUPS_TO_TEAM}
+                            dialogType={AddGroupsToTeamModal}
+                            dialogProps={{ channel }}
+                        >
+                            <i
+                                className='fa fa-user-plus'
+                            />
+                            <FormattedMessage
+                                id='intro_messages.addGroupsToTeam'
+                                defaultMessage='Add other groups to this team'
+                            />
+                        </ToggleModalButton>
                     }
                 </TeamPermissionGate>
             </TeamPermissionGate>
@@ -490,12 +490,14 @@ function createDefaultIntroMessage(
             id='channelIntro'
             className={'channel-intro ' + centeredIntro}
         >
-            <ChannelIntroTownSquareSvg/>
+            {/* <ChannelIntroTownSquareSvg /> */}
             <h2 className='channel-intro__title'>
-                {channel.display_name}
+                {/* {channel.display_name} */}
+                Amir Channel
             </h2>
             <p className='channel-intro__text'>
-                {!isReadOnly &&
+                Hello Amir
+                {/* {!isReadOnly &&
                     <FormattedMessage
                         id='intro_messages.default'
                         defaultMessage='Welcome to {display_name}. Post messages here that you want everyone to see. Everyone automatically becomes a member of this channel when they join the team.'
@@ -512,7 +514,7 @@ function createDefaultIntroMessage(
                             display_name: channel.display_name,
                         }}
                     />
-                }
+                } */}
             </p>
             {actionButtons}
         </div>
@@ -578,7 +580,7 @@ function createStandardIntroMessage(
                 <FormattedMessage
                     id='intro_messages.noCreatorPrivate'
                     defaultMessage='Private channel created on {date}.'
-                    values={{name: (uiName), date}}
+                    values={{ name: (uiName), date }}
                 />
             );
         } else if (channel.type === Constants.OPEN_CHANNEL) {
@@ -586,7 +588,7 @@ function createStandardIntroMessage(
                 <FormattedMessage
                     id='intro_messages.noCreator'
                     defaultMessage='Public channel created on {date}.'
-                    values={{name: (uiName), date}}
+                    values={{ name: (uiName), date }}
                 />
             );
         }
@@ -627,7 +629,7 @@ function createStandardIntroMessage(
                 <FormattedMessage
                     id='intro_messages.purpose'
                     defaultMessage=" This channel's purpose is: {purpose}"
-                    values={{purpose: channel.purpose}}
+                    values={{ purpose: channel.purpose }}
                 />
             </span>
         );
@@ -654,7 +656,7 @@ function createStandardIntroMessage(
             totalUsers={totalUsers}
             usersLimit={usersLimit}
             channel={channel}
-            pluginButtons={<PluggableIntroButtons channel={channel}/>}
+            pluginButtons={<PluggableIntroButtons channel={channel} />}
         />
     );
 
@@ -671,7 +673,7 @@ function createStandardIntroMessage(
                 {teamInviteLink}
                 {setHeaderButton}
                 {!isMobileView && createNotificationPreferencesButton(channel, currentUser)}
-                <PluggableIntroButtons channel={channel}/>
+                <PluggableIntroButtons channel={channel} />
             </div>
         );
     }
@@ -681,12 +683,12 @@ function createStandardIntroMessage(
             id='channelIntro'
             className={'channel-intro ' + centeredIntro}
         >
-            {isPrivate ? <ChannelIntroPrivateSvg/> : <ChannelIntroPublicSvg/>}
+            {isPrivate ? <ChannelIntroPrivateSvg /> : <ChannelIntroPublicSvg />}
             <h2 className='channel-intro__title'>
                 {channel.display_name}
             </h2>
             <div className='channel-intro__created'>
-                {isPrivate ? <LockOutlineIcon size={14}/> : <GlobeIcon size={14}/>}
+                {isPrivate ? <LockOutlineIcon size={14} /> : <GlobeIcon size={14} />}
                 {createMessage}
             </div>
             <p className='channel-intro__text'>
@@ -710,7 +712,7 @@ function createSetHeaderButton(channel: Channel) {
             ariaLabel={Utils.localizeMessage('intro_messages.setHeader', 'Set header')}
             className={'action-button'}
             dialogType={EditChannelHeaderModal}
-            dialogProps={{channel}}
+            dialogProps={{ channel }}
         >
             <PencilOutlineIcon
                 size={24}
@@ -745,7 +747,7 @@ function createFavoriteButton(isFavorite: boolean, toggleFavorite: () => void, c
             onClick={toggleFavorite}
             aria-label={'Favorite'}
         >
-            {isFavorite ? <StarIcon size={24}/> : <StarOutlineIcon size={24}/>}
+            {isFavorite ? <StarIcon size={24} /> : <StarOutlineIcon size={24} />}
             {favoriteText}
         </button>
     );
@@ -758,9 +760,9 @@ function createNotificationPreferencesButton(channel: Channel, currentUser: User
             ariaLabel={Utils.localizeMessage('intro_messages.notificationPreferences', 'Notification Preferences')}
             className={'action-button'}
             dialogType={ChannelNotificationsModal}
-            dialogProps={{channel, currentUser}}
+            dialogProps={{ channel, currentUser }}
         >
-            <BellRingOutlineIcon size={24}/>
+            <BellRingOutlineIcon size={24} />
             <FormattedMessage
                 id='intro_messages.notificationPreferences'
                 defaultMessage='Notifications'

@@ -1,17 +1,20 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {PureComponent} from 'react';
-import {FormattedMessage} from 'react-intl';
+import React, { PureComponent } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import BrowserStore from 'stores/browser_store';
 
 import FormattedMarkdownMessage from 'components/formatted_markdown_message';
 
-import desktopImg from 'images/deep-linking/deeplinking-desktop-img.png';
+import desktopImg from 'images/deep-linking/infogito_graphic1.png';
 import mobileImg from 'images/deep-linking/deeplinking-mobile-img.png';
+import macOSIcon from 'images/icons/macOS.png';
+import windowsIcon from 'images/icons/windows.png';
+
 import MattermostLogoSvg from 'images/logo.svg';
-import {LandingPreferenceTypes} from 'utils/constants';
+import { LandingPreferenceTypes } from 'utils/constants';
 import * as UserAgent from 'utils/user_agent';
 import * as Utils from 'utils/utils';
 
@@ -99,7 +102,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
     };
 
     handleChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({rememberChecked: e.target.checked});
+        this.setState({ rememberChecked: e.target.checked });
 
         // If it was checked, and now we're unchecking it, clear the preference
         if (!e.target.checked) {
@@ -116,20 +119,20 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         }
 
         switch (pref) {
-        case LandingPreferenceTypes.MATTERMOSTAPP:
-            BrowserStore.setLandingPreferenceToMattermostApp(this.props.siteUrl);
-            break;
-        case LandingPreferenceTypes.BROWSER:
-            BrowserStore.setLandingPreferenceToBrowser(this.props.siteUrl);
-            break;
-        default:
-            break;
+            case LandingPreferenceTypes.MATTERMOSTAPP:
+                BrowserStore.setLandingPreferenceToMattermostApp(this.props.siteUrl);
+                break;
+            case LandingPreferenceTypes.BROWSER:
+                BrowserStore.setLandingPreferenceToBrowser(this.props.siteUrl);
+                break;
+            default:
+                break;
         }
     };
 
     openMattermostApp = () => {
         this.setPreference(LandingPreferenceTypes.MATTERMOSTAPP);
-        this.setState({redirectPage: true});
+        this.setState({ redirectPage: true });
         window.location.href = this.state.nativeLocation;
     };
 
@@ -151,10 +154,13 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         }
 
         return (
-            <FormattedMessage
-                id='get_app.systemDialogMessage'
-                defaultMessage='View in Desktop App'
-            />
+            <>
+                <img src={windowsIcon} alt='Windows Icon' className='download_btn_icons' />
+                <FormattedMessage
+                    id='get_app.systemDialogMessage'
+                    defaultMessage='Download Windows'
+                />
+            </>
         );
     };
 
@@ -167,7 +173,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                 }}
                 onClick={() => {
                     this.setPreference(LandingPreferenceTypes.MATTERMOSTAPP, true);
-                    this.setState({redirectPage: true, navigating: true});
+                    this.setState({ redirectPage: true, navigating: true });
                     if (UserAgent.isMobile()) {
                         if (UserAgent.isAndroidWeb()) {
                             const timeout = setTimeout(() => {
@@ -198,7 +204,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
     };
 
     handleBrandImageError = () => {
-        this.setState({brandImageError: true});
+        this.setState({ brandImageError: true });
     };
 
     renderGraphic = () => {
@@ -206,12 +212,12 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
 
         if (isMobile) {
             return (
-                <img src={mobileImg}/>
+                <img src={mobileImg} />
             );
         }
 
         return (
-            <img src={desktopImg}/>
+            <img src={desktopImg} />
         );
     };
 
@@ -255,7 +261,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                 <div className='get-app__download-link'>
                     {this.renderDownloadLinkText()}
                     {'\u00A0'}
-                    <br/>
+                    <br />
                     <a href={downloadLink}>
                         <FormattedMessage
                             id='get_app.downloadTheAppNow'
@@ -300,10 +306,10 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                             id='get_app.redirectedInMoments'
                             defaultMessage='You will be redirected in a few moments.'
                         />
-                        <br/>
+                        <br />
                         {this.renderDownloadLinkText()}
                         {'\u00A0'}
-                        <br className='mobile-only'/>
+                        <br className='mobile-only' />
                         <a href={downloadLink}>
                             <FormattedMessage
                                 id='get_app.downloadTheAppNow'
@@ -320,7 +326,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                 id='get_app.ifNothingPrompts'
                 defaultMessage='You can view {siteName} in the desktop app or continue in your web browser.'
                 values={{
-                    siteName: this.props.enableCustomBrand ? '' : ' Mattermost',
+                    siteName: this.props.enableCustomBrand ? '' : ' Infogito',
                 }}
             />
         );
@@ -330,7 +336,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                     id='get_app.ifNothingPromptsMobile'
                     defaultMessage='You can view {siteName} in the mobile app or continue in your web browser.'
                     values={{
-                        siteName: this.props.enableCustomBrand ? '' : ' Mattermost',
+                        siteName: this.props.enableCustomBrand ? '' : ' Infogito',
                     }}
                 />
             );
@@ -372,15 +378,34 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                         }}
                         onClick={() => {
                             this.setPreference(LandingPreferenceTypes.BROWSER, true);
-                            this.setState({navigating: true});
+                            this.setState({ navigating: true });
                         }}
-                        className='btn btn-tertiary btn-lg'
+                        className='btn btn-primary  btn-lg'
+                    >
+                        <img src={macOSIcon} alt='macOs Icon' className='download_btn_icons' />
+                        <FormattedMessage
+                            id='get_app.systemDialogMessage1'
+                            defaultMessage='Download macOS'
+                        />
+                    </a>
+                    <a
+                        href={this.state.location}
+                        onMouseDown={() => {
+                            this.setPreference(LandingPreferenceTypes.BROWSER, true);
+                        }}
+                        onClick={() => {
+                            this.setPreference(LandingPreferenceTypes.BROWSER, true);
+                            this.setState({ navigating: true });
+                        }}
+                        className='btn btn-tertiary view_in_browser_btn btn-lg'
                     >
                         <FormattedMessage
                             id='get_app.continueToBrowser'
                             defaultMessage='View in Browser'
                         />
                     </a>
+
+
                 </div>
                 <label className='get-app__preference'>
                     <input
@@ -399,40 +424,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         );
     };
 
-    renderHeader = () => {
-        let header = (
-            <div className='get-app__header'>
-                <img
-                    src={MattermostLogoSvg}
-                    className='get-app__logo'
-                />
-            </div>
-        );
-        if (this.props.enableCustomBrand && this.props.brandImageUrl) {
-            let customLogo;
-            if (this.props.brandImageUrl && !this.state.brandImageError) {
-                customLogo = (
-                    <img
-                        src={this.props.brandImageUrl}
-                        onError={this.handleBrandImageError}
-                        className='get-app__custom-logo'
-                    />
-                );
-            }
-
-            header = (
-                <div className='get-app__header'>
-                    {customLogo}
-                    <div className='get-app__custom-site-name'>
-                        <span>{this.props.siteName}</span>
-                    </div>
-                </div>
-            );
-        }
-
-        return header;
-    };
-
     render() {
         const isMobile = UserAgent.isMobile();
 
@@ -443,7 +434,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
 
         return (
             <div className='get-app'>
-                {this.renderHeader()}
                 <div className='get-app__dialog'>
                     <div
                         className={`get-app__graphic ${isMobile ? 'mobile' : ''}`}

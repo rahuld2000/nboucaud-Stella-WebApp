@@ -3,6 +3,12 @@
 
 @import 'utils/mixins';
 
+.cursor {
+    display: inline-block;
+    animation: blink 1s step-end infinite;
+}
+
+
 .login-body {
     display: flex;
     flex-direction: column;
@@ -26,15 +32,21 @@
     .login-body-content {
         display: flex;
         height: fit-content;
+        gap: 10em;
         flex: 1;
         align-items: center;
         justify-content: center;
 
         .login-body-message-subtitle {
-            color: rgba(var(--center-channel-color-rgb), 0.75);
-            font-size: 18px;
+            color: #fff;
+            font-size: 24px;
             font-weight: 400;
             line-height: 28px;
+        }
+
+        .login-body-message-subtitle>span {
+            font-weight: 600;
+            color: #0EB7B4;
         }
 
         .login-body-message {
@@ -44,13 +56,17 @@
             align-self: flex-start;
 
             .login-body-message-title {
-                padding-right: 24px;
-                color: var(--title-color-indigo-500);
+                color: #A5EFED !important;
                 font-family: Metropolis;
-                font-size: 80px;
+                font-size: 45px;
+                -webkit-text-stroke: 1px black;
                 font-weight: 600;
                 letter-spacing: -0.01em;
                 line-height: 88px;
+            }
+
+            .login-body-message-title>span {
+                color: #0EB7B4 !important;
             }
 
             .login-body-message-svg {
@@ -194,13 +210,13 @@
         .login-body-custom-branding-markdown {
             flex: 1;
 
-            ul + p,
-            ol + p {
+            ul+p,
+            ol+p {
                 margin-top: 0.6em;
             }
 
-            p + ul,
-            p + ol {
+            p+ul,
+            p+ol {
                 margin-top: 0.6em;
             }
 
@@ -224,13 +240,14 @@
 
 @media screen and (min-width: 1680px) {
     .login-body .login-body-content {
+
         .login-body-message,
         .login-body-card {
             width: 610px;
         }
 
         .login-body-message .login-body-message-title {
-            padding-right: 80px;
+
             margin-top: 48px;
         }
     }
@@ -238,9 +255,6 @@
 
 @media screen and (max-width: 1199px) {
     .login-body {
-        .login-body-alternate-link {
-            padding-right: 24px;
-        }
 
         .login-body-content {
             flex-direction: column;
@@ -310,7 +324,7 @@
                             font-size: 32px;
                             line-height: 40px;
 
-                            &:has(+ .login-body-custom-branding-markdown){
+                            &:has(+ .login-body-custom-branding-markdown) {
                                 margin-bottom: 12px;
                             }
                         }

@@ -140,7 +140,6 @@ func RenderMobileMessage(w http.ResponseWriter, message string) {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
 				<style>
 					body {
-						color: #333;
 						background-color: #fff;
 						font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 						font-size: 14px;
