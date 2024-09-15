@@ -45,6 +45,13 @@ import LoginOffice365Icon from 'components/widgets/icons/login_office_365_icon';
 import LoginOpenIDIcon from 'components/widgets/icons/login_openid_icon';
 import Input, { SIZE } from 'components/widgets/inputs/input/input';
 import PasswordInput from 'components/widgets/inputs/password_input/password_input';
+import Google from 'images/icons/google.png';
+import Github from 'images/icons/github.png';
+import macImage from 'images/icons/mac.png';
+import whatsapp from 'images/icons/whatsapp.png';
+import Mascot from 'images/gif_picker/Mascots.png';
+
+
 
 import Constants from 'utils/constants';
 import DesktopApp from 'utils/desktop_api';
@@ -149,53 +156,53 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
 
     const [desktopLoginLink, setDesktopLoginLink] = useState('');
     const wordsArray = [
-        'solve.',
-        'change.',
-        'adapt.',
-        'wonder.',
-        'believe.',
-        'question.',
-        'evolve.',
-        'challenge.',
-        'create.',
-        'grow.',
-        'connect.',
-        'explore.',
-        'see.',
-        'choose.',
-        'change the game.',
-        'defy.',
-        'rebel.',
-        'innovate.',
-        'imagine.',
-        'progress.',
-        'dream.',
-        'influence.',
-        'transform.',
-        'decide.',
-        'empower.',
-        'amplify.',
-        'know.',
-        'move.',
-        'build.',
-        'connect.',
-        'support.',
-        'collaborate.',
-        'accelerate.',
-        'discover.',
-        'lead.',
-        'inspire.',
-        'push.',
-        'optimize.',
-        'love.',
-        'advance.',
-        'feel.',
-        'forgive.',
-        'design.',
-        'reflect.',
-        'develop.',
-        'improve.',
-        'become.'
+        'therefore I solve.',
+        'therefore I change.',
+        'therefore I adapt.',
+        'therefore I wonder.',
+        'therefore I believe.',
+        'therefore I question.',
+        'therefore I evolve.',
+        'therefore I challenge.',
+        'therefore I create.',
+        'therefore I grow.',
+        'therefore I connect.',
+        'therefore I explore.',
+        'therefore I see.',
+        'therefore I choose.',
+        'therefore I change the game.',
+        'therefore I defy.',
+        'therefore I rebel.',
+        'therefore I innovate.',
+        'therefore I imagine.',
+        'therefore I progress.',
+        'therefore I dream.',
+        'therefore I influence.',
+        'therefore I transform.',
+        'therefore I decide.',
+        'therefore I empower.',
+        'therefore I amplify.',
+        'therefore I know.',
+        'therefore I move.',
+        'therefore I build.',
+        'therefore I connect.',
+        'therefore I support.',
+        'therefore I collaborate.',
+        'therefore I accelerate.',
+        'therefore I discover.',
+        'therefore I lead.',
+        'therefore I inspire.',
+        'therefore I push.',
+        'therefore I optimize.',
+        'therefore I love.',
+        'therefore I advance.',
+        'therefore I feel.',
+        'therefore I forgive.',
+        'therefore I design.',
+        'therefore I reflect.',
+        'therefore I develop.',
+        'therefore I improve.',
+        'therefore I become.'
     ];
     const getExternalLoginOptions = () => {
         const externalLoginOptions: ExternalLoginButtonType[] = [];
@@ -402,8 +409,8 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
 
     const getAlternateLink = useCallback(() => {
         const linkLabel = formatMessage({
-            id: 'login.noAccount',
-            defaultMessage: 'Don\'t have an account?',
+            id: 'login.signup',
+            defaultMessage: 'Sign Up',
         });
         const handleClick = () => {
             trackEvent('signup', 'click_login_no_account');
@@ -420,7 +427,7 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
         return (
             <AlternateLinkLayout
                 className='login-body-alternate-link'
-                alternateLinkPath={'/access_problem'}
+                alternateLinkPath={'/signup_user_complete'}
                 alternateLinkLabel={linkLabel}
                 onClick={handleClick}
             />
@@ -876,7 +883,7 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                     ) : (
                         <h1 className='login-body-message-title'>
                             {formatMessage({ id: 'login.title', defaultMessage: ' I think,' })} <span>
-                                therefore I <TypingAnimation words={wordsArray} />
+                                <TypingAnimation words={wordsArray} />
                             </span>
                         </h1>
 
@@ -889,15 +896,12 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                     )}
                 </div>
                 <div className='login-body-action'>
-                    {!isMobileView && getAlternateLink()}
+                    <p className='dont_p'>Don't have an account? <span>{!isMobileView && getAlternateLink()}</span></p>
                     <div className={classNames('login-body-card', { 'custom-branding': enableCustomBrand, 'with-error': hasError })}>
                         <div
                             className='login-body-card-content'
                             tabIndex={0}
                         >
-                            <p className='login-body-card-title'>
-                                {getCardTitle()}
-                            </p>
                             {enableCustomBrand && getMessageSubtitle()}
                             {alertBanner && (
                                 <AlertBanner
@@ -907,6 +911,10 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                                     onDismiss={alertBanner.onDismiss ?? dismissAlert}
                                 />
                             )}
+                            <p className='login-body-card-title'>
+                                {getCardTitle()}
+                            </p>
+
                             {enableBaseLogin && (
                                 <form
                                     onSubmit={(event: FormEvent<HTMLFormElement>) => {
@@ -937,6 +945,17 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                                             disabled={isWaiting}
                                         />
                                         {getResetPasswordLink()}
+                                        <div className="text-with-lines">or</div>
+
+                                        <div className='icons_div'>
+                                            <img src={Google} alt="" className='signIn_icons' />
+                                            <img src={macImage} alt="" className='signIn_icons' />
+
+                                            <img src={Github} alt="" className='signIn_icons' />
+                                            <img src={whatsapp} alt="" className='signIn_icons' />
+
+                                        </div>
+
                                         <SaveButton
                                             extraClasses='login-body-card-form-button-submit large'
                                             saving={isWaiting}
@@ -966,6 +985,10 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                                 </div>
                             )}
                         </div>
+
+                        <img src={Mascot} alt="" className='mascot_image' />
+
+
                     </div>
                 </div>
             </>

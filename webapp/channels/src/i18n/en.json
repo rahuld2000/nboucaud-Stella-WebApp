@@ -4091,6 +4091,7 @@
   "login.ldapUsername": "AD/LDAP Username",
   "login.ldapUsernameLower": "AD/LDAP username",
   "login.logIn": "Log in",
+  "login.signup": "Sign Up",
   "login.logingIn": "Logging in…",
   "login.noAccount": "Don't have an account?",
   "login.noEmail": "Please enter your email",

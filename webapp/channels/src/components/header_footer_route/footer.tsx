@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 
 import { getConfig } from 'mattermost-redux/selectors/entities/general';
+import Logo from 'images/infogito small logo (1) 1.png';
 
 import './footer.scss';
 import ExternalLink from 'components/external_link';
@@ -17,6 +18,8 @@ const Footer = () => {
 
     return (
         <div className='hfroute-footer'>
+            <img src={Logo} alt="" className='footer_logo' />
+
             <span
                 key='footer-copyright'
                 className='footer-copyright'

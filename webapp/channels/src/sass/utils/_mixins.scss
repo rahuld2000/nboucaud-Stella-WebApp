@@ -12,7 +12,7 @@
 }
 
 @mixin font-smoothing($value: antialiased) {
-    @if $value == antialiased {
+    @if $value ==antialiased {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
@@ -128,7 +128,7 @@
     justify-content: center;
     border: 0;
     border-radius: 4px;
-    background: var(--button-bg);
+    background: #02B9B5 !important;
     color: var(--button-color);
     font-weight: 600;
     transition: all 0.15s ease-out;
@@ -393,6 +393,7 @@
 }
 
 @keyframes shake-horizontally {
+
     10%,
     90% {
         transform: translate3d(-1px, 0, 0);

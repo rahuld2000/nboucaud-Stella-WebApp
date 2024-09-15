@@ -8,6 +8,52 @@
     animation: blink 1s step-end infinite;
 }
 
+.mascot_image {
+    position: absolute;
+    right: -6em;
+    bottom: -19em;
+    width: 259px !important;
+    height: 497px !important;
+}
+
+.icons_div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.signIn_icons {
+    cursor: pointer;
+    width: 52px;
+    height: 48px;
+}
+
+.text-with-lines {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0px;
+    color: #6F727C;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #E0E1E3; // Adjust the color and thickness as needed
+        margin: 0 10px; // Adjust the spacing as needed
+    }
+}
+
+.dont_p {
+    font-size: 20px !important;
+    line-height: 16px !important;
+    color: #fff !important;
+    display: flex !important;
+    gap: 5px !important;
+    margin: 0px !important;
+
+}
 
 .login-body {
     display: flex;
@@ -18,7 +64,7 @@
     .login-body-action {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: flex-start;
 
         @media (max-width: 700px) {
             width: 100%;
@@ -27,6 +73,9 @@
 
     .login-body-alternate-link {
         margin-bottom: 18px;
+        display: flex;
+        justify-content: start;
+
     }
 
     .login-body-content {
@@ -90,7 +139,7 @@
 
                     .login-body-message-subtitle,
                     .login-body-custom-branding-markdown {
-                        text-align: left;
+                        text-align: right;
                     }
                 }
 
@@ -108,11 +157,11 @@
         }
 
         .login-body-card {
+            position: relative;
             width: 540px;
             box-sizing: border-box;
             border: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
             border-radius: 8px;
-            margin-left: 60px;
             background-color: var(--center-channel-bg);
             box-shadow: var(--elevation-5);
 
@@ -129,7 +178,7 @@
                 box-shadow: none;
 
                 .login-body-card-title {
-                    color: var(--center-channel-color);
+                    color: #0EB7B4 !important;
                     font-family: 'Metropolis';
                     font-size: 22px;
                     font-style: normal;
@@ -241,9 +290,12 @@
 @media screen and (min-width: 1680px) {
     .login-body .login-body-content {
 
-        .login-body-message,
-        .login-body-card {
+        .login-body-message {
             width: 610px;
+        }
+
+        .login-body-card {
+            width: 540px;
         }
 
         .login-body-message .login-body-message-title {
@@ -261,7 +313,7 @@
 
             .login-body-message,
             .login-body-card {
-                width: 640px;
+                width: 540px;
             }
 
             .login-body-message {
