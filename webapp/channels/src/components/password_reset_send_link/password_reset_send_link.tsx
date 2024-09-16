@@ -7,7 +7,10 @@ import {FormattedMessage, injectIntl, type IntlShape} from 'react-intl';
 import type {ActionResult} from 'mattermost-redux/types/actions';
 import {isEmail} from 'mattermost-redux/utils/helpers';
 
-import BackButton from 'components/common/back_button';
+
+import './password_reset_send_link.scss'
+import Footer from 'components/header_footer_route/footer';
+import { Link } from 'react-router-dom';
 
 export interface Props {
     actions: {
@@ -99,11 +102,16 @@ export class PasswordResetSendLink extends React.PureComponent<Props, State> {
         }
 
         return (
-            <div>
-                <BackButton/>
-                <div className='col-sm-12'>
-                    <div className='signup-team__container'>
-                        <FormattedMessage
+            <div className='get-app'>
+
+                <div className='col-sm-12 card_center'>
+                
+                    <div className=' reset-password_link-body-card'>
+                    <p className='dont_p_RESET'>Don't have an account? <Link to={'/signup_user_complete'} className='signup_p'>Sign Up</Link></p>
+                    {error}
+
+                       <div className=''>
+                       <FormattedMessage
                             id='password_send.title'
                             tagName='h1'
                             defaultMessage='Password Reset'
@@ -123,7 +131,7 @@ export class PasswordResetSendLink extends React.PureComponent<Props, State> {
                                 <input
                                     id='passwordResetEmailInput'
                                     type='email'
-                                    className='form-control'
+                                    className='form-control reset_input'
                                     name='email'
                                     placeholder={this.props.intl.formatMessage({
                                         id: 'password_send.email',
@@ -134,11 +142,10 @@ export class PasswordResetSendLink extends React.PureComponent<Props, State> {
                                     autoFocus={true}
                                 />
                             </div>
-                            {error}
                             <button
                                 id='passwordResetButton'
                                 type='submit'
-                                className='btn btn-primary'
+                                className='btn btn-primary reset_my_password ' 
                             >
                                 <FormattedMessage
                                     id='password_send.reset'
@@ -146,8 +153,10 @@ export class PasswordResetSendLink extends React.PureComponent<Props, State> {
                                 />
                             </button>
                         </form>
+                       </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
         );
     }

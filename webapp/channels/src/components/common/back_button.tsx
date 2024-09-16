@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import React from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
 import {Link} from 'react-router-dom';
-
+import BackImage from 'images/icons/back.png';
 type Props = {
 
     /**
@@ -31,15 +31,18 @@ const BackButton = ({url, className, onClick}: Props): JSX.Element => {
                 onClick={onClick}
                 to={url}
             >
+    <img src={BackImage} alt="" style={{width: '28px ' , height: '27px' }}  />
+                
+{/* 
                 <span
                     id='back_button_icon'
                     className='fa fa-1x fa-angle-left'
                     title={formatMessage({id: 'generic_icons.back', defaultMessage: 'Back Icon'})}
-                />
-                <FormattedMessage
+                /> */}
+                {/* <FormattedMessage
                     id='web.header.back'
                     defaultMessage='Back'
-                />
+                /> */}
             </Link>
         </div>
     );

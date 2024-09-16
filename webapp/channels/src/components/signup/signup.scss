@@ -3,6 +3,43 @@
 
 @import 'utils/mixins';
 
+.mascot_image_signup {
+    position: absolute;
+    right: -6em;
+    bottom: -10em;
+    width: 259px !important;
+    height: 497px !important;
+}
+
+.icons_div1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 80px;
+}
+
+.signIn_icons {
+    cursor: pointer;
+    width: 52px;
+    height: 48px;
+}
+
+.text-with-lines1 {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0px;
+    color: #6F727C;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #E0E1E3;
+        margin: 0 10px; 
+    }
+}
+
 .signup-body {
     display: flex;
     flex-direction: column;
@@ -11,7 +48,7 @@
     .signup-body-action {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: flex-start;
 
         @media (max-width: 700px) {
             width: 100%;
@@ -25,6 +62,7 @@
     .signup-body-content {
         display: flex;
         height: fit-content;
+        gap: 20em;
         flex: 1;
         align-items: center;
         justify-content: center;
@@ -55,12 +93,19 @@
         }
 
         .signup-body-message-subtitle {
-            padding-right: 170px;
-            color: rgba(var(--center-channel-color-rgb), 0.75);
-            font-size: 18px;
+            padding-right: 0px;
+            color: #fff;
+            font-size: 24px;
             font-weight: 400;
             line-height: 28px;
         }
+
+
+        .signup-body-message-subtitle>span {
+            font-weight: 600;
+            color: #0EB7B4;
+        }
+
 
         .signup-body-message {
             display: flex;
@@ -69,10 +114,9 @@
             align-self: flex-start;
 
             .signup-body-message-title {
-                padding-right: 60px;
                 color: var(--title-color-indigo-500);
                 font-family: Metropolis;
-                font-size: 80px;
+                font-size: 45px;
                 font-weight: 600;
                 letter-spacing: -0.01em;
                 line-height: 88px;
@@ -116,16 +160,16 @@
             }
 
             &.with-alternate-link {
-                margin-top: 40px;
+                margin-top: 10em;
             }
         }
 
         .signup-body-card {
+            position: relative;
             width: 540px;
             box-sizing: border-box;
             border: 1px solid rgba(var(--center-channel-color-rgb), 0.08);
             border-radius: 8px;
-            margin-left: 60px;
             background-color: var(--center-channel-bg);
             box-shadow: var(--elevation-5);
 
@@ -137,12 +181,12 @@
                 display: flex;
                 flex: 1;
                 flex-flow: column;
-                padding: 48px 56px;
+                padding: 48px 25px;
                 border: none;
                 box-shadow: none;
 
                 .signup-body-card-title {
-                    color: var(--center-channel-color);
+                    color: #0EB7B4;
                     font-family: 'Metropolis';
                     font-size: 22px;
                     font-style: normal;
@@ -288,8 +332,12 @@
             width: 610px;
         }
 
+        .signup-body-card{
+            width: 610px;
+        }
+
         .signup-body-message .signup-body-message-title {
-            padding-right: 130px;
+            padding-right: 0px;
             margin-top: 48px;
         }
     }
@@ -410,4 +458,13 @@
             }
         }
     }
+}
+.dont_p {
+    font-size: 20px !important;
+    line-height: 16px !important;
+    color: #fff !important;
+    display: flex !important;
+    gap: 5px !important;
+    margin-left: 0px !important;
+
 }

@@ -10,7 +10,8 @@ import SiteNameAndDescription from 'components/common/site_name_and_description'
 describe('/components/common/SiteNameAndDescription', () => {
     const baseProps = {
         customDescriptionText: '',
-        siteName: 'Mattermost',
+        siteName: "Infogito's",
+
     };
 
     test('should match snapshot, default', () => {

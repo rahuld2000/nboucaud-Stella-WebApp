@@ -59,8 +59,13 @@ import {isDesktopApp} from 'utils/user_agent';
 import {isValidUsername, getRoleFromTrackFlow, getMediumFromTrackFlow} from 'utils/utils';
 
 import type {GlobalState} from 'types/store';
-
+import Google from 'images/icons/google.png';
+import Github from 'images/icons/github.png';
+import macImage from 'images/icons/mac.png';
+import whatsapp from 'images/icons/whatsapp.png';
+import Mascot from 'images/gif_picker/Mascots.png';
 import './signup.scss';
+import TypingAnimation from 'components/login/typing_animation';
 
 const MOBILE_SCREEN_WIDTH = 1200;
 
@@ -145,6 +150,12 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     const [alertBanner, setAlertBanner] = useState<AlertBannerProps | null>(null);
     const [isMobileView, setIsMobileView] = useState(false);
     const [subscribeToSecurityNewsletter, setSubscribeToSecurityNewsletter] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleCheckboxChange = () => {
+        setIsChecked(!isChecked);
+    };
+
 
     const cwsAvailability = useCWSAvailabilityCheck();
 
@@ -165,6 +176,55 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
         }
     };
 
+    const wordsArray = [
+        'therefore I solve.',
+        'therefore I change.',
+        'therefore I adapt.',
+        'therefore I wonder.',
+        'therefore I believe.',
+        'therefore I question.',
+        'therefore I evolve.',
+        'therefore I challenge.',
+        'therefore I create.',
+        'therefore I grow.',
+        'therefore I connect.',
+        'therefore I explore.',
+        'therefore I see.',
+        'therefore I choose.',
+        'therefore I change the game.',
+        'therefore I defy.',
+        'therefore I rebel.',
+        'therefore I innovate.',
+        'therefore I imagine.',
+        'therefore I progress.',
+        'therefore I dream.',
+        'therefore I influence.',
+        'therefore I transform.',
+        'therefore I decide.',
+        'therefore I empower.',
+        'therefore I amplify.',
+        'therefore I know.',
+        'therefore I move.',
+        'therefore I build.',
+        'therefore I connect.',
+        'therefore I support.',
+        'therefore I collaborate.',
+        'therefore I accelerate.',
+        'therefore I discover.',
+        'therefore I lead.',
+        'therefore I inspire.',
+        'therefore I push.',
+        'therefore I optimize.',
+        'therefore I love.',
+        'therefore I advance.',
+        'therefore I feel.',
+        'therefore I forgive.',
+        'therefore I design.',
+        'therefore I reflect.',
+        'therefore I develop.',
+        'therefore I improve.',
+        'therefore I become.'
+    ];
     const getExternalSignupOptions = () => {
         const externalLoginOptions: ExternalLoginButtonType[] = [];
 
@@ -411,10 +471,13 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
 
         return (
             <p className='signup-body-message-subtitle'>
-                {formatMessage({
+                {/* {formatMessage({
                     id: 'signup_user_completed.subtitle',
                     defaultMessage: 'Create your Mattermost account to start collaborating with your team',
-                })}
+                })} */}
+                     Welcome to the <span>Infogito Platform</span>.
+                <br />
+                Home of <span>Stella v1.</span> Your Personal Problem-Solver.
             </p>
         );
     };
@@ -779,18 +842,21 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                         />
                     ) : (
                         <h1 className='signup-body-message-title'>
-                            {formatMessage({id: 'signup_user_completed.title', defaultMessage: 'Let’s get started'})}
+                            {formatMessage({id: 'login.title', defaultMessage: 'I think,'})}
+                            <span>
+                                <TypingAnimation words={wordsArray} />
+                            </span>
                         </h1>
                     )}
                     {getMessageSubtitle()}
                     {!enableCustomBrand && (
                         <div className='signup-body-message-svg'>
-                            <ManWithLaptopSVG/>
+                            {/* <ManWithLaptopSVG/> */}
                         </div>
                     )}
                 </div>
                 <div className='signup-body-action'>
-                    {!isMobileView && getAlternateLink()}
+                <p className='dont_p_signup'><span>{!isMobileView && getAlternateLink()}</span></p>
                     <div className={classNames('signup-body-card', {'custom-branding': enableCustomBrand, 'with-error': hasError})}>
                         <div
                             className='signup-body-card-content'
@@ -862,15 +928,39 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                         error={passwordError}
                                         onBlur={(e) => handleOnBlur(e, 'password')}
                                     />
-                                    {getNewsletterCheck()}
+                                    
+
+                                    <CheckInput
+                                id='signup-body-card-form-check-terms'
+                                ariaLabel='terms and conditions checkbox'
+                                name='terms'
+                                onChange={handleCheckboxChange}
+                                text={`By creating an account, you agree to Infogito's Terms of Use, and Privacy Policy. You consent to the collection, use, and storage of your data as outlined in our Privacy Policy, including for account management, service improvements, and personalized experiences. You can manage your data preferences at any time in your account settings.`
+                                }
+                                checked={isChecked}
+                            />
                                     <SaveButton
                                         extraClasses='signup-body-card-form-button-submit large'
                                         saving={isWaiting}
-                                        disabled={!canSubmit}
+                                        disabled={!isChecked || !canSubmit}
+                              
                                         onClick={handleSubmit}
                                         defaultMessage={formatMessage({id: 'signup_user_completed.create', defaultMessage: 'Create account'})}
                                         savingMessage={formatMessage({id: 'signup_user_completed.saving', defaultMessage: 'Creating account…'})}
                                     />
+
+<div className="text-with-lines1">or</div>
+
+<div className='icons_div1'>
+    <img src={Google} alt="" className='signIn_icons' />
+    <img src={macImage} alt="" className='signIn_icons' />
+
+    <img src={Github} alt="" className='signIn_icons' />
+    <img src={whatsapp} alt="" className='signIn_icons' />
+
+</div>
+
+
                                 </div>
                             )}
                             {enableSignUpWithEmail && enableExternalSignup && (
@@ -905,6 +995,10 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                                 </p>
                             )}
                         </div>
+
+                        <img src={Mascot} alt="" className='mascot_image_signup' />
+
+
                     </div>
                 </div>
             </>
@@ -912,7 +1006,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
     };
 
     return (
-        <div className='signup-body'>
+        <div className='signup-body' >
             <div className='signup-body-content'>
                 {getContent()}
             </div>
