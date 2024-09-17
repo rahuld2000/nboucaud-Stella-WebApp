@@ -21,8 +21,8 @@ import {isChannels} from 'utils/products';
 
 import type {GlobalState} from 'types/store';
 
-import AtMentionsButton from './at_mentions_button/at_mentions_button';
 import PlanUpgradeButton from './plan_upgrade_button';
+import PreviousGPTsButton from './previous_gpts_button/previous_gpts_button';
 import SavedPostsButton from './saved_posts_button/saved_posts_button';
 import SettingsButton from './settings_button';
 
@@ -68,7 +68,7 @@ const RightControls = ({productId = null}: Props): JSX.Element => {
             <PlanUpgradeButton/>
             {isChannels(productId) ? (
                 <>
-                    <AtMentionsButton/>
+                    <PreviousGPTsButton/>
                     <SavedPostsButton/>
                 </>
             ) : (

@@ -44,6 +44,10 @@ import PerformanceReporterController from './performance_reporter_controller';
 import RootProvider from './root_provider';
 import RootRedirect from './root_redirect';
 
+import logo from '../../images/infogito.png';
+import notesIcon from '../../images/notes-icon.png';
+import storeIcon from '../../images/store.png';
+
 import type {PropsFromRedux} from './index';
 
 import 'plugins/export.js';
@@ -490,75 +494,95 @@ export default class Root extends React.PureComponent<Props, State> {
                         <GlobalHeader/>
                         <CloudEffects/>
                         <TeamSidebar/>
-                        <div className='main-wrapper'>
-                            <Switch>
-                                {this.props.products?.filter((product) => Boolean(product.publicComponent)).map((product) => (
-                                    <Route
-                                        key={`${product.id}-public`}
-                                        path={`${product.baseURL}/public`}
-                                        render={(props) => {
-                                            return (
-                                                <Pluggable
-                                                    pluggableName={'Product'}
-                                                    subComponentName={'publicComponent'}
-                                                    pluggableId={product.id}
-                                                    css={{gridArea: 'center'}}
-                                                    {...props}
-                                                />
-                                            );
-                                        }}
-                                    />
-                                ))}
-                                {this.props.products?.map((product) => (
-                                    <Route
-                                        key={product.id}
-                                        path={product.baseURL}
-                                        render={(props) => {
-                                            let pluggable = (
-                                                <Pluggable
-                                                    pluggableName={'Product'}
-                                                    subComponentName={'mainComponent'}
-                                                    pluggableId={product.id}
-                                                    webSocketClient={webSocketClient}
-                                                    css={product.wrapped ? undefined : {gridArea: 'center'}}
-                                                />
-                                            );
-                                            if (product.wrapped) {
-                                                pluggable = (
-                                                    <div className={classNames(['product-wrapper', {wide: !product.showTeamSidebar}])}>
-                                                        {pluggable}
-                                                    </div>
-                                                );
-                                            }
-                                            return (
-                                                <LoggedIn {...props}>
-                                                    {pluggable}
-                                                </LoggedIn>
-                                            );
-                                        }}
-                                    />
-                                ))}
-                                {this.props.plugins?.map((plugin) => (
-                                    <Route
-                                        key={plugin.id}
-                                        path={'/plug/' + (plugin as any).route}
-                                        render={() => (
-                                            <Pluggable
-                                                pluggableName={'CustomRouteComponent'}
-                                                pluggableId={plugin.id}
-                                                css={{gridArea: 'center'}}
-                                            />
-                                        )}
-                                    />
-                                ))}
-                                <LoggedInRoute
-                                    theme={this.props.theme}
-                                    path={`/:team(${TEAM_NAME_PATH_PATTERN})`}
-                                    component={TeamController}
+                        <div className='home-screen-wrapper'>
+                            <div className='home-screen-wrapper__sidebar left'>
+                                <img
+                                    src={logo}
+                                    alt='logo'
                                 />
-                                <RootRedirect/>
-                            </Switch>
-                            <SidebarRight/>
+                            </div>
+                            <div className='main-wrapper'>
+                                <Switch>
+                                    {this.props.products?.filter((product) => Boolean(product.publicComponent)).map((product) => (
+                                        <Route
+                                            key={`${product.id}-public`}
+                                            path={`${product.baseURL}/public`}
+                                            render={(props) => {
+                                                return (
+                                                    <Pluggable
+                                                        pluggableName={'Product'}
+                                                        subComponentName={'publicComponent'}
+                                                        pluggableId={product.id}
+                                                        css={{gridArea: 'center'}}
+                                                        {...props}
+                                                    />
+                                                );
+                                            }}
+                                        />
+                                    ))}
+                                    {this.props.products?.map((product) => (
+                                        <Route
+                                            key={product.id}
+                                            path={product.baseURL}
+                                            render={(props) => {
+                                                let pluggable = (
+                                                    <Pluggable
+                                                        pluggableName={'Product'}
+                                                        subComponentName={'mainComponent'}
+                                                        pluggableId={product.id}
+                                                        webSocketClient={webSocketClient}
+                                                        css={product.wrapped ? undefined : {gridArea: 'center'}}
+                                                    />
+                                                );
+                                                if (product.wrapped) {
+                                                    pluggable = (
+                                                        <div className={classNames(['product-wrapper', {wide: !product.showTeamSidebar}])}>
+                                                            {pluggable}
+                                                        </div>
+                                                    );
+                                                }
+                                                return (
+                                                    <LoggedIn {...props}>
+                                                        {pluggable}
+                                                    </LoggedIn>
+                                                );
+                                            }}
+                                        />
+                                    ))}
+                                    {this.props.plugins?.map((plugin) => (
+                                        <Route
+                                            key={plugin.id}
+                                            path={'/plug/' + (plugin as any).route}
+                                            render={() => (
+                                                <Pluggable
+                                                    pluggableName={'CustomRouteComponent'}
+                                                    pluggableId={plugin.id}
+                                                    css={{gridArea: 'center'}}
+                                                />
+                                            )}
+                                        />
+                                    ))}
+                                    <LoggedInRoute
+                                        theme={this.props.theme}
+                                        path={`/:team(${TEAM_NAME_PATH_PATTERN})`}
+                                        component={TeamController}
+                                    />
+                                    <RootRedirect/>
+                                </Switch>
+                                <SidebarRight/>
+                            </div>
+                            <div className='home-screen-wrapper__sidebar right'>
+                                <div className='top'>
+                                    <button>
+                                        <img src={notesIcon}/>
+                                    </button>
+                                </div>
+                                <div className='bottom'>
+                                    <button>
+                                        <img src={storeIcon}/>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <Pluggable pluggableName='Global'/>
                         <AppBar/>

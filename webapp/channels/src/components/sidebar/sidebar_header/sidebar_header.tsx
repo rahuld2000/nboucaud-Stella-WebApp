@@ -1,8 +1,8 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React from 'react';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 import Heading from '@mattermost/compass-components/components/heading'; // eslint-disable-line no-restricted-imports
@@ -11,16 +11,7 @@ import Flex from '@mattermost/compass-components/utilities/layout/Flex'; // esli
 import {getTheme} from 'mattermost-redux/selectors/entities/preferences';
 import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 
-import {setAddChannelDropdown} from 'actions/views/add_channel_dropdown';
-import {isAddChannelDropdownOpen} from 'selectors/views/add_channel_dropdown';
-
-import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas';
 import CompassThemeProvider from 'components/compass_theme_provider/compass_theme_provider';
-import MainMenu from 'components/main_menu';
-import AddChannelDropdown from 'components/sidebar/add_channel_dropdown';
-import {OnboardingTourSteps} from 'components/tours';
-import {useShowOnboardingTutorialStep} from 'components/tours/onboarding_tour';
-import MenuWrapper from 'components/widgets/menu/menu_wrapper';
 import WithTooltip from 'components/with_tooltip';
 
 import type {GlobalState} from 'types/store';
@@ -94,23 +85,9 @@ export type Props = {
     canCreateCustomGroups: boolean;
 }
 
-const SidebarHeader = (props: Props) => {
-    const dispatch = useDispatch();
+const SidebarHeader = (_: Props) => {
     const currentTeam = useSelector((state: GlobalState) => getCurrentTeam(state));
-    const showCreateTutorialTip = useShowOnboardingTutorialStep(OnboardingTourSteps.CREATE_AND_JOIN_CHANNELS);
-    const showInviteTutorialTip = useShowOnboardingTutorialStep(OnboardingTourSteps.INVITE_PEOPLE);
-    const usageDeltas = useGetUsageDeltas();
-    const isAddChannelOpen = useSelector(isAddChannelDropdownOpen);
     const theme = useSelector(getTheme);
-    const openAddChannelOpen = useCallback((open: boolean) => {
-        dispatch(setAddChannelDropdown(open));
-    }, []);
-
-    const [menuToggled, setMenuToggled] = useState(false);
-
-    const handleMenuToggle = () => {
-        setMenuToggled(!menuToggled);
-    };
 
     if (!currentTeam) {
         return null;
@@ -121,44 +98,17 @@ const SidebarHeader = (props: Props) => {
             <SidebarHeaderContainer
                 id={'sidebar-header-container'}
             >
-                <MenuWrapper
-                    onToggle={handleMenuToggle}
-                    className='SidebarHeaderMenuWrapper test-team-header'
+                <WithTooltip
+                    id='team-name__tooltip'
+                    title={currentTeam.description ? currentTeam.description : currentTeam.display_name}
+                    placement='bottom'
                 >
-                    <WithTooltip
-                        id='team-name__tooltip'
-                        title={currentTeam.description ? currentTeam.description : currentTeam.display_name}
-                        placement='bottom'
-                    >
-                        <SidebarHeading>
-                            <button className='style--none sidebar-header'>
-                                <span className='title'>{currentTeam.display_name}</span>
-                                <i className='icon icon-chevron-down'/>
-                            </button>
-                        </SidebarHeading>
-                    </WithTooltip>
-                    <MainMenu
-                        id='sidebarDropdownMenu'
-                        usageDeltaTeams={usageDeltas.teams.active}
-                    />
-                </MenuWrapper>
-                <AddChannelDropdown
-                    showNewChannelModal={props.showNewChannelModal}
-                    showMoreChannelsModal={props.showMoreChannelsModal}
-                    invitePeopleModal={props.invitePeopleModal}
-                    showCreateCategoryModal={props.showCreateCategoryModal}
-                    canCreateChannel={props.canCreateChannel}
-                    canJoinPublicChannel={props.canJoinPublicChannel}
-                    handleOpenDirectMessagesModal={props.handleOpenDirectMessagesModal}
-                    unreadFilterEnabled={props.unreadFilterEnabled}
-                    showCreateTutorialTip={showCreateTutorialTip}
-                    showInviteTutorialTip={showInviteTutorialTip}
-                    isAddChannelOpen={isAddChannelOpen}
-                    openAddChannelOpen={openAddChannelOpen}
-                    canCreateCustomGroups={props.canCreateCustomGroups}
-                    showCreateUserGroupModal={props.showCreateUserGroupModal}
-                    userGroupsEnabled={props.userGroupsEnabled}
-                />
+                    <SidebarHeading>
+                        <button className='style--none sidebar-header'>
+                            <span className='title'>{currentTeam.display_name}</span>
+                        </button>
+                    </SidebarHeading>
+                </WithTooltip>
             </SidebarHeaderContainer>
         </CompassThemeProvider>
     );

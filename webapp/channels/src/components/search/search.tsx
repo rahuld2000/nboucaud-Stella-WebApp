@@ -508,7 +508,7 @@ const Search: React.FC<Props> = (props: Props): JSX.Element => {
                     }
                     buttonId={'channelHeaderSearchButton'}
                     onClick={searchButtonClick}
-                    tooltip={intl.formatMessage({id: 'channel_header.search', defaultMessage: 'Search'})}
+                    tooltip={intl.formatMessage({id: 'channel_header.search', defaultMessage: 'Search Files, Messages, and Home'})}
                 />
             );
         }

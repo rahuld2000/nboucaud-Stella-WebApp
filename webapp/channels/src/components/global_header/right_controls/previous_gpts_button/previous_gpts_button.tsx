@@ -17,7 +17,7 @@ import {RHSStates} from 'utils/constants';
 
 import type {GlobalState} from 'types/store';
 
-const AtMentionsButton = (): JSX.Element => {
+const PreviousGPTsButton = (): JSX.Element => {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
     const rhsState = useSelector((state: GlobalState) => getRhsState(state));
@@ -33,13 +33,13 @@ const AtMentionsButton = (): JSX.Element => {
 
     return (
         <WithTooltip
-            id='recentMentions'
+            id='previousGPTs'
             placement='bottom'
             title={
                 <>
                     <FormattedMessage
-                        id='channel_header.recentMentions'
-                        defaultMessage='Recent mentions'
+                        id='channel_header.previousGPTs'
+                        defaultMessage='Previous GPTs'
                     />
                     <KeyboardShortcutSequence
                         shortcut={KEYBOARD_SHORTCUTS.navMentions}
@@ -51,17 +51,17 @@ const AtMentionsButton = (): JSX.Element => {
         >
             <IconButton
                 size={'sm'}
-                icon={'at'}
+                icon={'clock-outline'}
                 toggled={rhsState === RHSStates.MENTION}
                 onClick={mentionButtonClick}
                 inverted={true}
                 compact={true}
                 aria-expanded={rhsState === RHSStates.MENTION}
                 aria-controls='searchContainer' // Must be changed if the ID of the container changes
-                aria-label={formatMessage({id: 'channel_header.recentMentions', defaultMessage: 'Recent mentions'})}
+                aria-label={formatMessage({id: 'channel_header.previousGPTs', defaultMessage: 'Previous GPTs'})}
             />
         </WithTooltip>
     );
 };
 
-export default AtMentionsButton;
+export default PreviousGPTsButton;

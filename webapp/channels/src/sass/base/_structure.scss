@@ -168,9 +168,9 @@ body.app__body #root {
         border: var(--border-light);
         margin: 0 4px 4px 4px;
         border-radius: var(--radius-l);
-        grid-area: main;
         grid-template: "lhs center rhs";
         grid-template-columns: min-content minmax(385px, 1fr) min-content;
+        height: 100%;
 
         &:has(.backstage-body) {
             background: inherit;
@@ -293,6 +293,53 @@ body.app__body #root {
 
         #sidebar-right {
             transition: none;
+        }
+    }
+
+    .home-screen-wrapper {
+        position: relative;
+        overflow: hidden;
+        grid-area: main;
+        background-color: var(--sidebar-header-bg);
+        display: flex;
+
+        &__sidebar {
+            padding: 6px;
+            padding-bottom: 12px;
+            width: 48px;
+            flex-basis: 48px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 0;
+
+            &.left {
+                justify-content: end;
+    
+                img {
+                    width: 100%;
+                }
+            }
+
+            &.right {
+                & > div {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: right;
+
+                    &.bottom {
+                        justify-content: end;
+                    }
+
+                    button {
+                        @include icon-button;
+                    }
+                }
+            }
+        }
+
+        .main-wrapper {
+            flex: 1;
         }
     }
 }

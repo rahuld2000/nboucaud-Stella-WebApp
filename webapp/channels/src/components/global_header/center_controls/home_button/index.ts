@@ -18,7 +18,7 @@ import {getIsMobileView} from 'selectors/views/browser';
 
 import type {GlobalState} from 'types/store';
 
-import UserGuideDropdown from './user_guide_dropdown';
+import HomeButton from './home_button';
 
 function mapStateToProps(state: GlobalState) {
     const {HelpLink, ReportAProblemLink, EnableAskCommunityLink} = getConfig(state);
@@ -47,4 +47,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default withRouter(connector(UserGuideDropdown));
+export default withRouter(connector(HomeButton));

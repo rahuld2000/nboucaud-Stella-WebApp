@@ -8,6 +8,8 @@ import {Overlay} from 'react-bootstrap';
 import {FormattedMessage, injectIntl} from 'react-intl';
 import type {IntlShape} from 'react-intl';
 
+import CameraOutlineIcon from '@mattermost/compass-icons/components/camera-outline';
+import PhoneOutlineIcon from '@mattermost/compass-icons/components/phone-outline';
 import type {Channel, ChannelMembership, ChannelNotifyProps} from '@mattermost/types/channels';
 import type {UserCustomStatus, UserProfile} from '@mattermost/types/users';
 
@@ -350,7 +352,8 @@ class ChannelHeader extends React.PureComponent<Props, State> {
         const channelFilesIconClass = classNames('channel-header__icon channel-header__icon--left btn btn-icon btn-xs ', {
             'channel-header__icon--active': rhsState === RHSStates.CHANNEL_FILES,
         });
-        const channelFilesIcon = <i className='icon icon-file-text-outline'/>;
+        const channelSearchIcon = <i className='icon icon-magnify'/>;
+        const channelMentionIcon = <i className='icon icon-at'/>;
         const pinnedIconClass = classNames('channel-header__icon channel-header__icon--wide channel-header__icon--left btn btn-icon btn-xs', {
             'channel-header__icon--active': rhsState === RHSStates.PIN,
         });
@@ -534,6 +537,7 @@ class ChannelHeader extends React.PureComponent<Props, State> {
                     );
                 }
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             headerTextContainer = (
                 <div
                     id='channelHeaderDescription'
@@ -606,17 +610,22 @@ class ChannelHeader extends React.PureComponent<Props, State> {
                                         onClick={this.showPinnedPosts}
                                         tooltip={this.props.intl.formatMessage({id: 'channel_header.pinnedPosts', defaultMessage: 'Pinned messages'})}
                                     />
-                                    {this.props.isFileAttachmentsEnabled &&
-                                        <HeaderIconWrapper
-                                            iconComponent={channelFilesIcon}
-                                            buttonClass={channelFilesIconClass}
-                                            buttonId={'channelHeaderFilesButton'}
-                                            onClick={this.showChannelFiles}
-                                            tooltip={this.props.intl.formatMessage({id: 'channel_header.channelFiles', defaultMessage: 'Channel files'})}
-                                        />
-                                    }
+                                    <HeaderIconWrapper
+                                        iconComponent={channelSearchIcon}
+                                        buttonClass={channelFilesIconClass}
+                                        buttonId={'channelHeaderSearchButton'}
+                                        onClick={() => {}}
+                                        tooltip={this.props.intl.formatMessage({id: 'channel_header.search', defaultMessage: 'Search'})}
+                                    />
+                                    <HeaderIconWrapper
+                                        iconComponent={channelMentionIcon}
+                                        buttonClass={channelFilesIconClass}
+                                        buttonId={'channelHeaderMentionhButton'}
+                                        onClick={() => {}}
+                                        tooltip={this.props.intl.formatMessage({id: 'channel_header.mention', defaultMessage: 'Mention'})}
+                                    />
                                 </div>
-                                {headerTextContainer}
+                                {/* {headerTextContainer} */}
                             </div>
                         </div>
                     </div>
@@ -625,6 +634,18 @@ class ChannelHeader extends React.PureComponent<Props, State> {
                         channelMember={channelMember}
                     />
                     <CallButton/>
+                    <HeaderIconWrapper
+                        iconComponent={<PhoneOutlineIcon size={18}/>}
+                        buttonId={'channelVoiceCallButton'}
+                        onClick={() => {}}
+                        tooltip={this.props.intl.formatMessage({id: 'channel_header.voice_call', defaultMessage: 'Voice Call'})}
+                    />
+                    <HeaderIconWrapper
+                        iconComponent={<CameraOutlineIcon size={18}/>}
+                        buttonId={'channelVideoCallButton'}
+                        onClick={() => {}}
+                        tooltip={this.props.intl.formatMessage({id: 'channel_header.video_call_btn', defaultMessage: 'Video Call'})}
+                    />
                     <ChannelInfoButton channel={channel}/>
                 </div>
             </div>

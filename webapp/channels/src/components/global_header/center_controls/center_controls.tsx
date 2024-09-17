@@ -10,7 +10,7 @@ import Pluggable from 'plugins/pluggable';
 import {isChannels} from 'utils/products';
 
 import GlobalSearchNav from './global_search_nav/global_search_nav';
-import UserGuideDropdown from './user_guide_dropdown';
+import HomeButton from './home_button';
 
 const CenterControlsContainer = styled.div`
     display: flex;
@@ -35,7 +35,7 @@ const CenterControls = ({productId = null}: Props): JSX.Element => {
             {isChannels(productId) ? (
                 <>
                     <GlobalSearchNav/>
-                    <UserGuideDropdown/>
+                    <HomeButton/>
                 </>
             ) : (
                 <Pluggable

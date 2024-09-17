@@ -38,7 +38,7 @@ import {Mark} from 'utils/performance_telemetry';
 
 import type {GlobalState} from 'types/store';
 
-import ThreadsIcon from './threads_icon';
+import InternetIcon from './internet_icon';
 
 import {useThreadRouting} from '../hooks';
 
@@ -113,11 +113,11 @@ const GlobalThreadsLink = () => {
                     tabIndex={0}
                 >
                     <span className='icon'>
-                        <ThreadsIcon/>
+                        <InternetIcon/>
                     </span>
                     <div className='SidebarChannelLinkLabel_wrapper'>
                         <span className='SidebarChannelLinkLabel sidebar-item__name'>
-                            {formatMessage({id: 'globalThreads.sidebarLink', defaultMessage: 'Threads'})}
+                            {formatMessage({id: 'globalInternet.sidebarLink', defaultMessage: 'Internet'})}
                         </span>
                     </div>
                     {counts?.total_unread_mentions > 0 && (

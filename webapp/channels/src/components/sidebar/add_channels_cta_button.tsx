@@ -109,15 +109,15 @@ const AddChannelsCtaButton = (): JSX.Element | null => {
             <button
                 className={buttonClass}
                 id={'addChannelsCta'}
-                aria-label={intl.formatMessage({id: 'sidebar_left.add_channel_dropdown.dropdownAriaLabel', defaultMessage: 'Add Channel Dropdown'})}
+                aria-label={intl.formatMessage({id: 'sidebar_left.add_channel_dropdown.dropdownAriaLabel', defaultMessage: 'Browse Apps Dropdown'})}
                 onClick={handleClick}
             >
                 <div
-                    aria-label={intl.formatMessage({id: 'sidebar_left.sidebar_channel_navigator.addChannelsCta', defaultMessage: 'Add channels'})}
+                    aria-label={intl.formatMessage({id: 'sidebar_left.sidebar_channel_navigator.browseAppsCta', defaultMessage: 'Browse Apps'})}
                 >
                     <i className='icon-plus-box'/>
                     <span>
-                        {intl.formatMessage({id: 'sidebar_left.addChannelsCta', defaultMessage: 'Add Channels'})}
+                        {intl.formatMessage({id: 'sidebar_left.browseAppsCta', defaultMessage: 'Browse Apps'})}
                     </span>
                 </div>
             </button>

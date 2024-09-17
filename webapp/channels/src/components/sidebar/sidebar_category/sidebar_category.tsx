@@ -30,7 +30,6 @@ import SidebarCategoryMenu from './sidebar_category_menu';
 import SidebarCategorySortingMenu from './sidebar_category_sorting_menu';
 
 import AddChannelsCtaButton from '../add_channels_cta_button';
-import InviteMembersButton from '../invite_members_button';
 import {SidebarCategoryHeader} from '../sidebar_category_header';
 import SidebarChannel from '../sidebar_channel';
 
@@ -320,16 +319,6 @@ export default class SidebarCategory extends React.PureComponent<Props, State> {
                 disableInteractiveElementBlocking={true}
             >
                 {(provided, snapshot) => {
-                    let inviteMembersButton = null;
-                    if (category.type === 'direct_messages' && !category.collapsed) {
-                        inviteMembersButton = (
-                            <InviteMembersButton
-                                className='followingSibling'
-                                isAdmin={this.props.isAdmin}
-                            />
-                        );
-                    }
-
                     let addChannelsCtaButton = null;
                     if (category.type === 'channels' && !category.collapsed) {
                         addChannelsCtaButton = (
@@ -393,7 +382,6 @@ export default class SidebarCategory extends React.PureComponent<Props, State> {
                                     );
                                 }}
                             </Droppable>
-                            {inviteMembersButton}
                             {addChannelsCtaButton}
                         </div>
                     );
@@ -409,8 +397,8 @@ const categoryNames = defineMessages({
         defaultMessage: 'CHANNELS',
     },
     direct_messages: {
-        id: 'sidebar.types.direct_messages',
-        defaultMessage: 'DIRECT MESSAGES',
+        id: 'sidebar.types.chat',
+        defaultMessage: 'CHAT',
     },
     favorites: {
         id: 'sidebar.types.favorites',

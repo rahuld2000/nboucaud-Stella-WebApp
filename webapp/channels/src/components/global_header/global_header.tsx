@@ -13,7 +13,6 @@ import {useCurrentProductId} from 'utils/products';
 
 import CenterControls from './center_controls/center_controls';
 import {useIsLoggedIn} from './hooks';
-import LeftControls from './left_controls/left_controls';
 import RightControls from './right_controls/right_controls';
 
 const GlobalHeaderContainer = styled.header`
@@ -48,7 +47,10 @@ const GlobalHeader = (): JSX.Element | null => {
     return (
         <CompassThemeProvider theme={theme}>
             <GlobalHeaderContainer id='global-header'>
-                <LeftControls/>
+                <div
+                    className='flex-1 mr-3'
+                    style={{flexBasis: '30%'}}
+                >&nbsp;</div>
                 <CenterControls productId={currentProductID}/>
                 <RightControls productId={currentProductID}/>
             </GlobalHeaderContainer>
