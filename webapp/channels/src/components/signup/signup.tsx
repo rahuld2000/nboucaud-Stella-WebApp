@@ -475,9 +475,9 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                     id: 'signup_user_completed.subtitle',
                     defaultMessage: 'Create your Mattermost account to start collaborating with your team',
                 })} */}
-                     Welcome to the <span>Infogito Platform</span>.
+                     Welcome to the Infogito Platform.
                 <br />
-                Home of <span>Stella v1.</span> Your Personal Problem-Solver.
+                Home of Stella v1. Your Personal Problem-Solver.
             </p>
         );
     };
@@ -583,7 +583,15 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
             telemetryEvents.errors.push({field: 'email', rule: 'not_provided'});
             isValid = false;
         } else if (!isEmail(providedEmail)) {
+            
             setEmailError(formatMessage({id: 'signup_user_completed.validEmail', defaultMessage: 'Please enter a valid email address'}));
+            setAlertBanner({
+                mode: 'danger',
+                title: formatMessage({
+                    id: 'ignup_user_completed.validEmail',
+                    defaultMessage: 'Please enter a valid email address',
+                }),
+            });
             telemetryEvents.errors.push({field: 'email', rule: 'invalid_email'});
             isValid = false;
         }
@@ -624,6 +632,13 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
 
         if (error) {
             setPasswordError(error as string);
+            setAlertBanner({
+                mode: 'danger',
+                title: formatMessage({
+                    id: 'password',
+                    defaultMessage: 'Password Must be 8-72 characters long.',
+                }),
+            });
             telemetryEvents.errors = [...telemetryEvents.errors, ...telemetryErrorIds];
             isValid = false;
         }
@@ -863,18 +878,19 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                             onKeyDown={onEnterKeyDown}
                             tabIndex={0}
                         >
-                            <p className='signup-body-card-title'>
-                                {getCardTitle()}
-                            </p>
-                            {enableCustomBrand && getMessageSubtitle()}
+                             {enableCustomBrand && getMessageSubtitle()}
                             {alertBanner && (
                                 <AlertBanner
-                                    className='login-body-card-banner'
+                                    className='signup-body-card-banner'
                                     mode={alertBanner.mode}
                                     title={alertBanner.title}
                                     onDismiss={alertBanner.onDismiss}
                                 />
                             )}
+                            <p className='signup-body-card-title'>
+                                {getCardTitle()}
+                            </p>
+                           
                             {enableSignUpWithEmail && (
                                 <div className='signup-body-card-form'>
                                     <Input
@@ -996,7 +1012,7 @@ const Signup = ({onCustomizeHeader}: SignupProps) => {
                             )}
                         </div>
 
-                        <img src={Mascot} alt="" className='mascot_image_signup' />
+                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHlzaXRwcmY3MzRuYXJiNDhsb3U0aW01NWRmdGkxYTNkNXF5YXgwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/mSR4Sqv5IuZCIDSwBq/giphy.gif" alt="" className='mascot_image_signup' />
 
 
                     </div>

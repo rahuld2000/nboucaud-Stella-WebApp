@@ -12,6 +12,7 @@ import desktopImg from 'images/deep-linking/infogito_graphic1.png';
 import mobileImg from 'images/deep-linking/deeplinking-mobile-img.png';
 import macOSIcon from 'images/icons/macOS.png';
 import windowsIcon from 'images/icons/windows.png';
+import WelcomeVideo from 'images/icons/welcome.mp4';
 
 import MattermostLogoSvg from 'images/logo.svg';
 import { LandingPreferenceTypes } from 'utils/constants';
@@ -36,6 +37,7 @@ type State = {
     nativeLocation: string;
     brandImageError: boolean;
     navigating: boolean;
+    showVideo: boolean;
 }
 
 export default class LinkingLandingPage extends PureComponent<Props, State> {
@@ -51,6 +53,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
             nativeLocation: location.replace(/^(https|http)/, 'mattermost'),
             brandImageError: false,
             navigating: false,
+            showVideo: false,
         };
 
         if (!BrowserStore.hasSeenLandingPage()) {
@@ -138,7 +141,15 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
 
     openInBrowser = () => {
         this.setPreference(LandingPreferenceTypes.BROWSER);
-        window.location.href = this.state.location;
+        this.setState({ showVideo: true });
+    };
+
+    handleVideoEnd = () => {
+        window.location.href = '/login';
+    };
+
+    handleVideoClick = () => {
+        window.location.href = '/login';
     };
 
     renderSystemDialogMessage = () => {
@@ -282,7 +293,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
         let openingLink = (
             <FormattedMessage
                 id='get_app.openingLink'
-                defaultMessage='Opening link in Mattermost...'
+                defaultMessage='Opening link in Infogito...'
             />
         );
         if (this.props.enableCustomBrand) {
@@ -291,7 +302,7 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                     id='get_app.openingLinkWhiteLabel'
                     defaultMessage='Opening link in {appName}...'
                     values={{
-                        appName: this.props.siteName || 'Mattermost',
+                        appName: this.props.siteName || 'Infogito',
                     }}
                 />
             );
@@ -389,13 +400,13 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                         />
                     </a>
                     <a
-                        href={this.state.location}
+                        href='#'
                         onMouseDown={() => {
                             this.setPreference(LandingPreferenceTypes.BROWSER, true);
                         }}
                         onClick={() => {
                             this.setPreference(LandingPreferenceTypes.BROWSER, true);
-                            this.setState({ navigating: true });
+                            this.setState({ showVideo: true });
                         }}
                         className='btn btn-tertiary view_in_browser_btn btn-lg'
                     >
@@ -404,8 +415,6 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
                             defaultMessage='View in Browser'
                         />
                     </a>
-
-
                 </div>
                 <label className='get-app__preference'>
                     <input
@@ -432,12 +441,24 @@ export default class LinkingLandingPage extends PureComponent<Props, State> {
             return null;
         }
 
+        if (this.state.showVideo) {
+            return (
+                <video
+                    style={{ width: "100%", height: "100%" }}
+                    autoPlay
+                    muted
+                    onEnded={this.handleVideoEnd}
+                    onClick={this.handleVideoClick}
+                >
+                    <source src={WelcomeVideo} type="video/mp4" />
+                </video>
+            );
+        }
+
         return (
             <div className='get-app'>
                 <div className='get-app__dialog'>
-                    <div
-                        className={`get-app__graphic ${isMobile ? 'mobile' : ''}`}
-                    >
+                    <div className={`get-app__graphic ${isMobile ? 'mobile' : ''}`}>
                         {this.renderGraphic()}
                     </div>
                     {this.renderDialogBody()}

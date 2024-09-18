@@ -49,9 +49,6 @@ import Google from 'images/icons/google.png';
 import Github from 'images/icons/github.png';
 import macImage from 'images/icons/mac.png';
 import whatsapp from 'images/icons/whatsapp.png';
-import Mascot from 'images/gif_picker/Mascots.png';
-
-
 
 import Constants from 'utils/constants';
 import DesktopApp from 'utils/desktop_api';
@@ -73,6 +70,7 @@ type LoginProps = {
 }
 
 const Login = ({ onCustomizeHeader }: LoginProps) => {
+
     const { formatMessage } = useIntl();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -789,9 +787,9 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
         return (
             <p className='login-body-message-subtitle'>
                 {/* {formatMessage({ id: 'login.subtitle', defaultMessage: 'Collaborate with your team in real-time' })} */}
-                Welcome to the <span>Infogito Platform</span>.
+                Welcome to the Infogito Platform
                 <br />
-                Home of <span>Stella v1.</span> Your Personal Problem-Solver.
+                Home of Stella v1. Your Personal Problem-Solver.
             </p>
         );
     };
@@ -986,7 +984,7 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                             )}
                         </div>
 
-                        <img src={Mascot} alt="" className='mascot_image' />
+                        <img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExdHlzaXRwcmY3MzRuYXJiNDhsb3U0aW01NWRmdGkxYTNkNXF5YXgwOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/mSR4Sqv5IuZCIDSwBq/giphy.gif" alt="" className='mascot_image' />
 
 
                     </div>

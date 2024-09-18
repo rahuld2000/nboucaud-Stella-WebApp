@@ -7,9 +7,9 @@ body {
 }
 
 .LoadingScreen {
-    --background-color: #f4f4f6;
-    --background-color-highlight: #ffffff;
-    --stipple-color: #1e325c;
+    --background-color: #031221;
+    --background-color-highlight: #031221;
+    --stipple-color: #031221;
     --stipple-opacity: 0.08;
     position: absolute;
     z-index: 100;
@@ -28,9 +28,9 @@ body {
 }
 
 .LoadingScreen--darkMode {
-    --background-color-highlight: #28427b;
-    --background-color: #1e325c;
-    --stipple-color: #14213e;
+    --background-color-highlight: #031221;
+    --background-color: #031221;
+    --stipple-color: #031221;
     --stipple-opacity: 0.8;
 }
 

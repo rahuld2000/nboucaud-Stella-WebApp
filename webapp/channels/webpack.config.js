@@ -104,7 +104,7 @@ var config = {
                 ],
             },
             {
-                test: /\.(png|eot|tiff|svg|woff2|woff|ttf|gif|mp3|jpg)$/,
+                test: /\.(png|eot|tiff|svg|woff2|woff|ttf|gif|mp3|jpg|mp4)$/,
                 type: 'asset/resource',
                 use: [
                     {
