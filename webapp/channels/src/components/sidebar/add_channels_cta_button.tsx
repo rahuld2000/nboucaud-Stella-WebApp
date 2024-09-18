@@ -40,7 +40,7 @@ const AddChannelsCtaButton = (): JSX.Element | null => {
     const currentUserId = useSelector(getCurrentUserId);
     const openAddChannelsCtaOpen = useCallback((open: boolean) => {
         dispatch(setAddChannelCtaDropdown(open));
-    }, []);
+    }, [dispatch]);
 
     let buttonClass = 'SidebarChannelNavigator__addChannelsCtaLhsButton';
 
