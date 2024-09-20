@@ -6,8 +6,8 @@ import { LiaCompass } from "react-icons/lia";
 const Browser_Header = () => {
     return (
         <div className="browser-header">
-            <div className="browser-tab"><LiaCompass className="compass-icon"/> <span>Infognito</span></div>
-            <LuPlus className="plus-icon"/>
+            <div className="browser-tab"><LiaCompass className="icon"/> <span>Infognito</span></div>
+            <LuPlus className="icon"/>
         </div>
     );
 };
