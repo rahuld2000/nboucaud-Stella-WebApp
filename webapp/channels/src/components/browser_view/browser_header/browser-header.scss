@@ -1,0 +1,40 @@
+.browser-tab{
+    width: 250px;
+    height: 35px;
+    padding-top: 10px;
+    padding-left: 10px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 6px;
+    background-color: #35363B;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: white;
+    font-weight: 600;
+}
+
+.browser-header{
+    background-color: #1F2224;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding-top: 10px;
+    padding-left: 11px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+
+.plus-icon {
+    width: 20px;
+    height: 20px;
+    color: #BEC1C5;
+    &:hover {cursor: pointer}
+}
+
+.compass-icon {
+    width: 20px;
+    height: 20px;
+    color: #BEC1C5;
+    &:hover {cursor: pointer}
+}
