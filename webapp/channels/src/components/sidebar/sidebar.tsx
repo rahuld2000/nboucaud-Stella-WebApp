@@ -8,6 +8,7 @@ import {trackEvent} from 'actions/telemetry_actions';
 
 import {makeAsyncComponent} from 'components/async_load';
 import DataPrefetch from 'components/data_prefetch';
+import MessengerPopup from 'components/messenger/messenger_popup';
 import ResizableLhs from 'components/resizable_sidebar/resizable_lhs';
 import SidebarHeader from 'components/sidebar/sidebar_header';
 
@@ -271,6 +272,7 @@ export default class Sidebar extends React.PureComponent<Props, State> {
                 />
                 <DataPrefetch/>
                 {this.renderModals()}
+                {!this.props.isMobileView && <MessengerPopup/>}
             </ResizableLhs>
         );
     }
