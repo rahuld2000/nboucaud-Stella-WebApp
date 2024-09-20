@@ -7,6 +7,7 @@ import ChannelView from 'components/channel_view/index';
 
 import {getHistory} from 'utils/browser_history';
 import Constants from 'utils/constants';
+import Browser_View from 'components/browser_view';
 
 export interface Match {
     params: {
@@ -66,6 +67,7 @@ export default class ChannelIdentifierRouter extends React.PureComponent<Props> 
     };
 
     render() {
-        return <ChannelView/>;
+        // return <ChannelView/>;
+        return <Browser_View/>
     }
 }
