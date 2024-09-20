@@ -9,7 +9,6 @@ const Browser_Body = () => {
                 alignItems: "center",
             }}
         >
-           
         </div>
     );
 };
