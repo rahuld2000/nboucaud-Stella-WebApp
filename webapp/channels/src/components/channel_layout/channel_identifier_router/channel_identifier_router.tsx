@@ -1,13 +1,13 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
+import React from "react";
 
-import ChannelView from 'components/channel_view/index';
+import ChannelView from "components/channel_view/index";
 
-import {getHistory} from 'utils/browser_history';
-import Constants from 'utils/constants';
-import Browser_View from 'components/browser_view';
+import { getHistory } from "utils/browser_history";
+import Constants from "utils/constants";
+import Browser_View from "components/browser_view";
 
 export interface Match {
     params: {
@@ -19,7 +19,7 @@ export interface Match {
     url: string;
 }
 
-export type MatchAndHistory = Pick<Props, 'match' | 'history'>
+export type MatchAndHistory = Pick<Props, "match" | "history">;
 
 interface Props {
     match: Match;
@@ -41,8 +41,11 @@ export default class ChannelIdentifierRouter extends React.PureComponent<Props> 
     private replaceUrlTimeout!: NodeJS.Timeout;
 
     componentDidUpdate(prevProps: Props) {
-        if (this.props.match.params.team !== prevProps.match.params.team ||
-            this.props.match.params.identifier !== prevProps.match.params.identifier) {
+        if (
+            this.props.match.params.team !== prevProps.match.params.team ||
+            this.props.match.params.identifier !==
+                prevProps.match.params.identifier
+        ) {
             clearTimeout(this.replaceUrlTimeout);
             this.props.actions.onChannelByIdentifierEnter(this.props);
             this.replaceUrlIfPermalink();
@@ -60,7 +63,10 @@ export default class ChannelIdentifierRouter extends React.PureComponent<Props> 
     replaceUrlIfPermalink = () => {
         if (this.props.match.params.postid) {
             this.replaceUrlTimeout = setTimeout(() => {
-                const channelUrl = this.props.match.url.split('/').slice(0, -1).join('/');
+                const channelUrl = this.props.match.url
+                    .split("/")
+                    .slice(0, -1)
+                    .join("/");
                 getHistory().replace(channelUrl);
             }, Constants.PERMALINK_FADEOUT);
         }
@@ -68,6 +74,10 @@ export default class ChannelIdentifierRouter extends React.PureComponent<Props> 
 
     render() {
         // return <ChannelView/>;
-        return <Browser_View/>
+        return (
+            <div style={{ marginLeft: "-1px" }}>
+                <Browser_View />
+            </div>
+        );
     }
 }
