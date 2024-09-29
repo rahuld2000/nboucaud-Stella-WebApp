@@ -45,8 +45,6 @@ import RootProvider from './root_provider';
 import RootRedirect from './root_redirect';
 
 import logo from '../../images/infogito.png';
-import notesIcon from '../../images/notes-icon.png';
-import storeIcon from '../../images/store.png';
 
 import type {PropsFromRedux} from './index';
 
@@ -570,18 +568,6 @@ export default class Root extends React.PureComponent<Props, State> {
                                     <RootRedirect/>
                                 </Switch>
                                 <SidebarRight/>
-                            </div>
-                            <div className='home-screen-wrapper__sidebar right'>
-                                <div className='top'>
-                                    <button>
-                                        <img src={notesIcon}/>
-                                    </button>
-                                </div>
-                                <div className='bottom'>
-                                    <button>
-                                        <img src={storeIcon}/>
-                                    </button>
-                                </div>
                             </div>
                         </div>
                         <Pluggable pluggableName='Global'/>
