@@ -66,7 +66,11 @@ import storeIcon from "../../images/store.png";
 
 import type { PropsFromRedux } from "./index";
 
+import auditIcon from '../../images/audit.png';
+import comboChartIcon from '../../images/combo-chart.png';
 import logo from '../../images/infogito.png';
+import notebookIcon from '../../images/notebook.png';
+import storeIcon from '../../images/store.png';
 
 import type {PropsFromRedux} from './index';
 
@@ -668,11 +672,22 @@ class Root extends React.PureComponent<Props, State> {
 
                                 <SidebarRight />
                             </div>
-                            <div className="home-screen-wrapper__sidebar right">
-                                <div className="top">
-                                    <button>
-                                        <img src={notesIcon} />
-                                    </button>
+                            <div className='home-screen-wrapper__sidebar right'>
+                                <div className='top'>
+                                    <div className='group'>
+                                        <button>
+                                            <img src={comboChartIcon}/>
+                                        </button>
+                                        <button>
+                                            <img src={auditIcon}/>
+                                        </button>
+                                        <button>
+                                            <img src={notebookIcon}/>
+                                        </button>
+                                        <button className='invert'>
+                                            <i className='icon icon-plus'/>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="bottom">
                                     <button>
