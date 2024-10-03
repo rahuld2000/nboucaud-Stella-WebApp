@@ -492,13 +492,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const categoryNames = defineMessages({
     channels: {
-<<<<<<< HEAD
-        id: "sidebar.types.channels",
-        defaultMessage: "CHANNELS",
-=======
         id: 'sidebar.types.channels',
         defaultMessage: 'APPS',
->>>>>>> c253927922 (chore: ui touchups and fixes)
     },
     direct_messages: {
         id: "sidebar.types.chat",
