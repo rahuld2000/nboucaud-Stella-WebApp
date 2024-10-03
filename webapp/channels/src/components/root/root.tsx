@@ -60,11 +60,7 @@ import PerformanceReporterController from "./performance_reporter_controller";
 import RootProvider from "./root_provider";
 import RootRedirect from "./root_redirect";
 
-import logo from "../../images/infogito.png";
 import notesIcon from "../../images/notes-icon.png";
-import storeIcon from "../../images/store.png";
-
-import type { PropsFromRedux } from "./index";
 
 import auditIcon from '../../images/audit.png';
 import comboChartIcon from '../../images/combo-chart.png';
