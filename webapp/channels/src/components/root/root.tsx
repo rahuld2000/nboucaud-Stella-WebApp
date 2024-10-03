@@ -66,135 +66,6 @@ import storeIcon from "../../images/store.png";
 
 import type { PropsFromRedux } from "./index";
 
-<<<<<<< HEAD
-import "plugins/export.js";
-import AppLibraryModal from "components/browse_apps/browse_app";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../packages/mattermost-redux/src/actions/modalActions";
-import { openModal } from "../../packages/mattermost-redux/src/actions/modalActions";
-const MobileViewWatcher = makeAsyncComponent(
-    "MobileViewWatcher",
-    lazy(() => import("components/mobile_view_watcher"))
-);
-const WindowSizeObserver = makeAsyncComponent(
-    "WindowSizeObserver",
-    lazy(() => import("components/window_size_observer/WindowSizeObserver"))
-);
-const ErrorPage = makeAsyncComponent(
-    "ErrorPage",
-    lazy(() => import("components/error_page"))
-);
-const Login = makeAsyncComponent(
-    "LoginController",
-    lazy(() => import("components/login/login"))
-);
-const AccessProblem = makeAsyncComponent(
-    "AccessProblem",
-    lazy(() => import("components/access_problem"))
-);
-const PasswordResetSendLink = makeAsyncComponent(
-    "PasswordResedSendLink",
-    lazy(() => import("components/password_reset_send_link"))
-);
-const PasswordResetForm = makeAsyncComponent(
-    "PasswordResetForm",
-    lazy(() => import("components/password_reset_form"))
-);
-const Signup = makeAsyncComponent(
-    "SignupController",
-    lazy(() => import("components/signup/signup"))
-);
-const ShouldVerifyEmail = makeAsyncComponent(
-    "ShouldVerifyEmail",
-    lazy(() => import("components/should_verify_email/should_verify_email"))
-);
-const DoVerifyEmail = makeAsyncComponent(
-    "DoVerifyEmail",
-    lazy(() => import("components/do_verify_email/do_verify_email"))
-);
-const ClaimController = makeAsyncComponent(
-    "ClaimController",
-    lazy(() => import("components/claim"))
-);
-const TermsOfService = makeAsyncComponent(
-    "TermsOfService",
-    lazy(() => import("components/terms_of_service"))
-);
-const LinkingLandingPage = makeAsyncComponent(
-    "LinkingLandingPage",
-    lazy(() => import("components/linking_landing_page"))
-);
-const AdminConsole = makeAsyncComponent(
-    "AdminConsole",
-    lazy(() => import("components/admin_console"))
-);
-const SelectTeam = makeAsyncComponent(
-    "SelectTeam",
-    lazy(() => import("components/select_team"))
-);
-const Authorize = makeAsyncComponent(
-    "Authorize",
-    lazy(() => import("components/authorize"))
-);
-const CreateTeam = makeAsyncComponent(
-    "CreateTeam",
-    lazy(() => import("components/create_team"))
-);
-const Mfa = makeAsyncComponent(
-    "Mfa",
-    lazy(() => import("components/mfa/mfa_controller"))
-);
-const PreparingWorkspace = makeAsyncComponent(
-    "PreparingWorkspace",
-    lazy(() => import("components/preparing_workspace"))
-);
-const Pluggable = makeAsyncComponent(
-    "Pluggable",
-    lazy(() => import("plugins/pluggable"))
-);
-const LaunchingWorkspace = makeAsyncComponent(
-    "LaunchingWorkspace",
-    lazy(() => import("components/preparing_workspace/launching_workspace"))
-);
-const CompassThemeProvider = makeAsyncComponent(
-    "CompassThemeProvider",
-    lazy(
-        () => import("components/compass_theme_provider/compass_theme_provider")
-    )
-);
-const TeamController = makeAsyncComponent(
-    "TeamController",
-    lazy(() => import("components/team_controller"))
-);
-const AnnouncementBarController = makeAsyncComponent(
-    "AnnouncementBarController",
-    lazy(() => import("components/announcement_bar"))
-);
-const SystemNotice = makeAsyncComponent(
-    "SystemNotice",
-    lazy(() => import("components/system_notice"))
-);
-const CloudEffects = makeAsyncComponent(
-    "CloudEffects",
-    lazy(() => import("components/cloud_effects"))
-);
-const TeamSidebar = makeAsyncComponent(
-    "TeamSidebar",
-    lazy(() => import("components/team_sidebar"))
-);
-const SidebarRight = makeAsyncComponent(
-    "SidebarRight",
-    lazy(() => import("components/sidebar_right"))
-);
-const ModalController = makeAsyncComponent(
-    "ModalController",
-    lazy(() => import("components/modal_controller"))
-);
-const AppBar = makeAsyncComponent(
-    "AppBar",
-    lazy(() => import("components/app_bar/app_bar"))
-);
-=======
 import logo from '../../images/infogito.png';
 
 import type {PropsFromRedux} from './index';
@@ -231,7 +102,6 @@ const TeamSidebar = makeAsyncComponent('TeamSidebar', lazy(() => import('compone
 const SidebarRight = makeAsyncComponent('SidebarRight', lazy(() => import('components/sidebar_right')));
 const ModalController = makeAsyncComponent('ModalController', lazy(() => import('components/modal_controller')));
 const AppBar = makeAsyncComponent('AppBar', lazy(() => import('components/app_bar/app_bar')));
->>>>>>> 25d5747bce (feat:  products store page)
 
 const noop = () => {};
 export type Props = PropsFromRedux &
@@ -798,7 +668,6 @@ class Root extends React.PureComponent<Props, State> {
 
                                 <SidebarRight />
                             </div>
-<<<<<<< HEAD
                             <div className="home-screen-wrapper__sidebar right">
                                 <div className="top">
                                     <button>
@@ -811,8 +680,6 @@ class Root extends React.PureComponent<Props, State> {
                                     </button>
                                 </div>
                             </div>
-=======
->>>>>>> 25d5747bce (feat:  products store page)
                         </div>
                         <Pluggable pluggableName="Global" />
                         <AppBar />

@@ -23,19 +23,10 @@ import {
 } from "../browse_apps/apps_iframe";
 import { addVisibleUsersInCurrentChannelToStatusPoll } from "actions/status_actions";
 
-import { makeAsyncComponent } from "components/async_load";
-import CenterChannel from "components/channel_layout/center_channel";
-import LoadingScreen from "components/loading_screen";
-import Sidebar from "components/sidebar";
-import CRTPostsChannelResetWatcher from "components/threading/channel_threads/posts_channel_reset_watcher";
-import UnreadsStatusHandler from "components/unreads_status_handler";
-
-<<<<<<< HEAD
 import Pluggable from "plugins/pluggable";
 import { Constants } from "utils/constants";
 import { isInternetExplorer, isEdge } from "utils/user_agent";
 import IframeContainer from "components/browse_apps/iframe_container";
-=======
 import {makeAsyncComponent} from 'components/async_load';
 import CenterChannel from 'components/channel_layout/center_channel';
 import LoadingScreen from 'components/loading_screen';
@@ -43,7 +34,6 @@ import ProductResults from 'components/shop/product_results';
 import Sidebar from 'components/sidebar';
 import CRTPostsChannelResetWatcher from 'components/threading/channel_threads/posts_channel_reset_watcher';
 import UnreadsStatusHandler from 'components/unreads_status_handler';
->>>>>>> 25d5747bce (feat:  products store page)
 
 const ProductNoticesModal = makeAsyncComponent(
     "ProductNoticesModal",
@@ -54,17 +44,11 @@ const ResetStatusModal = makeAsyncComponent(
     lazy(() => import("components/reset_status_modal"))
 );
 
-<<<<<<< HEAD
 const BODY_CLASS_FOR_CHANNEL = ["app__body", "channel-view"];
-=======
 import notesIcon from '../../images/notes-icon.png';
 import storeIcon from '../../images/store.png';
 
-const ProductNoticesModal = makeAsyncComponent('ProductNoticesModal', lazy(() => import('components/product_notices_modal')));
-const ResetStatusModal = makeAsyncComponent('ResetStatusModal', lazy(() => import('components/reset_status_modal')));
 
-const BODY_CLASS_FOR_CHANNEL = ['app__body', 'channel-view'];
->>>>>>> 25d5747bce (feat:  products store page)
 
 type Props = {
     shouldRenderCenterChannel: boolean;
@@ -143,26 +127,6 @@ export default function ChannelController(props: Props) {
                 className="channel-view"
                 data-testid="channel_view"
             >
-<<<<<<< HEAD
-                <UnreadsStatusHandler />
-                <ProductNoticesModal />
-                <div
-                    className={classNames("container-fluid channel-view-inner")}
-                >
-                    {props.shouldRenderCenterChannel ? (
-                        <div className="iframe-container">
-                            {ActiveIframe ? (
-                                <IframeContainer />
-                            ) : (
-                                <CenterChannel />
-                            )}
-                        </div>
-                    ) : (
-                        <LoadingScreen centered={true} />
-                    )}
-                    <Pluggable pluggableName="Root" />
-                    <ResetStatusModal />
-=======
                 <UnreadsStatusHandler/>
                 <ProductNoticesModal/>
                 <div className={classNames('container-fluid channel-view-inner')}>
@@ -191,7 +155,6 @@ export default function ChannelController(props: Props) {
                     <button onClick={() => setOpenShop(!openShop)}>
                         <img src={storeIcon}/>
                     </button>
->>>>>>> 25d5747bce (feat:  products store page)
                 </div>
             </div>
         </>
