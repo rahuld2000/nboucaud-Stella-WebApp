@@ -1,0 +1,166 @@
+.filter_menu_container {
+    display: flex;
+    width: 240px;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    background: #ffffff;
+}
+
+.label_check_container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter_label {
+    color: "#1E1E1E";
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: "break-word";
+}
+
+.filter_keyword_wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.checkbox.style-c {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.checkbox.style-c input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.checkbox.style-c input:checked ~ .checkbox__checkmark {
+    background-color: #2c2c2c;
+}
+.checkbox.style-c input:checked ~ .checkbox__checkmark:after {
+    opacity: 1;
+}
+.checkbox.style-c:hover input ~ .checkbox__checkmark {
+    background-color: #eee;
+}
+.checkbox.style-c:hover input:checked ~ .checkbox__checkmark {
+    background-color: #2c2c2c;
+}
+.checkbox.style-c .checkbox__checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    transition: background-color 0.25s ease;
+    border-radius: 4px;
+}
+.checkbox.style-c .checkbox__checkmark:after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+.checkbox.style-c .checkbox__body {
+    flex: 1 1 0;
+    color: #1e1e1e;
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.checkbox_description {
+    width: 180px;
+    color: #757575;
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.icon_label_container {
+    display: "flex";
+    flex-direction: "row";
+    align-items: "center";
+    justify-content: "center";
+
+    label {
+        margin: 0px;
+    }
+}
+
+.keyword_pill_container {
+    display: inline-flex;
+    min-width: 89px;
+    width: fit-content;
+    height: 32px;
+    padding: 8px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.keyword_pill_label {
+    color: #1e1e1e;
+    font-size: 16px;
+    font-weight: 400;
+    word-wrap: break-word;
+}
+
+.add_keyword_input {
+    height: 30px;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: white;
+    border-radius: 9999px;
+    overflow: hidden;
+    border: 1px #d9d9d9 solid;
+    justify-content: flex-start;
+    align-items: center;
+    display: inline-flex;
+}
+
+.add_keyword_icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyword_pill_close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.keyword_pill_close_icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
