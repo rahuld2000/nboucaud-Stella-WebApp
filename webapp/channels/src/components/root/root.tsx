@@ -1,97 +1,218 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import classNames from 'classnames';
-import deepEqual from 'fast-deep-equal';
-import React, {lazy} from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
-import type {RouteComponentProps} from 'react-router-dom';
+import classNames from "classnames";
+import deepEqual from "fast-deep-equal";
+import React, { lazy } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
+import type { RouteComponentProps } from "react-router-dom";
+import { RootState } from "../../types/appModal";
+import { ServiceEnvironment } from "@mattermost/types/config";
+import { AppModalState } from "../../types/appModal";
+import { setSystemEmojis } from "mattermost-redux/actions/emojis";
+import { setUrl } from "mattermost-redux/actions/general";
+import { Client4 } from "mattermost-redux/client";
+import {
+    rudderAnalytics,
+    RudderTelemetryHandler,
+} from "mattermost-redux/client/rudder";
 
-import {ServiceEnvironment} from '@mattermost/types/config';
+import {
+    measurePageLoadTelemetry,
+    temporarilySetPageLoadContext,
+    trackEvent,
+    trackSelectorMetrics,
+} from "actions/telemetry_actions.jsx";
+import BrowserStore from "stores/browser_store";
 
-import {setSystemEmojis} from 'mattermost-redux/actions/emojis';
-import {setUrl} from 'mattermost-redux/actions/general';
-import {Client4} from 'mattermost-redux/client';
-import {rudderAnalytics, RudderTelemetryHandler} from 'mattermost-redux/client/rudder';
+import { makeAsyncComponent } from "components/async_load";
+import OpenPluginInstallPost from "components/custom_open_plugin_install_post_renderer";
+import GlobalHeader from "components/global_header/global_header";
+import { HFRoute } from "components/header_footer_route/header_footer_route";
+import {
+    HFTRoute,
+    LoggedInHFTRoute,
+} from "components/header_footer_template_route";
+import InitialLoadingScreen from "components/initial_loading_screen";
+import LoggedIn from "components/logged_in";
+import LoggedInRoute from "components/logged_in_route";
+import { LAUNCHING_WORKSPACE_FULLSCREEN_Z_INDEX } from "components/preparing_workspace/launching_workspace";
+import { Animations } from "components/preparing_workspace/steps";
+import SidebarMobileRightMenu from "components/sidebar_mobile_right_menu";
 
-import {measurePageLoadTelemetry, temporarilySetPageLoadContext, trackEvent, trackSelectorMetrics} from 'actions/telemetry_actions.jsx';
-import BrowserStore from 'stores/browser_store';
+import webSocketClient from "client/web_websocket_client";
+import { initializePlugins } from "plugins";
+import A11yController from "utils/a11y_controller";
+import { PageLoadContext } from "utils/constants";
+import { EmojiIndicesByAlias } from "utils/emoji";
+import { TEAM_NAME_PATH_PATTERN } from "utils/path";
+import { getSiteURL } from "utils/url";
+import {
+    isAndroidWeb,
+    isChromebook,
+    isDesktopApp,
+    isIosWeb,
+} from "utils/user_agent";
+import { applyTheme, isTextDroppableEvent } from "utils/utils";
 
-import {makeAsyncComponent} from 'components/async_load';
-import OpenPluginInstallPost from 'components/custom_open_plugin_install_post_renderer';
-import GlobalHeader from 'components/global_header/global_header';
-import {HFRoute} from 'components/header_footer_route/header_footer_route';
-import {HFTRoute, LoggedInHFTRoute} from 'components/header_footer_template_route';
-import InitialLoadingScreen from 'components/initial_loading_screen';
-import LoggedIn from 'components/logged_in';
-import LoggedInRoute from 'components/logged_in_route';
-import {LAUNCHING_WORKSPACE_FULLSCREEN_Z_INDEX} from 'components/preparing_workspace/launching_workspace';
-import {Animations} from 'components/preparing_workspace/steps';
-import SidebarMobileRightMenu from 'components/sidebar_mobile_right_menu';
+import LuxonController from "./luxon_controller";
+import PerformanceReporterController from "./performance_reporter_controller";
+import RootProvider from "./root_provider";
+import RootRedirect from "./root_redirect";
 
-import webSocketClient from 'client/web_websocket_client';
-import {initializePlugins} from 'plugins';
-import A11yController from 'utils/a11y_controller';
-import {PageLoadContext} from 'utils/constants';
-import {EmojiIndicesByAlias} from 'utils/emoji';
-import {TEAM_NAME_PATH_PATTERN} from 'utils/path';
-import {getSiteURL} from 'utils/url';
-import {isAndroidWeb, isChromebook, isDesktopApp, isIosWeb} from 'utils/user_agent';
-import {applyTheme, isTextDroppableEvent} from 'utils/utils';
+import logo from "../../images/infogito.png";
+import notesIcon from "../../images/notes-icon.png";
+import storeIcon from "../../images/store.png";
 
-import LuxonController from './luxon_controller';
-import PerformanceReporterController from './performance_reporter_controller';
-import RootProvider from './root_provider';
-import RootRedirect from './root_redirect';
+import type { PropsFromRedux } from "./index";
 
-import logo from '../../images/infogito.png';
-import notesIcon from '../../images/notes-icon.png';
-import storeIcon from '../../images/store.png';
-
-import type {PropsFromRedux} from './index';
-
-import 'plugins/export.js';
-
-const MobileViewWatcher = makeAsyncComponent('MobileViewWatcher', lazy(() => import('components/mobile_view_watcher')));
-const WindowSizeObserver = makeAsyncComponent('WindowSizeObserver', lazy(() => import('components/window_size_observer/WindowSizeObserver')));
-const ErrorPage = makeAsyncComponent('ErrorPage', lazy(() => import('components/error_page')));
-const Login = makeAsyncComponent('LoginController', lazy(() => import('components/login/login')));
-const AccessProblem = makeAsyncComponent('AccessProblem', lazy(() => import('components/access_problem')));
-const PasswordResetSendLink = makeAsyncComponent('PasswordResedSendLink', lazy(() => import('components/password_reset_send_link')));
-const PasswordResetForm = makeAsyncComponent('PasswordResetForm', lazy(() => import('components/password_reset_form')));
-const Signup = makeAsyncComponent('SignupController', lazy(() => import('components/signup/signup')));
-const ShouldVerifyEmail = makeAsyncComponent('ShouldVerifyEmail', lazy(() => import('components/should_verify_email/should_verify_email')));
-const DoVerifyEmail = makeAsyncComponent('DoVerifyEmail', lazy(() => import('components/do_verify_email/do_verify_email')));
-const ClaimController = makeAsyncComponent('ClaimController', lazy(() => import('components/claim')));
-const TermsOfService = makeAsyncComponent('TermsOfService', lazy(() => import('components/terms_of_service')));
-const LinkingLandingPage = makeAsyncComponent('LinkingLandingPage', lazy(() => import('components/linking_landing_page')));
-const AdminConsole = makeAsyncComponent('AdminConsole', lazy(() => import('components/admin_console')));
-const SelectTeam = makeAsyncComponent('SelectTeam', lazy(() => import('components/select_team')));
-const Authorize = makeAsyncComponent('Authorize', lazy(() => import('components/authorize')));
-const CreateTeam = makeAsyncComponent('CreateTeam', lazy(() => import('components/create_team')));
-const Mfa = makeAsyncComponent('Mfa', lazy(() => import('components/mfa/mfa_controller')));
-const PreparingWorkspace = makeAsyncComponent('PreparingWorkspace', lazy(() => import('components/preparing_workspace')));
-const Pluggable = makeAsyncComponent('Pluggable', lazy(() => import('plugins/pluggable')));
-const LaunchingWorkspace = makeAsyncComponent('LaunchingWorkspace', lazy(() => import('components/preparing_workspace/launching_workspace')));
-const CompassThemeProvider = makeAsyncComponent('CompassThemeProvider', lazy(() => import('components/compass_theme_provider/compass_theme_provider')));
-const TeamController = makeAsyncComponent('TeamController', lazy(() => import('components/team_controller')));
-const AnnouncementBarController = makeAsyncComponent('AnnouncementBarController', lazy(() => import('components/announcement_bar')));
-const SystemNotice = makeAsyncComponent('SystemNotice', lazy(() => import('components/system_notice')));
-const CloudEffects = makeAsyncComponent('CloudEffects', lazy(() => import('components/cloud_effects')));
-const TeamSidebar = makeAsyncComponent('TeamSidebar', lazy(() => import('components/team_sidebar')));
-const SidebarRight = makeAsyncComponent('SidebarRight', lazy(() => import('components/sidebar_right')));
-const ModalController = makeAsyncComponent('ModalController', lazy(() => import('components/modal_controller')));
-const AppBar = makeAsyncComponent('AppBar', lazy(() => import('components/app_bar/app_bar')));
+import "plugins/export.js";
+import AppLibraryModal from "components/browse_apps/browse_app";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { closeModal } from "../../packages/mattermost-redux/src/actions/modalActions";
+import { openModal } from "../../packages/mattermost-redux/src/actions/modalActions";
+const MobileViewWatcher = makeAsyncComponent(
+    "MobileViewWatcher",
+    lazy(() => import("components/mobile_view_watcher"))
+);
+const WindowSizeObserver = makeAsyncComponent(
+    "WindowSizeObserver",
+    lazy(() => import("components/window_size_observer/WindowSizeObserver"))
+);
+const ErrorPage = makeAsyncComponent(
+    "ErrorPage",
+    lazy(() => import("components/error_page"))
+);
+const Login = makeAsyncComponent(
+    "LoginController",
+    lazy(() => import("components/login/login"))
+);
+const AccessProblem = makeAsyncComponent(
+    "AccessProblem",
+    lazy(() => import("components/access_problem"))
+);
+const PasswordResetSendLink = makeAsyncComponent(
+    "PasswordResedSendLink",
+    lazy(() => import("components/password_reset_send_link"))
+);
+const PasswordResetForm = makeAsyncComponent(
+    "PasswordResetForm",
+    lazy(() => import("components/password_reset_form"))
+);
+const Signup = makeAsyncComponent(
+    "SignupController",
+    lazy(() => import("components/signup/signup"))
+);
+const ShouldVerifyEmail = makeAsyncComponent(
+    "ShouldVerifyEmail",
+    lazy(() => import("components/should_verify_email/should_verify_email"))
+);
+const DoVerifyEmail = makeAsyncComponent(
+    "DoVerifyEmail",
+    lazy(() => import("components/do_verify_email/do_verify_email"))
+);
+const ClaimController = makeAsyncComponent(
+    "ClaimController",
+    lazy(() => import("components/claim"))
+);
+const TermsOfService = makeAsyncComponent(
+    "TermsOfService",
+    lazy(() => import("components/terms_of_service"))
+);
+const LinkingLandingPage = makeAsyncComponent(
+    "LinkingLandingPage",
+    lazy(() => import("components/linking_landing_page"))
+);
+const AdminConsole = makeAsyncComponent(
+    "AdminConsole",
+    lazy(() => import("components/admin_console"))
+);
+const SelectTeam = makeAsyncComponent(
+    "SelectTeam",
+    lazy(() => import("components/select_team"))
+);
+const Authorize = makeAsyncComponent(
+    "Authorize",
+    lazy(() => import("components/authorize"))
+);
+const CreateTeam = makeAsyncComponent(
+    "CreateTeam",
+    lazy(() => import("components/create_team"))
+);
+const Mfa = makeAsyncComponent(
+    "Mfa",
+    lazy(() => import("components/mfa/mfa_controller"))
+);
+const PreparingWorkspace = makeAsyncComponent(
+    "PreparingWorkspace",
+    lazy(() => import("components/preparing_workspace"))
+);
+const Pluggable = makeAsyncComponent(
+    "Pluggable",
+    lazy(() => import("plugins/pluggable"))
+);
+const LaunchingWorkspace = makeAsyncComponent(
+    "LaunchingWorkspace",
+    lazy(() => import("components/preparing_workspace/launching_workspace"))
+);
+const CompassThemeProvider = makeAsyncComponent(
+    "CompassThemeProvider",
+    lazy(
+        () => import("components/compass_theme_provider/compass_theme_provider")
+    )
+);
+const TeamController = makeAsyncComponent(
+    "TeamController",
+    lazy(() => import("components/team_controller"))
+);
+const AnnouncementBarController = makeAsyncComponent(
+    "AnnouncementBarController",
+    lazy(() => import("components/announcement_bar"))
+);
+const SystemNotice = makeAsyncComponent(
+    "SystemNotice",
+    lazy(() => import("components/system_notice"))
+);
+const CloudEffects = makeAsyncComponent(
+    "CloudEffects",
+    lazy(() => import("components/cloud_effects"))
+);
+const TeamSidebar = makeAsyncComponent(
+    "TeamSidebar",
+    lazy(() => import("components/team_sidebar"))
+);
+const SidebarRight = makeAsyncComponent(
+    "SidebarRight",
+    lazy(() => import("components/sidebar_right"))
+);
+const ModalController = makeAsyncComponent(
+    "ModalController",
+    lazy(() => import("components/modal_controller"))
+);
+const AppBar = makeAsyncComponent(
+    "AppBar",
+    lazy(() => import("components/app_bar/app_bar"))
+);
 
 const noop = () => {};
+export type Props = PropsFromRedux &
+    RouteComponentProps &
+    DispatchProps & {
+        isModalOpen: boolean; // Include isModalOpen type
+    };
 
-export type Props = PropsFromRedux & RouteComponentProps;
+interface DispatchProps {
+    closeModal: () => void; // Define closeModal type
+}
 
 interface State {
     shouldMountAppRoutes?: boolean;
 }
 
-export default class Root extends React.PureComponent<Props, State> {
+class Root extends React.PureComponent<Props, State> {
+    handleCloseModal = () => {
+        this.props.closeModal(); // Dispatch the closeModal action
+    };
     // The constructor adds a bunch of event listeners,
     // so we do need this.
     private a11yController: A11yController;
@@ -116,65 +237,76 @@ export default class Root extends React.PureComponent<Props, State> {
     setRudderConfig = () => {
         const telemetryId = this.props.telemetryId;
 
-        const rudderUrl = 'https://pdat.matterlytics.com';
-        let rudderKey = '';
+        const rudderUrl = "https://pdat.matterlytics.com";
+        let rudderKey = "";
         switch (this.props.serviceEnvironment) {
-        case ServiceEnvironment.PRODUCTION:
-            rudderKey = '1aoejPqhgONMI720CsBSRWzzRQ9';
-            break;
-        case ServiceEnvironment.TEST:
-            rudderKey = '1aoeoCDeh7OCHcbW2kseWlwUFyq';
-            break;
-        case ServiceEnvironment.DEV:
-            break;
+            case ServiceEnvironment.PRODUCTION:
+                rudderKey = "1aoejPqhgONMI720CsBSRWzzRQ9";
+                break;
+            case ServiceEnvironment.TEST:
+                rudderKey = "1aoeoCDeh7OCHcbW2kseWlwUFyq";
+                break;
+            case ServiceEnvironment.DEV:
+                break;
         }
 
-        if (rudderKey !== '' && this.props.telemetryEnabled) {
-            const rudderCfg: {setCookieDomain?: string} = {};
-            if (this.props.siteURL !== '') {
+        if (rudderKey !== "" && this.props.telemetryEnabled) {
+            const rudderCfg: { setCookieDomain?: string } = {};
+            if (this.props.siteURL !== "") {
                 try {
-                    rudderCfg.setCookieDomain = new URL(this.props.siteURL || '').hostname;
+                    rudderCfg.setCookieDomain = new URL(
+                        this.props.siteURL || ""
+                    ).hostname;
                 } catch (_) {
                     // eslint-disable-next-line no-console
-                    console.error('Failed to set cookie domain for RudderStack');
+                    console.error(
+                        "Failed to set cookie domain for RudderStack"
+                    );
                 }
             }
 
-            rudderAnalytics.load(rudderKey, rudderUrl || '', rudderCfg);
+            rudderAnalytics.load(rudderKey, rudderUrl || "", rudderCfg);
 
-            rudderAnalytics.identify(telemetryId, {}, {
-                context: {
-                    ip: '0.0.0.0',
-                },
-                page: {
-                    path: '',
-                    referrer: '',
-                    search: '',
-                    title: '',
-                    url: '',
-                },
-                anonymousId: '00000000000000000000000000',
-            });
+            rudderAnalytics.identify(
+                telemetryId,
+                {},
+                {
+                    context: {
+                        ip: "0.0.0.0",
+                    },
+                    page: {
+                        path: "",
+                        referrer: "",
+                        search: "",
+                        title: "",
+                        url: "",
+                    },
+                    anonymousId: "00000000000000000000000000",
+                }
+            );
 
-            rudderAnalytics.page('ApplicationLoaded', {
-                path: '',
-                referrer: '',
-                search: ('' as any),
-                title: '',
-                url: '',
-            } as any,
-            {
-                context: {
-                    ip: '0.0.0.0',
-                },
-                anonymousId: '00000000000000000000000000',
-            });
+            rudderAnalytics.page(
+                "ApplicationLoaded",
+                {
+                    path: "",
+                    referrer: "",
+                    search: "" as any,
+                    title: "",
+                    url: "",
+                } as any,
+                {
+                    context: {
+                        ip: "0.0.0.0",
+                    },
+                    anonymousId: "00000000000000000000000000",
+                }
+            );
 
             const utmParams = this.captureUTMParams();
             rudderAnalytics.ready(() => {
                 Client4.setTelemetryHandler(new RudderTelemetryHandler());
                 if (utmParams) {
-                    trackEvent('utm_params', 'utm_params', utmParams);
+                    trackEvent("utm_params", "utm_params", utmParams);
                 }
             });
         }
@@ -185,7 +317,7 @@ export default class Root extends React.PureComponent<Props, State> {
             this.props.actions.initializeProducts(),
             initializePlugins(),
         ]).then(() => {
-            this.setState({shouldMountAppRoutes: true});
+            this.setState({ shouldMountAppRoutes: true });
         });
 
         this.props.actions.migrateRecentEmojis();
@@ -224,17 +356,17 @@ export default class Root extends React.PureComponent<Props, State> {
         }
 
         // We don't want to show when resetting the password
-        if (this.props.location.pathname === '/reset_password_complete') {
+        if (this.props.location.pathname === "/reset_password_complete") {
             return;
         }
 
         // We don't want to show when we're doing Desktop App external login
-        if (this.props.location.pathname === '/login/desktop') {
+        if (this.props.location.pathname === "/login/desktop") {
             return;
         }
 
         // Stop this infinitely redirecting
-        if (this.props.location.pathname.includes('/landing')) {
+        if (this.props.location.pathname.includes("/landing")) {
             return;
         }
 
@@ -244,11 +376,15 @@ export default class Root extends React.PureComponent<Props, State> {
         }
 
         // Disable for Rainforest tests
-        if (window.location.hostname?.endsWith('.test.mattermost.com')) {
+        if (window.location.hostname?.endsWith(".test.mattermost.com")) {
             return;
         }
 
-        this.props.history.push('/landing#' + this.props.location.pathname + this.props.location.search);
+        this.props.history.push(
+            "/landing#" +
+                this.props.location.pathname +
+                this.props.location.search
+        );
         BrowserStore.setLandingPageSeen(true);
     };
 
@@ -257,11 +393,11 @@ export default class Root extends React.PureComponent<Props, State> {
             applyTheme(this.props.theme);
         }
 
-        if (this.props.location.pathname === '/') {
+        if (this.props.location.pathname === "/") {
             if (this.props.noAccounts) {
-                prevProps.history.push('/signup_user_complete');
+                prevProps.history.push("/signup_user_complete");
             } else if (this.props.showTermsOfService) {
-                prevProps.history.push('/terms_of_service');
+                prevProps.history.push("/terms_of_service");
             }
         }
 
@@ -277,8 +413,15 @@ export default class Root extends React.PureComponent<Props, State> {
             this.setRudderConfig();
         }
 
-        if (prevState.shouldMountAppRoutes === false && this.state.shouldMountAppRoutes === true) {
-            if (!doesRouteBelongToTeamControllerRoutes(this.props.location.pathname)) {
+        if (
+            prevState.shouldMountAppRoutes === false &&
+            this.state.shouldMountAppRoutes === true
+        ) {
+            if (
+                !doesRouteBelongToTeamControllerRoutes(
+                    this.props.location.pathname
+                )
+            ) {
                 InitialLoadingScreen.stop();
             }
         }
@@ -288,7 +431,7 @@ export default class Root extends React.PureComponent<Props, State> {
         const qs = new URLSearchParams(window.location.search);
 
         // list of key that we want to track
-        const keys = ['utm_source', 'utm_medium', 'utm_campaign'];
+        const keys = ["utm_source", "utm_medium", "utm_campaign"];
 
         const campaign = keys.reduce((acc, key) => {
             if (qs.has(key)) {
@@ -302,23 +445,26 @@ export default class Root extends React.PureComponent<Props, State> {
         }, {} as Record<string, string>);
 
         if (Object.keys(campaign).length > 0) {
-            this.props.history.replace({search: qs.toString()});
+            this.props.history.replace({ search: qs.toString() });
             return campaign;
         }
         return null;
     }
 
     initiateMeRequests = async () => {
-        const {isLoaded, isMeRequested} = await this.props.actions.loadConfigAndMe();
+        const { isLoaded, isMeRequested } =
+            await this.props.actions.loadConfigAndMe();
 
         if (isLoaded) {
-            const isUserAtRootRoute = this.props.location.pathname === '/';
+            const isUserAtRootRoute = this.props.location.pathname === "/";
 
             if (isUserAtRootRoute) {
                 if (isMeRequested) {
-                    this.props.actions.redirectToOnboardingOrDefaultTeam(this.props.history);
+                    this.props.actions.redirectToOnboardingOrDefaultTeam(
+                        this.props.history
+                    );
                 } else if (this.props.noAccounts) {
-                    this.props.history.push('/signup_user_complete');
+                    this.props.history.push("/signup_user_complete");
                 }
             }
 
@@ -327,14 +473,21 @@ export default class Root extends React.PureComponent<Props, State> {
     };
 
     handleDropEvent = (e: DragEvent) => {
-        if (e.dataTransfer && e.dataTransfer.items.length > 0 && e.dataTransfer.items[0].kind === 'file') {
+        if (
+            e.dataTransfer &&
+            e.dataTransfer.items.length > 0 &&
+            e.dataTransfer.items[0].kind === "file"
+        ) {
             e.preventDefault();
             e.stopPropagation();
         }
     };
 
     handleDragOverEvent = (e: DragEvent) => {
-        if (!isTextDroppableEvent(e) && !document.body.classList.contains('focalboard-body')) {
+        if (
+            !isTextDroppableEvent(e) &&
+            !document.body.classList.contains("focalboard-body")
+        ) {
             e.preventDefault();
             e.stopPropagation();
         }
@@ -346,24 +499,28 @@ export default class Root extends React.PureComponent<Props, State> {
         this.initiateMeRequests();
 
         // See figma design on issue https://mattermost.atlassian.net/browse/MM-43649
-        this.props.actions.registerCustomPostRenderer('custom_pl_notification', OpenPluginInstallPost, 'plugin_install_post_message_renderer');
+        this.props.actions.registerCustomPostRenderer(
+            "custom_pl_notification",
+            OpenPluginInstallPost,
+            "plugin_install_post_message_renderer"
+        );
 
         measurePageLoadTelemetry();
         trackSelectorMetrics();
 
         // Force logout of all tabs if one tab is logged out
-        window.addEventListener('storage', this.handleLogoutLoginSignal);
+        window.addEventListener("storage", this.handleLogoutLoginSignal);
 
         // Prevent drag and drop files from navigating away from the app
-        document.addEventListener('drop', this.handleDropEvent);
+        document.addEventListener("drop", this.handleDropEvent);
 
-        document.addEventListener('dragover', this.handleDragOverEvent);
+        document.addEventListener("dragover", this.handleDragOverEvent);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('storage', this.handleLogoutLoginSignal);
-        document.removeEventListener('drop', this.handleDropEvent);
-        document.removeEventListener('dragover', this.handleDragOverEvent);
+        window.removeEventListener("storage", this.handleLogoutLoginSignal);
+        document.removeEventListener("drop", this.handleDropEvent);
+        document.removeEventListener("dragover", this.handleDragOverEvent);
     }
 
     handleLogoutLoginSignal = (e: StorageEvent) => {
@@ -371,12 +528,12 @@ export default class Root extends React.PureComponent<Props, State> {
     };
 
     setRootMeta = () => {
-        const root = document.getElementById('root')!;
+        const root = document.getElementById("root")!;
 
         for (const [className, enabled] of Object.entries({
-            'app-bar-enabled': this.props.shouldShowAppBar,
-            'rhs-open': this.props.rhsIsOpen,
-            'rhs-open-expanded': this.props.rhsIsExpanded,
+            "app-bar-enabled": this.props.shouldShowAppBar,
+            "rhs-open": this.props.rhsIsOpen,
+            "rhs-open-expanded": this.props.rhsIsExpanded,
         })) {
             root.classList.toggle(className, enabled);
         }
@@ -384,142 +541,146 @@ export default class Root extends React.PureComponent<Props, State> {
 
     render() {
         if (!this.state.shouldMountAppRoutes) {
-            return <div/>;
+            return <div />;
         }
-
+        const { isModalOpen } = this.props;
         return (
             <RootProvider>
-                <MobileViewWatcher/>
-                <LuxonController/>
-                <PerformanceReporterController/>
+                {isModalOpen && (
+                    <AppLibraryModal onClose={this.handleCloseModal} />
+                )}
+                <MobileViewWatcher />
+                <LuxonController />
+                <PerformanceReporterController />
                 <Switch>
-                    <Route
-                        path={'/error'}
-                        component={ErrorPage}
-                    />
+                    <Route path={"/error"} component={ErrorPage} />
+                    <HFRoute path={"/login"} component={Login} />
                     <HFRoute
-                        path={'/login'}
-                        component={Login}
-                    />
-                    <HFRoute
-                        path={'/access_problem'}
+                        path={"/access_problem"}
                         component={AccessProblem}
                     />
                     <HFTRoute
-                        path={'/reset_password'}
+                        path={"/reset_password"}
                         component={PasswordResetSendLink}
                     />
                     <HFTRoute
-                        path={'/reset_password_complete'}
+                        path={"/reset_password_complete"}
                         component={PasswordResetForm}
                     />
                     <HFRoute
-                        path={'/signup_user_complete'}
+                        path={"/signup_user_complete"}
                         component={Signup}
                     />
                     <HFRoute
-                        path={'/should_verify_email'}
+                        path={"/should_verify_email"}
                         component={ShouldVerifyEmail}
                     />
                     <HFRoute
-                        path={'/do_verify_email'}
+                        path={"/do_verify_email"}
                         component={DoVerifyEmail}
                     />
-                    <HFTRoute
-                        path={'/claim'}
-                        component={ClaimController}
-                    />
+                    <HFTRoute path={"/claim"} component={ClaimController} />
                     <LoggedInRoute
-                        path={'/terms_of_service'}
+                        path={"/terms_of_service"}
                         component={TermsOfService}
                     />
-                    <Route
-                        path={'/landing'}
-                        component={LinkingLandingPage}
-                    />
-                    <Route
-                        path={'/admin_console'}
-                    >
+                    <Route path={"/landing"} component={LinkingLandingPage} />
+                    <Route path={"/admin_console"}>
                         <Switch>
                             <LoggedInRoute
                                 theme={this.props.theme}
-                                path={'/admin_console'}
+                                path={"/admin_console"}
                                 component={AdminConsole}
                             />
-                            <RootRedirect/>
+                            <RootRedirect />
                         </Switch>
                     </Route>
                     <LoggedInHFTRoute
-                        path={'/select_team'}
+                        path={"/select_team"}
                         component={SelectTeam}
                     />
                     <LoggedInHFTRoute
-                        path={'/oauth/authorize'}
+                        path={"/oauth/authorize"}
                         component={Authorize}
                     />
                     <LoggedInHFTRoute
-                        path={'/create_team'}
+                        path={"/create_team"}
                         component={CreateTeam}
                     />
+                    <LoggedInRoute path={"/mfa"} component={Mfa} />
                     <LoggedInRoute
-                        path={'/mfa'}
-                        component={Mfa}
-                    />
-                    <LoggedInRoute
-                        path={'/preparing-workspace'}
+                        path={"/preparing-workspace"}
                         component={PreparingWorkspace}
                     />
                     <Redirect
-                        from={'/_redirect/integrations/:subpath*'}
+                        from={"/_redirect/integrations/:subpath*"}
                         to={`/${this.props.permalinkRedirectTeamName}/integrations/:subpath*`}
                     />
                     <Redirect
-                        from={'/_redirect/pl/:postid'}
+                        from={"/_redirect/pl/:postid"}
                         to={`/${this.props.permalinkRedirectTeamName}/pl/:postid`}
                     />
                     <CompassThemeProvider theme={this.props.theme}>
-                        {(this.props.showLaunchingWorkspace && !this.props.location.pathname.includes('/preparing-workspace') &&
-                            <LaunchingWorkspace
-                                fullscreen={true}
-                                zIndex={LAUNCHING_WORKSPACE_FULLSCREEN_Z_INDEX}
-                                show={true}
-                                onPageView={noop}
-                                transitionDirection={Animations.Reasons.EnterFromBefore}
-                            />
-                        )}
-                        <WindowSizeObserver/>
-                        <ModalController/>
-                        <AnnouncementBarController/>
-                        <SystemNotice/>
-                        <GlobalHeader/>
-                        <CloudEffects/>
-                        <TeamSidebar/>
-                        <div className='home-screen-wrapper'>
-                            <div className='home-screen-wrapper__sidebar left'>
-                                <img
-                                    src={logo}
-                                    alt='logo'
+                        {this.props.showLaunchingWorkspace &&
+                            !this.props.location.pathname.includes(
+                                "/preparing-workspace"
+                            ) && (
+                                <LaunchingWorkspace
+                                    fullscreen={true}
+                                    zIndex={
+                                        LAUNCHING_WORKSPACE_FULLSCREEN_Z_INDEX
+                                    }
+                                    show={true}
+                                    onPageView={noop}
+                                    transitionDirection={
+                                        Animations.Reasons.EnterFromBefore
+                                    }
                                 />
+                            )}
+                        <WindowSizeObserver />
+                        <ModalController />
+                        <AnnouncementBarController />
+                        <SystemNotice />
+                        <GlobalHeader />
+                        <CloudEffects />
+                        <TeamSidebar />
+
+                        <div className="home-screen-wrapper">
+                            <div className="home-screen-wrapper__sidebar left">
+                                <img src={logo} alt="logo" />
                             </div>
-                            <div className='main-wrapper'>
+                            <div className="main-wrapper">
                                 <Switch>
-                                    {this.props.products?.filter((product) => Boolean(product.publicComponent)).map((product) => (
-                                        <Route
-                                            key={`${product.id}-public`}
-                                            path={`${product.baseURL}/public`}
-                                            render={(props) => {
-                                                return (
-                                                    <Pluggable
-                                                        pluggableName={'Product'}
-                                                        subComponentName={'publicComponent'}
-                                                        pluggableId={product.id}
-                                                        css={{gridArea: 'center'}}
-                                                        {...props}
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    ))}
+                                    {this.props.products
+                                        ?.filter((product) =>
+                                            Boolean(product.publicComponent)
+                                        )
+                                        .map((product) => (
+                                            <Route
+                                                key={`${product.id}-public`}
+                                                path={`${product.baseURL}/public`}
+                                                render={(props) => {
+                                                    return (
+                                                        <Pluggable
+                                                            pluggableName={
+                                                                "Product"
+                                                            }
+                                                            subComponentName={
+                                                                "publicComponent"
+                                                            }
+                                                            pluggableId={
+                                                                product.id
+                                                            }
+                                                            css={{
+                                                                gridArea:
+                                                                    "center",
+                                                            }}
+                                                            {...props}
+                                                        />
+                                                    );
+                                                }}
+                                            />
+                                        ))}
                                     {this.props.products?.map((product) => (
                                         <Route
                                             key={product.id}
@@ -527,16 +688,38 @@ export default class Root extends React.PureComponent<Props, State> {
                                             render={(props) => {
                                                 let pluggable = (
                                                     <Pluggable
-                                                        pluggableName={'Product'}
-                                                        subComponentName={'mainComponent'}
+                                                        pluggableName={
+                                                            "Product"
+                                                        }
+                                                        subComponentName={
+                                                            "mainComponent"
+                                                        }
                                                         pluggableId={product.id}
-                                                        webSocketClient={webSocketClient}
-                                                        css={product.wrapped ? undefined : {gridArea: 'center'}}
+                                                        webSocketClient={
+                                                            webSocketClient
+                                                        }
+                                                        css={
+                                                            product.wrapped
+                                                                ? undefined
+                                                                : {
+                                                                      gridArea:
+                                                                          "center",
+                                                                  }
+                                                        }
                                                     />
                                                 );
                                                 if (product.wrapped) {
                                                     pluggable = (
-                                                        <div className={classNames(['product-wrapper', {wide: !product.showTeamSidebar}])}>
+                                                        <div
+                                                            className={classNames(
+                                                                [
+                                                                    "product-wrapper",
+                                                                    {
+                                                                        wide: !product.showTeamSidebar,
+                                                                    },
+                                                                ]
+                                                            )}
+                                                        >
                                                             {pluggable}
                                                         </div>
                                                     );
@@ -552,12 +735,16 @@ export default class Root extends React.PureComponent<Props, State> {
                                     {this.props.plugins?.map((plugin) => (
                                         <Route
                                             key={plugin.id}
-                                            path={'/plug/' + (plugin as any).route}
+                                            path={
+                                                "/plug/" + (plugin as any).route
+                                            }
                                             render={() => (
                                                 <Pluggable
-                                                    pluggableName={'CustomRouteComponent'}
+                                                    pluggableName={
+                                                        "CustomRouteComponent"
+                                                    }
                                                     pluggableId={plugin.id}
-                                                    css={{gridArea: 'center'}}
+                                                    css={{ gridArea: "center" }}
                                                 />
                                             )}
                                         />
@@ -567,26 +754,27 @@ export default class Root extends React.PureComponent<Props, State> {
                                         path={`/:team(${TEAM_NAME_PATH_PATTERN})`}
                                         component={TeamController}
                                     />
-                                    <RootRedirect/>
+                                    <RootRedirect />
                                 </Switch>
-                                <SidebarRight/>
+
+                                <SidebarRight />
                             </div>
-                            <div className='home-screen-wrapper__sidebar right'>
-                                <div className='top'>
+                            <div className="home-screen-wrapper__sidebar right">
+                                <div className="top">
                                     <button>
-                                        <img src={notesIcon}/>
+                                        <img src={notesIcon} />
                                     </button>
                                 </div>
-                                <div className='bottom'>
+                                <div className="bottom">
                                     <button>
-                                        <img src={storeIcon}/>
+                                        <img src={storeIcon} />
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <Pluggable pluggableName='Global'/>
-                        <AppBar/>
-                        <SidebarMobileRightMenu/>
+                        <Pluggable pluggableName="Global" />
+                        <AppBar />
+                        <SidebarMobileRightMenu />
                     </CompassThemeProvider>
                 </Switch>
             </RootProvider>
@@ -594,7 +782,20 @@ export default class Root extends React.PureComponent<Props, State> {
     }
 }
 
-export function doesRouteBelongToTeamControllerRoutes(pathname: RouteComponentProps['location']['pathname']): boolean {
-    const TEAM_CONTROLLER_PATH_PATTERN = /^\/([a-z0-9\-_]+)\/(channels|messages|threads|drafts|integrations|emoji)(\/.*)?$/;
+export function doesRouteBelongToTeamControllerRoutes(
+    pathname: RouteComponentProps["location"]["pathname"]
+): boolean {
+    const TEAM_CONTROLLER_PATH_PATTERN =
+        /^\/([a-z0-9\-_]+)\/(channels|messages|threads|drafts|integrations|emoji)(\/.*)?$/;
     return TEAM_CONTROLLER_PATH_PATTERN.test(pathname);
 }
+
+const mapStateToProps = (state: any) => ({
+    isModalOpen: state.modal.isOpen, // Accessing modal state
+});
+// Map dispatch to props
+const mapDispatchToProps = {
+    closeModal,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

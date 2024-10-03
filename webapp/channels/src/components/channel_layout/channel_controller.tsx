@@ -1,34 +1,54 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import classNames from 'classnames';
-import React, {lazy, useEffect} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import classNames from "classnames";
+import React, { lazy, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import {cleanUpStatusAndProfileFetchingPoll} from 'mattermost-redux/actions/status_profile_polling';
-import {getIsUserStatusesConfigEnabled} from 'mattermost-redux/selectors/entities/common';
+import { cleanUpStatusAndProfileFetchingPoll } from "mattermost-redux/actions/status_profile_polling";
+import { getIsUserStatusesConfigEnabled } from "mattermost-redux/selectors/entities/common";
+import {
+    amphion,
+    code,
+    dawg,
+    imageeditor,
+    losslesscut,
+    lumen,
+    motion,
+    notable,
+    omniclip,
+    playbook,
+    plexocore,
+    viewerjs,
+} from "../browse_apps/apps_iframe";
+import { addVisibleUsersInCurrentChannelToStatusPoll } from "actions/status_actions";
 
-import {addVisibleUsersInCurrentChannelToStatusPoll} from 'actions/status_actions';
+import { makeAsyncComponent } from "components/async_load";
+import CenterChannel from "components/channel_layout/center_channel";
+import LoadingScreen from "components/loading_screen";
+import Sidebar from "components/sidebar";
+import CRTPostsChannelResetWatcher from "components/threading/channel_threads/posts_channel_reset_watcher";
+import UnreadsStatusHandler from "components/unreads_status_handler";
 
-import {makeAsyncComponent} from 'components/async_load';
-import CenterChannel from 'components/channel_layout/center_channel';
-import LoadingScreen from 'components/loading_screen';
-import Sidebar from 'components/sidebar';
-import CRTPostsChannelResetWatcher from 'components/threading/channel_threads/posts_channel_reset_watcher';
-import UnreadsStatusHandler from 'components/unreads_status_handler';
+import Pluggable from "plugins/pluggable";
+import { Constants } from "utils/constants";
+import { isInternetExplorer, isEdge } from "utils/user_agent";
+import IframeContainer from "components/browse_apps/iframe_container";
 
-import Pluggable from 'plugins/pluggable';
-import {Constants} from 'utils/constants';
-import {isInternetExplorer, isEdge} from 'utils/user_agent';
+const ProductNoticesModal = makeAsyncComponent(
+    "ProductNoticesModal",
+    lazy(() => import("components/product_notices_modal"))
+);
+const ResetStatusModal = makeAsyncComponent(
+    "ResetStatusModal",
+    lazy(() => import("components/reset_status_modal"))
+);
 
-const ProductNoticesModal = makeAsyncComponent('ProductNoticesModal', lazy(() => import('components/product_notices_modal')));
-const ResetStatusModal = makeAsyncComponent('ResetStatusModal', lazy(() => import('components/reset_status_modal')));
-
-const BODY_CLASS_FOR_CHANNEL = ['app__body', 'channel-view'];
+const BODY_CLASS_FOR_CHANNEL = ["app__body", "channel-view"];
 
 type Props = {
     shouldRenderCenterChannel: boolean;
-}
+};
 
 export default function ChannelController(props: Props) {
     const enabledUserStatuses = useSelector(getIsUserStatusesConfigEnabled);
@@ -36,11 +56,16 @@ export default function ChannelController(props: Props) {
 
     useEffect(() => {
         const isMsBrowser = isInternetExplorer() || isEdge();
-        const {navigator} = window;
+        const { navigator } = window;
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const platform = navigator?.userAgentData?.platform || navigator?.platform || 'unknown';
-        document.body.classList.add(...getClassnamesForBody(platform, isMsBrowser));
+        const platform =
+            navigator?.userAgentData?.platform ||
+            navigator?.platform ||
+            "unknown";
+        document.body.classList.add(
+            ...getClassnamesForBody(platform, isMsBrowser)
+        );
 
         return () => {
             document.body.classList.remove(...BODY_CLASS_FOR_CHANNEL);
@@ -64,40 +89,78 @@ export default function ChannelController(props: Props) {
         };
     }, [enabledUserStatuses]);
 
+    //app tabs and default screen switch
+
+    const iframeMap: { [key: string]: React.FC } = {
+        vscode: code,
+        notes: notable,
+        motion: motion,
+        viewerjs: viewerjs,
+        imageeditor: imageeditor,
+        lumen: lumen,
+        dawg: dawg,
+        amphion: amphion,
+        losslesscut: losslesscut,
+        omniclip: omniclip,
+        playbook: playbook,
+        plexocore: plexocore,
+    };
+    interface AppState {
+        tabs: {
+            activeApp: string | null;
+        };
+    }
+    const activeApp = useSelector((state: AppState) => state.tabs.activeApp);
+    const ActiveIframe = activeApp ? iframeMap[activeApp] : null;
     return (
         <>
-            <CRTPostsChannelResetWatcher/>
-            <Sidebar/>
+            <CRTPostsChannelResetWatcher />
+            <Sidebar />
             <div
-                id='channel_view'
-                className='channel-view'
-                data-testid='channel_view'
+                id="channel_view"
+                className="channel-view"
+                data-testid="channel_view"
             >
-                <UnreadsStatusHandler/>
-                <ProductNoticesModal/>
-                <div className={classNames('container-fluid channel-view-inner')}>
-                    {props.shouldRenderCenterChannel ? <CenterChannel/> : <LoadingScreen centered={true}/>}
-                    <Pluggable pluggableName='Root'/>
-                    <ResetStatusModal/>
+                <UnreadsStatusHandler />
+                <ProductNoticesModal />
+                <div
+                    className={classNames("container-fluid channel-view-inner")}
+                >
+                    {props.shouldRenderCenterChannel ? (
+                        <div className="iframe-container">
+                            {ActiveIframe ? (
+                                <IframeContainer />
+                            ) : (
+                                <CenterChannel />
+                            )}
+                        </div>
+                    ) : (
+                        <LoadingScreen centered={true} />
+                    )}
+                    <Pluggable pluggableName="Root" />
+                    <ResetStatusModal />
                 </div>
             </div>
         </>
     );
 }
 
-export function getClassnamesForBody(platform: Window['navigator']['platform'], isMsBrowser = false) {
+export function getClassnamesForBody(
+    platform: Window["navigator"]["platform"],
+    isMsBrowser = false
+) {
     const bodyClass = [...BODY_CLASS_FOR_CHANNEL];
 
     // OS Detection
-    if (platform === 'Win32' || platform === 'Win64') {
-        bodyClass.push('os--windows');
-    } else if (platform === 'MacIntel' || platform === 'MacPPC') {
-        bodyClass.push('os--mac');
+    if (platform === "Win32" || platform === "Win64") {
+        bodyClass.push("os--windows");
+    } else if (platform === "MacIntel" || platform === "MacPPC") {
+        bodyClass.push("os--mac");
     }
 
     // IE Detection
     if (isMsBrowser) {
-        bodyClass.push('browser--ie');
+        bodyClass.push("browser--ie");
     }
 
     return bodyClass;
