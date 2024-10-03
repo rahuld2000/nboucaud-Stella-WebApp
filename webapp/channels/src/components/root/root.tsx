@@ -70,7 +70,11 @@ import storeIcon from '../../images/store.png';
 
 import type {PropsFromRedux} from './index';
 
-import 'plugins/export.js';
+import "plugins/export.js";
+import AppLibraryModal from "components/browse_apps/browse_app";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { closeModal } from "../../packages/mattermost-redux/src/actions/modalActions";
+import { openModal } from "../../packages/mattermost-redux/src/actions/modalActions";
 
 const MobileViewWatcher = makeAsyncComponent('MobileViewWatcher', lazy(() => import('components/mobile_view_watcher')));
 const WindowSizeObserver = makeAsyncComponent('WindowSizeObserver', lazy(() => import('components/window_size_observer/WindowSizeObserver')));
