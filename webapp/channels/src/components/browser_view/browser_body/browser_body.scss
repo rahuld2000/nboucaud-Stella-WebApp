@@ -72,3 +72,19 @@
         }
     }
 }
+
+.form-input{
+    width: 100%;
+}
+
+.form-input input{
+    width: 100%;
+}
+.button--tab{
+    border:none;
+    background-color: transparent;
+}
+.tabs-wrapper{
+    display: flex;
+    gap:10px;
+}
