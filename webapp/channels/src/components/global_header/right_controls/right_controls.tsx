@@ -11,7 +11,10 @@ import type {ProductIdentifier} from '@mattermost/types/products';
 import {isCurrentUserGuestUser} from 'mattermost-redux/selectors/entities/users';
 
 import StatusDropdown from 'components/status_dropdown';
-import {OnboardingTourSteps, OnboardingTourStepsForGuestUsers} from 'components/tours';
+import {
+    OnboardingTourSteps,
+    OnboardingTourStepsForGuestUsers,
+} from 'components/tours';
 import {
     CustomizeYourExperienceTour,
     useShowOnboardingTutorialStep,
@@ -26,6 +29,10 @@ import PlanUpgradeButton from './plan_upgrade_button';
 import PreviousGPTsButton from './previous_gpts_button/previous_gpts_button';
 import SavedPostsButton from './saved_posts_button/saved_posts_button';
 import SettingsButton from './settings_button';
+
+import storeIcon from '../../../images/store.png';
+
+import './right_controls.scss';
 
 const RightControlsContainer = styled.div`
     display: flex;
@@ -44,7 +51,7 @@ const RightControlsContainer = styled.div`
 const StyledCustomizeYourExperienceTour = styled.div`
     display: flex;
     align-items: center;
-    height: 100%
+    height: 100%;
 `;
 
 const StyledStatusDropdown = styled.div`
@@ -53,11 +60,13 @@ const StyledStatusDropdown = styled.div`
 
 export type Props = {
     productId?: ProductIdentifier;
-}
+};
 
 const RightControls = ({productId = null}: Props): JSX.Element => {
     // guest validation to see which point the messaging tour tip starts
-    const isGuestUser = useSelector((state: GlobalState) => isCurrentUserGuestUser(state));
+    const isGuestUser = useSelector((state: GlobalState) =>
+        isCurrentUserGuestUser(state),
+    );
     const tourStep = isGuestUser ? OnboardingTourStepsForGuestUsers.CUSTOMIZE_EXPERIENCE : OnboardingTourSteps.CUSTOMIZE_EXPERIENCE;
     const {pathname} = useLocation();
     const urlParts = pathname.split('/');
@@ -66,13 +75,20 @@ const RightControls = ({productId = null}: Props): JSX.Element => {
     const showCustomizeTip = useShowOnboardingTutorialStep(tourStep);
 
     return (
-        <RightControlsContainer
-            id={'RightControlsContainer'}
-        >
+        <RightControlsContainer id={'RightControlsContainer'}>
+            <Link to={`${teamName}/shop`}>
+                <img
+                    src={storeIcon}
+                    height={15}
+                    style={{marginRight: '7px'}}
+                />
+            </Link>
             <Link
-                className='btn btn-xs btn-primary'
+                className='membership-right-control'
                 to={`${teamName}/membership`}
-            >{'Membership'}</Link>
+            >
+                {'Membership'}
+            </Link>
             <PlanUpgradeButton/>
             {isChannels(productId) ? (
                 <>
@@ -87,14 +103,14 @@ const RightControls = ({productId = null}: Props): JSX.Element => {
                 />
             )}
             <StyledCustomizeYourExperienceTour id='CustomizeYourExperienceTour'>
-                {
-                    isChannels(productId) ? (
-                        <>
-                            <SettingsButton/>
-                            {showCustomizeTip && <CustomizeYourExperienceTour/>}
-                        </>
-                    ) : null
-                }
+                {isChannels(productId) ? (
+                    <>
+                        <SettingsButton/>
+                        {showCustomizeTip && (
+                            <CustomizeYourExperienceTour/>
+                        )}
+                    </>
+                ) : null}
                 <StyledStatusDropdown>
                     <StatusDropdown/>
                 </StyledStatusDropdown>

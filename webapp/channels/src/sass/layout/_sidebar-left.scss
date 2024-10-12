@@ -196,7 +196,6 @@ $sidebarOpacityAnimationDuration: 0.15s;
         &__addChannelsCtaLhsButton {
             display: flex;
             padding: 6px 0;
-            margin-left: 15px;
             color: rgba(var(--sidebar-text-rgb), 0.64);
             line-height: 20px;
             list-style: none;
@@ -224,7 +223,7 @@ $sidebarOpacityAnimationDuration: 0.15s;
 
             div {
                 display: flex;
-                margin-left: 15px;
+                margin-left: 14px;
             }
         }
 

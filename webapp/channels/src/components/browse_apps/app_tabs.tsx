@@ -1,13 +1,18 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+
+import React from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+
+import iconlayer from './layers-app-icon.svg';
+
 import {
     addTab,
     removeTab,
     setActiveTab,
     setActiveApp,
-} from "../../packages/mattermost-redux/src/actions/tabAction";
-import iconlayer from "./layers-app-icon.svg";
-import "./app_tabs.scss";
+} from '../../packages/mattermost-redux/src/actions/tabAction';
+import './app_tabs.scss';
 
 interface Tab {
     id: string;
@@ -26,8 +31,8 @@ interface AppState {
 const Tabs: React.FC = () => {
     const dispatch = useDispatch();
 
-    const { tabs, activeTab, activeApp } = useSelector(
-        (state: AppState) => state.tabs
+    const {tabs, activeTab, activeApp} = useSelector(
+        (state: AppState) => state.tabs,
     );
 
     const handleTabClick = (uniqueId: string, id: string) => {
@@ -40,27 +45,28 @@ const Tabs: React.FC = () => {
         dispatch(removeTab(uniqueId));
     };
 
-    console.log("Tabs:", tabs, "Active Tab:", activeTab); // More descriptive logging
-
     return (
-        <div className="tabs-container">
+        <div className='tabs-container'>
             {tabs.map((tab: Tab) => (
                 <div
                     onClick={() => handleTabClick(tab.uniqueId, tab.id)} // Use uniqueId
                     key={tab.uniqueId} // Use uniqueId as key
                     className={`app-tab-wrap ${
-                        activeTab === tab.uniqueId ? "active" : ""
+                        activeTab === tab.uniqueId ? 'active' : ''
                     }`}
                 >
-                    <span className="app-heading-text">
-                        <img src={iconlayer} alt="icon" />
-                        {tab.title} #{tab.uniqueId.slice(-2)}
+                    <span className='app-heading-text'>
+                        <img
+                            src={iconlayer}
+                            alt='icon'
+                        />
+                        {`${tab.title} #${tab.uniqueId.slice(-2)}`} {/* Use uniqueId */}
                     </span>
                     <button
-                        className="app-close-tag"
+                        className='app-close-tag'
                         onClick={(e) => handleCloseTab(tab.uniqueId, e)} // Use uniqueId here too
                     >
-                        x
+                        {'x'}
                     </button>
                 </div>
             ))}

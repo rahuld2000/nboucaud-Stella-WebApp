@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {} from 'react';
+import React from 'react';
 import {useIntl} from 'react-intl';
 import {Link, useRouteMatch} from 'react-router-dom';
 
@@ -32,7 +32,10 @@ const GlobalThreadsLink = () => {
                     </span>
                     <div className='SidebarChannelLinkLabel_wrapper'>
                         <span className='SidebarChannelLinkLabel sidebar-item__name'>
-                            {formatMessage({id: 'globalInternet.sidebarLink', defaultMessage: 'Internet'})}
+                            {formatMessage({
+                                id: 'globalInternet.sidebarLink',
+                                defaultMessage: 'Browser',
+                            })}
                         </span>
                     </div>
                 </Link>

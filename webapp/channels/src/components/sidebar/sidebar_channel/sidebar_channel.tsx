@@ -41,7 +41,10 @@ function SidebarChannel({
     }
 
     function isCollapsed() {
-        return isCategoryDragged || (isCategoryCollapsed && !isUnread && !isCurrentChannel);
+        return (
+            isCategoryDragged ||
+            (isCategoryCollapsed && !isUnread && !isCurrentChannel)
+        );
     }
 
     function setRef(refMethod?: (element: HTMLLIElement) => void) {
@@ -52,13 +55,21 @@ function SidebarChannel({
     }
 
     function handleAnimationStart(event: AnimationEvent) {
-        if (event && event.animationName === 'toOpaqueAnimation' && !isCollapsed()) {
+        if (
+            event &&
+            event.animationName === 'toOpaqueAnimation' &&
+            !isCollapsed()
+        ) {
             setShow(true);
         }
     }
 
     function handleAnimationEnd(event: AnimationEvent) {
-        if (event && event.animationName === 'toTransparentAnimation' && isCollapsed()) {
+        if (
+            event &&
+            event.animationName === 'toTransparentAnimation' &&
+            isCollapsed()
+        ) {
             setShow(false);
         }
     }
@@ -91,7 +102,12 @@ function SidebarChannel({
 
     if (isDraggable) {
         let selectedCount: React.ReactNode;
-        if (isChannelSelected && draggingState.state && draggingState.id === channel.id && multiSelectedChannelIds.length > 1) {
+        if (
+            isChannelSelected &&
+            draggingState.state &&
+            draggingState.id === channel.id &&
+            multiSelectedChannelIds.length > 1
+        ) {
             selectedCount = show ? (
                 <div className='SidebarChannel__selectedCount'>
                     <FormattedMessage
@@ -119,9 +135,19 @@ function SidebarChannel({
                                 unread: isUnread,
                                 active: isCurrentChannel,
                                 dragging: snapshot.isDragging,
-                                selectedDragging: isChannelSelected && draggingState.state && draggingState.id !== channel.id,
-                                fadeOnDrop: snapshot.isDropAnimating && snapshot.draggingOver && autoSortedCategoryIds.has(snapshot.draggingOver),
-                                noFloat: isAutoSortedCategory && !snapshot.isDragging,
+                                selectedDragging:
+                                    isChannelSelected &&
+                                    draggingState.state &&
+                                    draggingState.id !== channel.id,
+                                fadeOnDrop:
+                                    snapshot.isDropAnimating &&
+                                    snapshot.draggingOver &&
+                                    autoSortedCategoryIds.has(
+                                        snapshot.draggingOver,
+                                    ),
+                                noFloat:
+                                    isAutoSortedCategory &&
+                                    !snapshot.isDragging,
                             })}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}

@@ -79,6 +79,9 @@ const SavedPostsButton = (): JSX.Element | null => {
             >
                 <IconButton
                     {...getReferenceProps()}
+                    css={{
+                        color: '#02B9B5',
+                    }}
                     size={'sm'}
                     icon={'bookmark-outline'}
                     toggled={rhsState === RHSStates.FLAG}

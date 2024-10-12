@@ -136,7 +136,7 @@ const FormattingIcon = (props: FormattingIconProps): JSX.Element => {
             {...otherProps}
         >
             <Icon
-                color={'currentColor'}
+                color={'#02B9B5'}
                 size={18}
             />
         </IconContainer>

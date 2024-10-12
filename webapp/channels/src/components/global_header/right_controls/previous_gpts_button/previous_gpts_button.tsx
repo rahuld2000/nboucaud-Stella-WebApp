@@ -83,6 +83,9 @@ const PreviousGPTsButton = (): JSX.Element => {
             >
                 <IconButton
                     {...getReferenceProps()}
+                    css={{
+                        color: '#02B9B5',
+                    }}
                     size={'sm'}
                     icon={'clock-outline'}
                     toggled={rhsState === RHSStates.MENTION}

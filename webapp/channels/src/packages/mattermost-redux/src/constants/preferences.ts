@@ -84,13 +84,13 @@ const Preferences = {
     THEMES: {
         denim: {
             type: 'Denim',
-            sidebarBg: '#1e325c',
+            sidebarBg: '#09333F',
             sidebarText: '#ffffff',
             sidebarUnreadText: '#ffffff',
-            sidebarTextHoverBg: '#28427b',
-            sidebarTextActiveBorder: '#5d89ea',
+            sidebarTextHoverBg: '#075F66',
+            sidebarTextActiveBorder: '#075F66',
             sidebarTextActiveColor: '#ffffff',
-            sidebarHeaderBg: '#192a4d',
+            sidebarHeaderBg: '#0A2432',
             sidebarHeaderTextColor: '#ffffff',
             sidebarTeamBarBg: '#162545',
             onlineIndicator: '#3db887',

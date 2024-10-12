@@ -250,7 +250,7 @@ const FormattingBar = (props: FormattingBarProps): JSX.Element => {
                         {...getDismissReferenceProps()}
                     >
                         <DotsHorizontalIcon
-                            color={'currentColor'}
+                            color={'#02B9B5'}
                             size={18}
                         />
                     </IconContainer>

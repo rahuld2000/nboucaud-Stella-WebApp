@@ -634,7 +634,10 @@ class ChannelHeader extends React.PureComponent<Props, State> {
                     />
                     <CallButton/>
                     <HeaderIconWrapper
-                        iconComponent={<PhoneOutlineIcon size={18}/>}
+                        iconComponent={<PhoneOutlineIcon
+                            color='#02B9B5'
+                            size={18}
+                        />}
                         buttonId={'channelVoiceCallButton'}
                         onClick={() => {}}
                         tooltip={this.props.intl.formatMessage({id: 'channel_header.voice_call', defaultMessage: 'Voice Call'})}
@@ -664,14 +667,14 @@ function CameraIcon() {
             <g clipPath='url(#clip0_799_476)'>
                 <path
                     d='M23.4286 6.85714L16.9286 11.5L23.4286 16.1429V6.85714Z'
-                    stroke='#84878F'
+                    stroke='#02B9B5'
                     strokeWidth='1.5'
                     strokeLinecap='round'
                     strokeLinejoin='round'
                 />
                 <path
                     d='M15.0714 5H4.85714C3.83147 5 3 5.83147 3 6.85714V16.1429C3 17.1685 3.83147 18 4.85714 18H15.0714C16.0971 18 16.9286 17.1685 16.9286 16.1429V6.85714C16.9286 5.83147 16.0971 5 15.0714 5Z'
-                    stroke='#84878F'
+                    stroke='#02B9B5'
                     strokeWidth='1.5'
                     strokeLinecap='round'
                     strokeLinejoin='round'

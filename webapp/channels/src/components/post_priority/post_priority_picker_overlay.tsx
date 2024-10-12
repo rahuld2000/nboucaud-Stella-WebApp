@@ -101,7 +101,7 @@ function PostPriorityPickerOverlay({
                 >
                     <AlertCircleOutlineIcon
                         size={18}
-                        color='currentColor'
+                        color='#02B9B5'
                     />
                 </IconContainer>
             </WithTooltip>

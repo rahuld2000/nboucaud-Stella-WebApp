@@ -1,46 +1,43 @@
-.app-heading-text{
+.app-heading-text {
     display: flex;
     gap: 9px;
     color: rgba(255, 255, 255, 0.64);
-font-family: "Open Sans";
-font-size: 14px;
-font-style: normal;
-font-weight: 400;
-line-height: 18px;
+    font-family: "Open Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
 }
 
-.app-tab-wrap{
+.app-tab-wrap {
     display: flex;
     justify-content: space-between;
     align-items: center;
-   padding-left: 21px;
-    padding-right:25px ;
+    padding-left: 17px;
+    padding-right: 25px;
     padding-top: 6px;
     padding-bottom: 6px;
     cursor: pointer;
-
 }
 
-.active{
-   background-color: #28427b;;
+// .active{
+//    background-color: #28427b;
 
+// }
+
+.app-tab-wrap:hover {
+    background-color: #02B9B554;
 }
 
-.app-tab-wrap:hover{
-  background-color: #28427b;;
-
-}
-
-.app-close-tag{
+.app-close-tag {
     background-color: transparent;
     padding: 0;
     font-weight: 500;
     border: none;
-    font-size:14px;
+    font-size: 14px;
     color: rgba(255, 255, 255, 0.64);
 }
-.iframe-container{
+.iframe-container {
     width: 100%;
     height: 100%;
 }
-

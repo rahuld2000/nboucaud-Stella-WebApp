@@ -87,6 +87,8 @@ export type Props = {
 
 const SidebarHeader = (_: Props) => {
     const currentTeam = useSelector((state: GlobalState) => getCurrentTeam(state));
+    const currentUser = useSelector((state: GlobalState) => state.entities.users.profiles[state.entities.users.currentUserId]);
+
     const theme = useSelector(getTheme);
 
     if (!currentTeam) {
@@ -105,7 +107,7 @@ const SidebarHeader = (_: Props) => {
                 >
                     <SidebarHeading>
                         <button className='style--none sidebar-header'>
-                            <span className='title'>{currentTeam.display_name}</span>
+                            <span className='title'> {`${currentUser.username}'s Workspace`}</span>
                         </button>
                     </SidebarHeading>
                 </WithTooltip>

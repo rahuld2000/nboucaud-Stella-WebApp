@@ -165,8 +165,8 @@ const SearchBar: React.FunctionComponent<Props> = (props: Props): JSX.Element =>
                     containerClass='w-full'
                     data-a11y-sort-order='9'
                     aria-describedby={props.isSideBarRight ? 'sbr-searchbar-help-popup' : 'searchbar-help-popup'}
-                    aria-label={intl.formatMessage({id: 'search_bar.search', defaultMessage: 'Search Files, Messages, and Home'})}
-                    placeholder={intl.formatMessage({id: 'search_bar.search', defaultMessage: 'Search Files, Messages, and Home'})}
+                    aria-label={intl.formatMessage({id: 'search_bar.search', defaultMessage: 'Search Files, Messages, and Users'})}
+                    placeholder={intl.formatMessage({id: 'search_bar.search', defaultMessage: 'Search Files, Messages, and Users'})}
                     value={props.searchTerms}
                     onFocus={props.handleFocus}
                     onBlur={props.handleBlur}

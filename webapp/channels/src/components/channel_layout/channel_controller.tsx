@@ -30,7 +30,6 @@ import IframeContainer from "components/browse_apps/iframe_container";
 import {makeAsyncComponent} from 'components/async_load';
 import CenterChannel from 'components/channel_layout/center_channel';
 import LoadingScreen from 'components/loading_screen';
-import ProductResults from 'components/shop/product_results';
 import Sidebar from 'components/sidebar';
 import CRTPostsChannelResetWatcher from 'components/threading/channel_threads/posts_channel_reset_watcher';
 import UnreadsStatusHandler from 'components/unreads_status_handler';
@@ -45,10 +44,6 @@ const ResetStatusModal = makeAsyncComponent(
 );
 
 const BODY_CLASS_FOR_CHANNEL = ["app__body", "channel-view"];
-import notesIcon from '../../images/notes-icon.png';
-import storeIcon from '../../images/store.png';
-
-
 
 type Props = {
     shouldRenderCenterChannel: boolean;
@@ -130,31 +125,13 @@ export default function ChannelController(props: Props) {
                 <UnreadsStatusHandler/>
                 <ProductNoticesModal/>
                 <div className={classNames('container-fluid channel-view-inner')}>
-                    {openShop ? (
-                        <ProductResults/>
+                    {props.shouldRenderCenterChannel ? (
+                        <CenterChannel/>
                     ) : (
-                        <>
-                            {props.shouldRenderCenterChannel ? (
-                                <CenterChannel/>
-                            ) : (
-                                <LoadingScreen centered={true}/>
-                            )}
-                            <Pluggable pluggableName='Root'/>
-                            <ResetStatusModal/>
-                        </>
+                        <LoadingScreen centered={true}/>
                     )}
-                </div>
-            </div>
-            <div className='home-screen-wrapper__sidebar right'>
-                <div className='top'>
-                    <button>
-                        <img src={notesIcon}/>
-                    </button>
-                </div>
-                <div className='bottom'>
-                    <button onClick={() => setOpenShop(!openShop)}>
-                        <img src={storeIcon}/>
-                    </button>
+                    <Pluggable pluggableName='Root'/>
+                    <ResetStatusModal/>
                 </div>
             </div>
         </>

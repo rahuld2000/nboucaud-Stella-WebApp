@@ -1,0 +1,22 @@
+.membership-right-control {
+    width: Fixed (87.2px) px;
+    height: var(--24);
+    padding: 3.17px 11.2px 3.83px 10px;
+    gap: 0px;
+    border-radius: 4px;
+    text-decoration: none;
+    background: linear-gradient(0deg, #02b9b5, #02b9b5),
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.125) 0%,
+            rgba(0, 0, 0, 0.25) 100%
+        );
+    box-shadow: 3px 4px 5.8px 0px #22dad61a;
+    &:hover {
+        text-decoration: none;
+    }
+    &:active {
+        text-decoration: none;
+    }
+    color: white !important;
+}

@@ -1,17 +1,17 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {lazy} from 'react';
+import React from 'react'; // {lazy}
 import type {RouteComponentProps} from 'react-router-dom';
 import {Route} from 'react-router-dom';
 
 import type {Theme} from 'mattermost-redux/selectors/entities/preferences';
 
-import {makeAsyncComponent} from 'components/async_load';
+// import {makeAsyncComponent} from 'components/async_load';
 import CompassThemeProvider from 'components/compass_theme_provider/compass_theme_provider';
 import LoggedIn from 'components/logged_in';
 
-const OnBoardingTaskList = makeAsyncComponent('OnboardingTaskList', lazy(() => import('components/onboarding_tasklist')));
+// const OnBoardingTaskList = makeAsyncComponent('OnboardingTaskList', lazy(() => import('components/onboarding_tasklist')));
 
 type Props = {
     component: React.ComponentType<RouteComponentProps<any>>;
@@ -29,7 +29,8 @@ export default function LoggedInRoute(props: Props) {
                 <LoggedIn {...routeProps}>
                     {theme && (
                         <CompassThemeProvider theme={theme}>
-                            <OnBoardingTaskList/>
+                            {/* note: undo this when turning onboarding */}
+                            {/* <OnBoardingTaskList/> */}
                         </CompassThemeProvider>
                     )}
                     <Component {...(routeProps)}/>

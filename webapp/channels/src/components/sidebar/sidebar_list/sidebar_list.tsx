@@ -32,7 +32,8 @@ import type {DraggingState} from 'types/store';
 import type {StaticPage} from 'types/store/lhs';
 
 const DraftsLink = makeAsyncComponent('DraftsLink', lazy(() => import('components/drafts/drafts_link/drafts_link')));
-const InternetBrowserLink = makeAsyncComponent('InternetBrowserLink', lazy(() => import('components/internet_browser/internet_browser_link')));
+
+// const InternetBrowserLink = makeAsyncComponent('InternetBrowserLink', lazy(() => import('components/internet_browser/internet_browser_link')));
 const UnreadChannelIndicator = makeAsyncComponent('UnreadChannelIndicator', lazy(() => import('../unread_channel_indicator')));
 const UnreadChannels = makeAsyncComponent('UnreadChannels', lazy(() => import('../unread_channels')));
 
@@ -553,7 +554,7 @@ export default class SidebarList extends React.PureComponent<Props, State> {
 
             // NOTE: id attribute added to temporarily support the desktop app's at-mention DOM scraping of the old sidebar
             <>
-                <InternetBrowserLink/>
+                {/* <InternetBrowserLink/> */}
                 <DraftsLink/>
                 <div
                     id='sidebar-left'
