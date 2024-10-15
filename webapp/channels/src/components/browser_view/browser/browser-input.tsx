@@ -1,17 +1,17 @@
 // src/components/UrlInput.tsx
-
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addUrl } from "./browser-state";
+import { useDispatch, useSelector } from "react-redux";
+import { setTabUrl } from "./browser-state";
 
 const UrlInput: React.FC = () => {
     const [url, setUrl] = useState("");
     const dispatch = useDispatch();
+    const { activeTabIndex } = useSelector((state: any) => state.urlManager);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (url) {
-            dispatch(addUrl(url));
+            dispatch(setTabUrl(activeTabIndex, url));
             setUrl("");
         }
     };

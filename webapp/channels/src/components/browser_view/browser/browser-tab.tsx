@@ -1,46 +1,46 @@
 // src/components/UrlTabs.tsx
-
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setActiveTab, removeUrl } from "./browser-state";
+import {
+    setActivebrowserTab,
+    addbrowserTab,
+    removebrowserTab,
+} from "./browser-state";
+import "./browsertabs.scss";
+import { LuPlus } from "react-icons/lu";
 
 const UrlTabs: React.FC = () => {
-    const { urls, activeTabIndex } = useSelector(
+    const { tabs, activeTabIndex } = useSelector(
         (state: any) => state.urlManager
     );
     const dispatch = useDispatch();
-
+    const state = useSelector((state: any) => state);
+    const idnumber = state.tabs.length;
     return (
         <div className="tabs-wrapper">
-            {urls.map((url: any, index: any) => (
+            {tabs.map((tab: any, index: any) => (
                 <div
-                    className="browser-tab"
-                    key={index}
-                    style={{
-                        display: "flex",
-                        paddingBottom: "5px",
-                        paddingRight: "5px",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
+                    key={tab.id}
+                    className={
+                        activeTabIndex === index
+                            ? "active-browser custom-tabs"
+                            : "custom-tabs"
+                    }
                 >
                     <button
-                        className="button--tab"
-                        onClick={() => dispatch(setActiveTab(index))}
+                        onClick={() => dispatch(setActivebrowserTab(index))}
                     >
-                        {url}
+                        Tab {index + 1}
                     </button>
-                    <button
-                        className="button--tab"
-                        onClick={() => dispatch(removeUrl(url))}
-                    >
-                        X
+                    <button onClick={() => dispatch(removebrowserTab(index))}>
+                        x
                     </button>
                 </div>
             ))}
-            {/* {activeTabIndex !== null && (
-                <p>Active Tab: {urls[activeTabIndex]}</p>
-            )} */}
+            <LuPlus
+                onClick={() => dispatch(addbrowserTab(idnumber))}
+                className="icon"
+            />
         </div>
     );
 };

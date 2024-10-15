@@ -7,6 +7,8 @@ import UrlIframe from "./browser/browser-iframe";
 import BrowserBody from "./browser_body";
 import BrowserHeader from "./browser_header";
 import BrowserSearchSection from "./browser_search_section";
+import UrlTabs from "./browser/browser-tab";
+import ContentDisplay from "./browser/contentDisplay";
 
 const BrowserView = () => {
     // Access the URLs, active tab index, and browser tab active state from the Redux store
@@ -26,13 +28,7 @@ const BrowserView = () => {
             <BrowserHeader />
             <BrowserSearchSection />
 
-            {/* Conditional rendering: Show BrowserBody if browser tab is active, otherwise show UrlIframe */}
-
-            {isBrowserTabActive ? (
-                <BrowserBody />
-            ) : (
-                <UrlIframe url={urls[activeTabIndex]} />
-            )}
+            <ContentDisplay />
         </div>
     );
 };

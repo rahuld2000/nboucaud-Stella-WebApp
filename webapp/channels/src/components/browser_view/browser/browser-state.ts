@@ -1,83 +1,104 @@
 // src/store/urlManager.ts
-import { AnyAction } from 'redux'; 
+import { AnyAction } from 'redux';
 
 // Action Types
-export const ADD_URL = 'ADD_URL';
-export const REMOVE_URL = 'REMOVE_URL';
-export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
-export const SET_BROWSER_TAB_ACTIVE = 'SET_BROWSER_TAB_ACTIVE';
+export const ADD_BROWSER_TAB = 'ADD_BROWSER_TAB';
+export const REMOVE_BROWSER_TAB = 'REMOVE_BROWSER_TAB';
+export const SET_ACTIVE_BROWSER_TAB = 'SET_ACTIVE_BROWSER_TAB';
+export const SET_TAB_URL = 'SET_TAB_URL';
 
 // Action Interfaces
-interface AddUrlAction {
-    type: typeof ADD_URL;
-    payload: string;
+interface AddTabAction {
+    type: typeof ADD_BROWSER_TAB;
 }
 
-interface RemoveUrlAction {
-    type: typeof REMOVE_URL;
-    payload: string;
+interface RemoveTabAction {
+    type: typeof REMOVE_BROWSER_TAB;
+    payload: number; // index of the tab to remove
 }
 
 interface SetActiveTabAction {
-    type: typeof SET_ACTIVE_TAB;
+    type: typeof SET_ACTIVE_BROWSER_TAB;
     payload: number; // index of the active tab
 }
 
-interface SetBrowserTabActiveAction {
-    type: typeof SET_BROWSER_TAB_ACTIVE; // New interface
+interface SetTabUrlAction {
+    type: typeof SET_TAB_URL;
+    payload: {
+        index: number;
+        url: string; // URL to set in the tab
+    };
 }
 
 // Action Creators
-export const addUrl = (url: string): AddUrlAction => ({
-    type: ADD_URL,
-    payload: url,
+export const addbrowserTab = (id:number): AddTabAction & { payload: { id: number; title: string; uniqueId?: string } } => ({
+    type: ADD_BROWSER_TAB,
+    payload: { id: Date.now(), title: "New Tab", uniqueId: "" }, 
 });
-
-export const removeUrl = (url: string): RemoveUrlAction => ({
-    type: REMOVE_URL,
-    payload: url,
-});
-
-export const setActiveTab = (index: number): SetActiveTabAction => ({
-    type: SET_ACTIVE_TAB,
+export const removebrowserTab = (index: number): RemoveTabAction => ({
+    type: REMOVE_BROWSER_TAB,
     payload: index,
 });
 
-// This action will set the browser tab to active
-export const setBrowserTabActive = (): SetBrowserTabActiveAction => ({
-    type: SET_BROWSER_TAB_ACTIVE,
+export const setActivebrowserTab = (index: number): SetActiveTabAction => ({
+    type: SET_ACTIVE_BROWSER_TAB,
+    payload: index,
+});
+
+export const setTabUrl = (index: number, url: string): SetTabUrlAction => ({
+    type: SET_TAB_URL,
+    payload: { index, url },
 });
 
 // State Interface
+interface Tab {
+    id: number; // Unique identifier for the tab
+    url: string | null; // URL or null to indicate BrowserBody
+}
+
 interface UrlManagerState {
-    urls: string[];
-    activeTabIndex: number | null;
-    isBrowserTabActive: boolean; 
+    tabs: Tab[]; // Array of tabs
+    activeTabIndex: number; // Active tab index
 }
 
 // Initial State
 const initialState: UrlManagerState = {
-    urls: [],
-    activeTabIndex: null,
-    isBrowserTabActive: true,
+    tabs: [{ id:0, url: null }], 
+    activeTabIndex: 0,
 };
 
 // Reducer
-const urlManagerReducer = (
-    state = initialState, 
-    action: AnyAction
-): UrlManagerState => {
+const urlManagerReducer = (state = initialState, action: AnyAction): UrlManagerState => {
     switch (action.type) {
-        case ADD_URL:
-            return { ...state, urls: [...state.urls, action.payload] };
-        case REMOVE_URL:
-            return { ...state, urls: state.urls.filter(url => url !== action.payload) };
-        case SET_ACTIVE_TAB:
-            return { ...state, activeTabIndex: action.payload, isBrowserTabActive: false }; // Set browser tab to false when a URL tab is activated
-        case SET_BROWSER_TAB_ACTIVE:
-            return { ...state, activeTabIndex: null, isBrowserTabActive: true }; // Handle the action to set the BrowserTab active
+        case ADD_BROWSER_TAB:
+            const newTabId = state.tabs?.length ?? 0; 
+            return {
+                ...state,
+                tabs: [...state.tabs, { id: newTabId, url: null }],
+                activeTabIndex: newTabId,
+            };
+
+        case REMOVE_BROWSER_TAB:
+            if (state.tabs.length === 1) return state; // Prevent removing the last tab
+            return {
+                ...state,
+                tabs: state.tabs.filter((_, idx) => idx !== action.payload),
+                activeTabIndex: Math.max(0, state.activeTabIndex - 1), // Adjust active tab index if needed
+            };
+        case SET_ACTIVE_BROWSER_TAB:
+            return {
+                ...state,
+                activeTabIndex: action.payload, // Update the active tab index
+            };
+        case SET_TAB_URL:
+            return {
+                ...state,
+                tabs: state.tabs.map((tab, idx) =>
+                    idx === action.payload.index ? { ...tab, url: action.payload.url } : tab
+                ),
+            };
         default:
-            return state;
+            return state; // Return unchanged state for unknown action types
     }
 };
 

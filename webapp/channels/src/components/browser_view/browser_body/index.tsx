@@ -10,17 +10,17 @@ import "./browser_body.scss";
 import logoImage from "../../../images/infogito.png";
 import backgroundImage from "../../../images/internet_browser_background.png";
 import robotImage from "../../../images/internet_browser_robot.png";
-import { useDispatch } from "react-redux";
-import { addUrl } from "../browser/browser-state";
+import { useDispatch, useSelector } from "react-redux";
+import { setTabUrl } from "../browser/browser-state";
 
 const BrowserBody = () => {
     const [url, setUrl] = useState("");
     const dispatch = useDispatch();
-
+    const { activeTabIndex } = useSelector((state: any) => state.urlManager);
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (url) {
-            dispatch(addUrl(url));
+            dispatch(setTabUrl(activeTabIndex, url));
             setUrl("");
         }
     };
