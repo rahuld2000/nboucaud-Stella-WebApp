@@ -1,7 +1,7 @@
 import React from "react";
 
 interface UrlIframeProps {
-    url: string; // Define that UrlIframe expects a 'url' prop of type string
+    url: string;
 }
 
 const UrlIframe: React.FC<UrlIframeProps> = ({ url }) => {

@@ -2,13 +2,9 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LuPlus } from "react-icons/lu";
 import { LiaCompass } from "react-icons/lia";
-import {
-    setBrowserTabActive,
-    setActiveTab,
-    addUrl,
-} from "../browser/browser-state";
 import UrlTabs from "../browser/browser-tab";
 import "./browser-header.scss";
+import { addbrowserTab } from "../browser/browser-state";
 
 const BrowserHeader = () => {
     const dispatch = useDispatch();
@@ -19,21 +15,16 @@ const BrowserHeader = () => {
     return (
         <div className="browser-header">
             {/* Default BrowserTab (Infogito) */}
-            <div
-                className={`browser-tab`}
-                onClick={() => dispatch(setBrowserTabActive())}
-            >
+            {/* <div className={`browser-tab`}>
                 <LiaCompass className="icon" /> <span>Infogito</span>
-            </div>
+            </div> */}
 
-            {/* Dynamic URL Tabs */}
             <UrlTabs />
 
-            {/* Add New Tab Button */}
-            <LuPlus
+            {/* <LuPlus
+                onClick={() => dispatch(addbrowserTab(idnumber))}
                 className="icon"
-                onClick={() => dispatch(addUrl("https://www.example.com"))}
-            />
+            /> */}
         </div>
     );
 };
