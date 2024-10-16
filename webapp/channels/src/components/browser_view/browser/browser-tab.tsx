@@ -28,11 +28,19 @@ const UrlTabs: React.FC = () => {
                     }
                 >
                     <button
+                        style={{
+                            width: "80%",
+                            textAlign: "left",
+                            overflow: "hidden",
+                        }}
                         onClick={() => dispatch(setActivebrowserTab(index))}
                     >
-                        Tab {index + 1}
+                        {tab.url ? tab.url : "New Tab"}
                     </button>
-                    <button onClick={() => dispatch(removebrowserTab(index))}>
+                    <button
+                        style={{ width: "20%" }}
+                        onClick={() => dispatch(removebrowserTab(index))}
+                    >
                         x
                     </button>
                 </div>

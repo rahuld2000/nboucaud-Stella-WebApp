@@ -10,7 +10,7 @@
     padding: 10px;
     font-weight: 600;
     flex: 0 1 200px;  /* Fixed initial width of 200px */
-    min-width: 20px; /* Tabs won't shrink below 100px */
+    min-width: 50px; /* Tabs won't shrink below 100px */
     white-space: nowrap; /* Prevent text wrapping */
     overflow: hidden; /* Hide overflowed content */
 }
