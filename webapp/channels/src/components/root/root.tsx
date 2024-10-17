@@ -1,18 +1,17 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import classNames from 'classnames';
-import deepEqual from 'fast-deep-equal';
-import React, {lazy} from 'react';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {Route, Switch, Redirect} from 'react-router-dom';
-import type {RouteComponentProps} from 'react-router-dom';
-
-import {ServiceEnvironment} from '@mattermost/types/config';
-
-import {setSystemEmojis} from 'mattermost-redux/actions/emojis';
-import {setUrl} from 'mattermost-redux/actions/general';
-import {Client4} from 'mattermost-redux/client';
+import classNames from "classnames";
+import deepEqual from "fast-deep-equal";
+import React, { lazy } from "react";
+import { Route, Switch, Redirect, Link } from "react-router-dom";
+import type { RouteComponentProps } from "react-router-dom";
+import { RootState } from "../../types/appModal";
+import { ServiceEnvironment } from "@mattermost/types/config";
+import { AppModalState } from "../../types/appModal";
+import { setSystemEmojis } from "mattermost-redux/actions/emojis";
+import { setUrl } from "mattermost-redux/actions/general";
+import { Client4 } from "mattermost-redux/client";
 import {
     rudderAnalytics,
     RudderTelemetryHandler,
@@ -763,6 +762,12 @@ class Root extends React.PureComponent<Props, State> {
                                             )}
                                         />
                                     ))}
+
+                                    <LoggedInRoute
+                                        theme={this.props.theme}
+                                        path={`/:team(${TEAM_NAME_PATH_PATTERN})/shop`}
+                                        component={TeamController}
+                                    />
                                     <LoggedInRoute
                                         theme={this.props.theme}
                                         path={`/:team(${TEAM_NAME_PATH_PATTERN})`}
@@ -772,6 +777,29 @@ class Root extends React.PureComponent<Props, State> {
                                 </Switch>
 
                                 <SidebarRight />
+                            </div>
+                            <div className='home-screen-wrapper__sidebar right'>
+                                <div className='top'>
+                                    <div className='group'>
+                                        <button>
+                                            <img src={comboChartIcon}/>
+                                        </button>
+                                        <button>
+                                            <img src={auditIcon}/>
+                                        </button>
+                                        <button>
+                                            <img src={notebookIcon}/>
+                                        </button>
+                                        <button className='invert'>
+                                            <i className='icon icon-plus'/>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='bottom'>
+                                    <Link to={(url) => url.pathname.split('/').length > 1 ? `/${url.pathname.split('/')[1]}/shop` : '#shop'}>
+                                        <img src={storeIcon}/>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                         <Pluggable pluggableName='Global'/>

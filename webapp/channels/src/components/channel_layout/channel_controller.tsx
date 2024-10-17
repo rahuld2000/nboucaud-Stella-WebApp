@@ -53,8 +53,6 @@ type Props = {
 };
 
 export default function ChannelController(props: Props) {
-    const [openShop, setOpenShop] = useState(false);
-
     const enabledUserStatuses = useSelector(getIsUserStatusesConfigEnabled);
     const dispatch = useDispatch();
 
@@ -125,6 +123,7 @@ export default function ChannelController(props: Props) {
                 className="channel-view"
                 data-testid="channel_view"
             >
+<<<<<<< HEAD
                 <UnreadsStatusHandler />
                 <ProductNoticesModal />
                 <div
@@ -155,6 +154,18 @@ export default function ChannelController(props: Props) {
                     <button onClick={() => setOpenShop(!openShop)}>
                         <img src={storeIcon} />
                     </button>
+=======
+                <UnreadsStatusHandler/>
+                <ProductNoticesModal/>
+                <div className={classNames('container-fluid channel-view-inner')}>
+                    {props.shouldRenderCenterChannel ? (
+                        <CenterChannel/>
+                    ) : (
+                        <LoadingScreen centered={true}/>
+                    )}
+                    <Pluggable pluggableName='Root'/>
+                    <ResetStatusModal/>
+>>>>>>> 56eb6ca92a (fix(ui): resolved ui issues)
                 </div>
             </div>
         </>
