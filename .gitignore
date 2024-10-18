@@ -156,3 +156,4 @@ docker-compose.override.yaml
 ## Notice Folders
 .notice/
 .notice-work/
+webapp/package-lock.json

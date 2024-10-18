@@ -27,7 +27,6 @@ import Pluggable from "plugins/pluggable";
 import { Constants } from "utils/constants";
 import { isInternetExplorer, isEdge } from "utils/user_agent";
 import IframeContainer from "components/browse_apps/iframe_container";
-import { makeAsyncComponent } from "components/async_load";
 import CenterChannel from "components/channel_layout/center_channel";
 import LoadingScreen from "components/loading_screen";
 import ProductResults from "components/shop/product_results";
@@ -36,16 +35,7 @@ import CRTPostsChannelResetWatcher from "components/threading/channel_threads/po
 import UnreadsStatusHandler from "components/unreads_status_handler";
 
 import {makeAsyncComponent} from 'components/async_load';
-import CenterChannel from 'components/channel_layout/center_channel';
-import LoadingScreen from 'components/loading_screen';
-import ProductResults from 'components/shop/product_results';
-import Sidebar from 'components/sidebar';
-import CRTPostsChannelResetWatcher from 'components/threading/channel_threads/posts_channel_reset_watcher';
-import UnreadsStatusHandler from 'components/unreads_status_handler';
 
-import Pluggable from 'plugins/pluggable';
-import {Constants} from 'utils/constants';
-import {isInternetExplorer, isEdge} from 'utils/user_agent';
 
 import notesIcon from '../../images/notes-icon.png';
 import storeIcon from '../../images/store.png';
