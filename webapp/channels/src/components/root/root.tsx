@@ -1,17 +1,22 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import classNames from "classnames";
-import deepEqual from "fast-deep-equal";
-import React, { lazy } from "react";
-import { Route, Switch, Redirect, Link } from "react-router-dom";
-import type { RouteComponentProps } from "react-router-dom";
-import { RootState } from "../../types/appModal";
-import { ServiceEnvironment } from "@mattermost/types/config";
-import { AppModalState } from "../../types/appModal";
-import { setSystemEmojis } from "mattermost-redux/actions/emojis";
-import { setUrl } from "mattermost-redux/actions/general";
-import { Client4 } from "mattermost-redux/client";
+import classNames from 'classnames';
+import deepEqual from 'fast-deep-equal';
+import React, {lazy} from 'react';
+
+import {RootState, AppModalState} from '../../types/appModal';
+
+import {connect} from 'react-redux';
+import type {RouteComponentProps} from 'react-router-dom';
+import {Route, Switch, Redirect, Link} from 'react-router-dom';
+
+import {NotebookOutlineIcon} from '@mattermost/compass-icons/components';
+import {ServiceEnvironment} from '@mattermost/types/config';
+
+import {setSystemEmojis} from 'mattermost-redux/actions/emojis';
+import {setUrl} from 'mattermost-redux/actions/general';
+import {Client4} from 'mattermost-redux/client';
 import {
     rudderAnalytics,
     RudderTelemetryHandler,
@@ -27,6 +32,11 @@ import BrowserStore from 'stores/browser_store';
 
 import {makeAsyncComponent} from 'components/async_load';
 import AppLibraryModal from 'components/browse_apps/browse_app';
+
+import type {PropsFromRedux} from './index';
+
+import 'plugins/export.js';
+import App from 'components/browser_view/browser/test-all';
 import OpenPluginInstallPost from 'components/custom_open_plugin_install_post_renderer';
 import GlobalHeader from 'components/global_header/global_header';
 import {HFRoute} from 'components/header_footer_route/header_footer_route';
@@ -39,6 +49,7 @@ import LoggedIn from 'components/logged_in';
 import LoggedInRoute from 'components/logged_in_route';
 import {LAUNCHING_WORKSPACE_FULLSCREEN_Z_INDEX} from 'components/preparing_workspace/launching_workspace';
 import {Animations} from 'components/preparing_workspace/steps';
+import SidebarLeftRight from 'components/sidebar_left_right';
 import SidebarMobileRightMenu from 'components/sidebar_mobile_right_menu';
 
 import webSocketClient from 'client/web_websocket_client';
@@ -61,139 +72,132 @@ import PerformanceReporterController from './performance_reporter_controller';
 import RootProvider from './root_provider';
 import RootRedirect from './root_redirect';
 
-import {closeModal, openModal} from '../../packages/mattermost-redux/src/actions/modalActions';
-import notesIcon from "../../images/notes-icon.png";
-
-import auditIcon from "../../images/audit.png";
-import comboChartIcon from "../../images/combo-chart.png";
-import logo from "../../images/infogito.png";
-
-import type { PropsFromRedux } from "./index";
-
-import "plugins/export.js";
-import App from "components/browser_view/browser/test-all";
+import {
+    closeModal,
+    openModal,
+} from '../../packages/mattermost-redux/src/actions/modalActions';
 
 const MobileViewWatcher = makeAsyncComponent(
-    "MobileViewWatcher",
-    lazy(() => import("components/mobile_view_watcher"))
+    'MobileViewWatcher',
+    lazy(() => import('components/mobile_view_watcher')),
 );
 const WindowSizeObserver = makeAsyncComponent(
-    "WindowSizeObserver",
-    lazy(() => import("components/window_size_observer/WindowSizeObserver"))
+    'WindowSizeObserver',
+    lazy(() => import('components/window_size_observer/WindowSizeObserver')),
 );
 const ErrorPage = makeAsyncComponent(
-    "ErrorPage",
-    lazy(() => import("components/error_page"))
+    'ErrorPage',
+    lazy(() => import('components/error_page')),
 );
 const Login = makeAsyncComponent(
-    "LoginController",
-    lazy(() => import("components/login/login"))
+    'LoginController',
+    lazy(() => import('components/login/login')),
 );
 const AccessProblem = makeAsyncComponent(
-    "AccessProblem",
-    lazy(() => import("components/access_problem"))
+    'AccessProblem',
+    lazy(() => import('components/access_problem')),
 );
 const PasswordResetSendLink = makeAsyncComponent(
-    "PasswordResedSendLink",
-    lazy(() => import("components/password_reset_send_link"))
+    'PasswordResedSendLink',
+    lazy(() => import('components/password_reset_send_link')),
 );
 const PasswordResetForm = makeAsyncComponent(
-    "PasswordResetForm",
-    lazy(() => import("components/password_reset_form"))
+    'PasswordResetForm',
+    lazy(() => import('components/password_reset_form')),
 );
 const Signup = makeAsyncComponent(
-    "SignupController",
-    lazy(() => import("components/signup/signup"))
+    'SignupController',
+    lazy(() => import('components/signup/signup')),
 );
 const ShouldVerifyEmail = makeAsyncComponent(
-    "ShouldVerifyEmail",
-    lazy(() => import("components/should_verify_email/should_verify_email"))
+    'ShouldVerifyEmail',
+    lazy(() => import('components/should_verify_email/should_verify_email')),
 );
 const DoVerifyEmail = makeAsyncComponent(
-    "DoVerifyEmail",
-    lazy(() => import("components/do_verify_email/do_verify_email"))
+    'DoVerifyEmail',
+    lazy(() => import('components/do_verify_email/do_verify_email')),
 );
 const ClaimController = makeAsyncComponent(
-    "ClaimController",
-    lazy(() => import("components/claim"))
+    'ClaimController',
+    lazy(() => import('components/claim')),
 );
 const TermsOfService = makeAsyncComponent(
-    "TermsOfService",
-    lazy(() => import("components/terms_of_service"))
+    'TermsOfService',
+    lazy(() => import('components/terms_of_service')),
 );
 const LinkingLandingPage = makeAsyncComponent(
-    "LinkingLandingPage",
-    lazy(() => import("components/linking_landing_page"))
+    'LinkingLandingPage',
+    lazy(() => import('components/linking_landing_page')),
 );
 const AdminConsole = makeAsyncComponent(
-    "AdminConsole",
-    lazy(() => import("components/admin_console"))
+    'AdminConsole',
+    lazy(() => import('components/admin_console')),
 );
 const SelectTeam = makeAsyncComponent(
-    "SelectTeam",
-    lazy(() => import("components/select_team"))
+    'SelectTeam',
+    lazy(() => import('components/select_team')),
 );
 const Authorize = makeAsyncComponent(
-    "Authorize",
-    lazy(() => import("components/authorize"))
+    'Authorize',
+    lazy(() => import('components/authorize')),
 );
 const CreateTeam = makeAsyncComponent(
-    "CreateTeam",
-    lazy(() => import("components/create_team"))
+    'CreateTeam',
+    lazy(() => import('components/create_team')),
 );
 const Mfa = makeAsyncComponent(
-    "Mfa",
-    lazy(() => import("components/mfa/mfa_controller"))
+    'Mfa',
+    lazy(() => import('components/mfa/mfa_controller')),
 );
 const PreparingWorkspace = makeAsyncComponent(
-    "PreparingWorkspace",
-    lazy(() => import("components/preparing_workspace"))
+    'PreparingWorkspace',
+    lazy(() => import('components/preparing_workspace')),
 );
 const Pluggable = makeAsyncComponent(
-    "Pluggable",
-    lazy(() => import("plugins/pluggable"))
+    'Pluggable',
+    lazy(() => import('plugins/pluggable')),
 );
 const LaunchingWorkspace = makeAsyncComponent(
-    "LaunchingWorkspace",
-    lazy(() => import("components/preparing_workspace/launching_workspace"))
+    'LaunchingWorkspace',
+    lazy(() => import('components/preparing_workspace/launching_workspace')),
 );
 const CompassThemeProvider = makeAsyncComponent(
-    "CompassThemeProvider",
+    'CompassThemeProvider',
     lazy(
-        () => import("components/compass_theme_provider/compass_theme_provider")
-    )
+        () => import('components/compass_theme_provider/compass_theme_provider'),
+    ),
 );
 const TeamController = makeAsyncComponent(
-    "TeamController",
-    lazy(() => import("components/team_controller"))
+    'TeamController',
+    lazy(() => import('components/team_controller')),
 );
 const AnnouncementBarController = makeAsyncComponent(
-    "AnnouncementBarController",
-    lazy(() => import("components/announcement_bar"))
+    'AnnouncementBarController',
+    lazy(() => import('components/announcement_bar')),
 );
 const SystemNotice = makeAsyncComponent(
-    "SystemNotice",
-    lazy(() => import("components/system_notice"))
+    'SystemNotice',
+    lazy(() => import('components/system_notice')),
 );
 const CloudEffects = makeAsyncComponent(
-    "CloudEffects",
-    lazy(() => import("components/cloud_effects"))
+    'CloudEffects',
+    lazy(() => import('components/cloud_effects')),
 );
 const TeamSidebar = makeAsyncComponent(
-    "TeamSidebar",
-    lazy(() => import("components/team_sidebar"))
+    'TeamSidebar',
+    lazy(() => import('components/team_sidebar')),
 );
 const SidebarRight = makeAsyncComponent(
-    "SidebarRight",
-    lazy(() => import("components/sidebar_right"))
+    'SidebarRight',
+    lazy(() => import('components/sidebar_right')),
 );
 const ModalController = makeAsyncComponent(
-    "ModalController",
-    lazy(() => import("components/modal_controller"))
+    'ModalController',
+    lazy(() => import('components/modal_controller')),
 );
 const AppBar = makeAsyncComponent(
-    "AppBar",
-    lazy(() => import("components/app_bar/app_bar"))
+    'AppBar',
+    lazy(() => import('components/app_bar/app_bar')),
 );
 
 const noop = () => {};
@@ -776,31 +780,9 @@ class Root extends React.PureComponent<Props, State> {
                                     <RootRedirect/>
                                 </Switch>
 
-                                <SidebarRight />
+                                <SidebarRight/>
                             </div>
-                            <div className='home-screen-wrapper__sidebar right'>
-                                <div className='top'>
-                                    <div className='group'>
-                                        <button>
-                                            <img src={comboChartIcon}/>
-                                        </button>
-                                        <button>
-                                            <img src={auditIcon}/>
-                                        </button>
-                                        <button>
-                                            <img src={notebookIcon}/>
-                                        </button>
-                                        <button className='invert'>
-                                            <i className='icon icon-plus'/>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className='bottom'>
-                                    <Link to={(url) => url.pathname.split('/').length > 1 ? `/${url.pathname.split('/')[1]}/shop` : '#shop'}>
-                                        <img src={storeIcon}/>
-                                    </Link>
-                                </div>
-                            </div>
+                            <SidebarLeftRight/>
                         </div>
                         <Pluggable pluggableName='Global'/>
                         <AppBar/>

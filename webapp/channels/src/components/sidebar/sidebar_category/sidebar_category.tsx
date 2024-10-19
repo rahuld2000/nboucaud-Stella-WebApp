@@ -2,11 +2,11 @@
 // See LICENSE.txt for license information.
 
 import classNames from 'classnames';
-import React, {lazy} from 'react';
+import React from 'react';
 import type {MouseEvent, KeyboardEvent} from 'react';
 import {Draggable, Droppable} from 'react-beautiful-dnd';
 import {FormattedMessage, defineMessages} from 'react-intl';
-import {connect, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 
 import type {ChannelCategory} from '@mattermost/types/channel_categories';
 import {CategorySorting} from '@mattermost/types/channel_categories';
@@ -17,7 +17,6 @@ import {localizeMessage} from 'mattermost-redux/utils/i18n_utils';
 
 import {trackEvent} from 'actions/telemetry_actions';
 
-import {makeAsyncComponent} from 'components/async_load';
 import Tabs from 'components/browse_apps/app_tabs';
 import KeyboardShortcutSequence, {
     KEYBOARD_SHORTCUTS,
@@ -37,12 +36,9 @@ import SidebarCategoryMenu from './sidebar_category_menu';
 import SidebarCategorySortingMenu from './sidebar_category_sorting_menu';
 
 import {openModal} from '../../../packages/mattermost-redux/src/actions/modalActions';
-import layerIcon from '../../browse_apps/layers-app-icon.svg';
 import AddChannelsCtaButton from '../add_channels_cta_button';
 import {SidebarCategoryHeader} from '../sidebar_category_header';
 import SidebarChannel from '../sidebar_channel';
-
-const InternetBrowserLink = makeAsyncComponent('InternetBrowserLink', lazy(() => import('components/internet_browser/internet_browser_link')));
 
 type Props = {
     category: ChannelCategory;
@@ -397,7 +393,7 @@ class SidebarCategory extends React.PureComponent<Props, State> {
                         addChannelsCtaButton = (
                             <>
                                 <AddChannelsCtaButton/> <Tabs/>
-                                <button
+                                {/* <button
                                     className='open-modal-button'
                                     onClick={this.handleOpenModal}
                                 >
@@ -409,7 +405,7 @@ class SidebarCategory extends React.PureComponent<Props, State> {
                                         {'MarketPlace'}
                                     </span>
                                 </button>
-                                <InternetBrowserLink/>
+                                <InternetBrowserLink/> */}
                             </>
                         );
                     }

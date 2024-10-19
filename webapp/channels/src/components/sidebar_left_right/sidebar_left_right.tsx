@@ -8,6 +8,7 @@ import {Link, useLocation} from 'react-router-dom';
 
 import auditIcon from '../../images/audit.png';
 import comboChartIcon from '../../images/combo-chart.png';
+import robotImage from '../../images/internet_browser_robot.png';
 import messageIcon from '../../images/message.png';
 import notebookIcon from '../../images/notebook.png';
 import screenshotIcon from '../../images/screenshot.png';
@@ -43,6 +44,9 @@ const SideBarLeftRight = (props: Props) => {
                     <img src={stackIcon}/>
                     <img src={screenshotIcon}/>
                 </div>
+            </div>
+            <div className='bottom'>
+                <img src={robotImage}/>
             </div>
         </div>
     );
