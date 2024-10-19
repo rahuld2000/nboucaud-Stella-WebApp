@@ -128,13 +128,31 @@ export default function ChannelController(props: Props) {
                 <div
                     className={classNames("container-fluid channel-view-inner")}
                 >
-                    {props.shouldRenderCenterChannel ? (
-                        <CenterChannel />
+                    {openShop ? (
+                        <ProductResults />
                     ) : (
-                        <LoadingScreen centered={true} />
+                        <>
+                            {props.shouldRenderCenterChannel ? (
+                                <CenterChannel />
+                            ) : (
+                                <LoadingScreen centered={true} />
+                            )}
+                            <Pluggable pluggableName="Root" />
+                            <ResetStatusModal />
+                        </>
                     )}
-                    <Pluggable pluggableName="Root" />
-                    <ResetStatusModal />
+                </div>
+            </div>
+            <div className="home-screen-wrapper__sidebar right">
+                <div className="top">
+                    <button>
+                        <img src={notesIcon} />
+                    </button>
+                </div>
+                <div className="bottom">
+                    <button onClick={() => setOpenShop(!openShop)}>
+                        <img src={storeIcon} />
+                    </button>
                 </div>
             </div>
         </>
