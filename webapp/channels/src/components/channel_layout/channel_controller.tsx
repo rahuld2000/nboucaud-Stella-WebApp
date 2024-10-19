@@ -128,19 +128,19 @@ export default function ChannelController(props: Props) {
                 <div
                     className={classNames("container-fluid channel-view-inner")}
                 >
-                    {openShop ? (
-                        <ProductResults />
-                    ) : (
-                        <>
-                            {props.shouldRenderCenterChannel ? (
-                                <CenterChannel />
+                    {props.shouldRenderCenterChannel ? (
+                        <div className="iframe-container">
+                            {ActiveIframe ? (
+                                <IframeContainer />
                             ) : (
-                                <LoadingScreen centered={true} />
+                                <CenterChannel />
                             )}
-                            <Pluggable pluggableName="Root" />
-                            <ResetStatusModal />
-                        </>
+                        </div>
+                    ) : (
+                        <LoadingScreen centered={true} />
                     )}
+                    <Pluggable pluggableName="Root" />
+                    <ResetStatusModal />
                 </div>
             </div>
             <div className="home-screen-wrapper__sidebar right">
