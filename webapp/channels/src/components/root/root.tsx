@@ -74,11 +74,8 @@ import logo from "../../images/infogito.png";
 import type { PropsFromRedux } from "./index";
 
 import "plugins/export.js";
-import AppLibraryModal from "components/browse_apps/browse_app";
+
 import { connect, useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../packages/mattermost-redux/src/actions/modalActions";
-import { openModal } from "../../packages/mattermost-redux/src/actions/modalActions";
-import App from "components/browser_view/browser/test-all";
 
 const MobileViewWatcher = makeAsyncComponent(
     "MobileViewWatcher",
