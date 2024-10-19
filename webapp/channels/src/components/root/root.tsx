@@ -74,6 +74,7 @@ import logo from "../../images/infogito.png";
 import type { PropsFromRedux } from "./index";
 
 import "plugins/export.js";
+// imported connect
 import { connect } from "react-redux";
 
 const MobileViewWatcher = makeAsyncComponent(
