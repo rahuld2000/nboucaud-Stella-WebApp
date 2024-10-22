@@ -8,3 +8,4 @@ declare module '*.apng';
 declare module '*.mp4';
 declare module '*.svg';
 declare module '*.gif'
+declare module '*.png'

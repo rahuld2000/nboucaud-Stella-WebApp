@@ -13,10 +13,13 @@ import {
     playbook,
     plexocore,
     viewerjs,
+    Office,
+    online3dviewer,
 } from "./apps_iframe"; // Import your iframes
 
 // Mapping of active tab names to iframe components
 const iframeMap: { [key: string]: React.FC } = {
+    Office: Office,
     vscode: code,
     notes: notable,
     motion: motion,
@@ -29,6 +32,7 @@ const iframeMap: { [key: string]: React.FC } = {
     omniclip: omniclip,
     playbook: playbook,
     plexocore: plexocore,
+    online3dviewer: online3dviewer,
 };
 
 interface AppState {
