@@ -5,10 +5,19 @@ interface UrlIframeProps {
 }
 
 const UrlIframe: React.FC<UrlIframeProps> = ({ url }) => {
+    const formatUrl = (url: string) => {
+        // Check if the URL starts with 'http://' or 'https://'
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            return `https://${url}`;
+        }
+        return url;
+    };
+
+    const formattedUrl = formatUrl(url);
     return (
         <div className="iframe-container">
             <iframe
-                src={url}
+                src={formattedUrl}
                 width="100%"
                 height="100%"
                 title={`URL Iframe - ${url}`}
