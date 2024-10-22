@@ -5,6 +5,8 @@ import { LiaAngleRightSolid } from "react-icons/lia";
 import { IoRefresh } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { CiLock } from "react-icons/ci";
+import { useDispatch, useSelector } from "react-redux";
+import { setTabUrl } from "../browser/browser-state";
 
 const Browser_Search_Section = () => {
     const style = {
@@ -13,7 +15,17 @@ const Browser_Search_Section = () => {
         height: "20px",
         "&:hover": { cursor: "pointer" },
     };
-    const defaultUrl = "www.infogito.com";
+    const [url, setUrl] = useState("");
+    const dispatch = useDispatch();
+    const { activeTabIndex } = useSelector((state: any) => state.urlManager);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (url) {
+            dispatch(setTabUrl(activeTabIndex, url));
+            setUrl("");
+        }
+    };
 
     // const [searchValue, setSearchValue] = useState("");
     return (
@@ -23,11 +35,15 @@ const Browser_Search_Section = () => {
             <IoRefresh className="refresh-icon" />
             <div className="search-bar">
                 <CiLock className="lock-icon" />
-                <input
-                    className="input-field"
-                    type="text"
-                    defaultValue={defaultUrl}
-                />
+                <form onSubmit={handleSubmit}>
+                    <input
+                        className="input-field"
+                        type="text"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder="Type a URL"
+                    />
+                </form>
             </div>
 
             <RxHamburgerMenu className="hamburg-icon" />
