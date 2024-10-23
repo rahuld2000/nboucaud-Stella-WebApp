@@ -48,7 +48,11 @@ const IframeContainer: React.FC = () => {
     console.log("Iframe Component for Active iframe:", ActiveIframe);
     return (
         <div className="iframe-container">
-            {ActiveIframe ? <ActiveIframe /> : <div>No app selected</div>}
+            {ActiveIframe ? (
+                <ActiveIframe />
+            ) : (
+                <div className="no-app-selected">No app selected</div>
+            )}
         </div>
     );
 };

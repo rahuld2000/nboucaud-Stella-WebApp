@@ -123,16 +123,18 @@ export default function ChannelController(props: Props) {
                 className="channel-view"
                 data-testid="channel_view"
             >
-                <UnreadsStatusHandler/>
-                <ProductNoticesModal/>
-                <div className={classNames('container-fluid channel-view-inner')}>
+                <UnreadsStatusHandler />
+                <ProductNoticesModal />
+                <div
+                    className={classNames("container-fluid channel-view-inner")}
+                >
                     {props.shouldRenderCenterChannel ? (
-                        <CenterChannel/>
+                        <CenterChannel />
                     ) : (
-                        <LoadingScreen centered={true}/>
+                        <LoadingScreen centered={true} />
                     )}
-                    <Pluggable pluggableName='Root'/>
-                    <ResetStatusModal/>
+                    <Pluggable pluggableName="Root" />
+                    <ResetStatusModal />
                 </div>
             </div>
         </>
