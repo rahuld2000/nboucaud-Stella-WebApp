@@ -1,37 +1,32 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
-import {useIntl} from 'react-intl';
-import {useSelector} from 'react-redux';
+import React from "react";
+import { useIntl } from "react-intl";
+import { useSelector } from "react-redux";
 
-import {getConfig} from 'mattermost-redux/selectors/entities/general';
+import { getConfig } from "mattermost-redux/selectors/entities/general";
 
-import ExternalLink from 'components/external_link';
+import ExternalLink from "components/external_link";
 
-import Logo from 'images/infogito.png';
+import Logo from "images/infogito.png";
 
-import './footer.scss';
+import "./footer.scss";
 
 const Footer = () => {
-    const {formatMessage} = useIntl();
+    const { formatMessage } = useIntl();
 
-    const {AboutLink, PrivacyPolicyLink, TermsOfServiceLink, HelpLink} = useSelector(getConfig);
+    const { AboutLink, PrivacyPolicyLink, TermsOfServiceLink, HelpLink } =
+        useSelector(getConfig);
 
     return (
-        <div className='hfroute-footer'>
-            <img
-                src={Logo}
-                className='footer_logo'
-            />
+        <div className="hfroute-footer">
+            <img src={Logo} className="footer_logo" />
 
-            <span
-                key='footer-copyright'
-                className='footer-copyright'
-            >
+            <span key="footer-copyright" className="footer-copyright">
                 {`© ${new Date().getFullYear()} Infogito. All Rights Reserved.`}
             </span>
-            {AboutLink && (
+            {/* {AboutLink && (
                 <ExternalLink
                     key='footer-link-about'
                     className='footer-link'
@@ -70,7 +65,7 @@ const Footer = () => {
                 >
                     {formatMessage({id: 'web.footer.help', defaultMessage: 'Help'})}
                 </ExternalLink>
-            )}
+            )} */}
         </div>
     );
 };
