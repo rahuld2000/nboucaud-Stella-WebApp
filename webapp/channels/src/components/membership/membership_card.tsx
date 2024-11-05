@@ -15,7 +15,7 @@ export type MembershipPlan = {
     title: string;
     titleSubtext?: string;
     info: string;
-    topFeatures: string[];
+    topFeatures?: string;
     pricing: string;
     pricingSubtext?: string;
     isBilledAnnually?: boolean;

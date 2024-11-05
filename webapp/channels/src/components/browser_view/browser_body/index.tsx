@@ -44,9 +44,7 @@ const BrowserBody = () => {
                     <i className="icon icon-microphone" />
                     <CameraOutlineIcon className="icon" color="black" />
                 </div>
-
                 <img className="logo" src={logoImage} />
-                <img className="robot" src={robotImage} />
             </div>
         </div>
     );

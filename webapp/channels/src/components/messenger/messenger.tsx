@@ -13,6 +13,7 @@ import userImage from '../../images/messenger.png';
 type Props = {
     intl: IntlShape;
     onClose: () => void;
+    onClone: () => void; 
 }
 
 const MINIMUM_WIDTH = 320;
@@ -31,7 +32,7 @@ const getWindowSize = () => {
     }
 };
 
-const Messenger = ({intl, onClose}: Props) => {
+const Messenger = ({intl, onClose, onClone}: Props) => {
     const [initialWidth, initialHeight] = getWindowSize();
 
     const animStyle = useSpring({
@@ -209,7 +210,7 @@ const Messenger = ({intl, onClose}: Props) => {
                 </div>
                 <div className='input'>
                     <div className='left'>
-                        <button>
+                        <button onClick={onClone} id='clone-messenger'>
                             <svg
                                 width='32'
                                 height='32'
