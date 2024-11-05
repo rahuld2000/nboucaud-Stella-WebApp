@@ -26,7 +26,7 @@ function mapStateToProps(state: GlobalState) {
     const license = getLicense(state);
     const config = getConfig(state);
     const buildEnterpriseReady = config.BuildEnterpriseReady === 'true';
-    const siteName = config.SiteName;
+    const siteName = "Infogito";
     const adminDefinition = getAdminDefinition(state);
     const consoleAccess = getConsoleAccess(state);
     const taskListStatus = getBool(state, OnboardingTaskCategory, OnboardingTaskList.ONBOARDING_TASK_LIST_SHOW);

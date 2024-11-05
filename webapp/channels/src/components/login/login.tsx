@@ -167,7 +167,7 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
     const isLicensed = IsLicensed === "true";
     const ldapEnabled = isLicensed && enableLdap;
     const enableSignUpWithSaml = isLicensed && enableSaml;
-    const siteName = SiteName ?? "";
+    const siteName = "Infogito";
 
     const enableBaseLogin =
         enableSignInWithEmail || enableSignInWithUsername || ldapEnabled;
@@ -367,7 +367,7 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
             ? formatMessage(
                   {
                       id: "login.session_expired.title",
-                      defaultMessage: "* {siteName} - Session Expired",
+                      defaultMessage: "* Infogito - Session Expired",
                   },
                   { siteName }
               )

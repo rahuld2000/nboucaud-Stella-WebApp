@@ -1,22 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
-import { nextTabUrl, prevTabUrl, reloadTabUrl } from "./browser-state";
 
 interface UrlIframeProps {
     url: string;
 }
-interface UrlIframeProps {
-    url: string;
-    prevTabUrl: () => void;
-    nextTabUrl: () => void;
-    reloadTabUrl: () => void;
-}
-const UrlIframe: React.FC<UrlIframeProps> = ({
-    url,
-    prevTabUrl,
-    nextTabUrl,
-    reloadTabUrl,
-}) => {
+
+const UrlIframe: React.FC<UrlIframeProps> = ({ url }) => {
     const formatUrl = (url: string) => {
         // Check if the URL starts with 'http://' or 'https://'
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -39,14 +27,5 @@ const UrlIframe: React.FC<UrlIframeProps> = ({
         </div>
     );
 };
-const mapStateToProps = (state: any) => ({
-    url: state.urlManager.tabs[state.urlManager.activeTabIndex].url || "",
-});
 
-const mapDispatchToProps = {
-    prevTabUrl,
-    nextTabUrl,
-    reloadTabUrl,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UrlIframe);
+export default UrlIframe;
