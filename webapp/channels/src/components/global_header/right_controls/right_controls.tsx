@@ -1,38 +1,38 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
-import {useSelector} from 'react-redux';
-import {Link, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
 
-import type {ProductIdentifier} from '@mattermost/types/products';
+import type { ProductIdentifier } from "@mattermost/types/products";
 
-import {isCurrentUserGuestUser} from 'mattermost-redux/selectors/entities/users';
+import { isCurrentUserGuestUser } from "mattermost-redux/selectors/entities/users";
 
-import StatusDropdown from 'components/status_dropdown';
+import StatusDropdown from "components/status_dropdown";
 import {
     OnboardingTourSteps,
     OnboardingTourStepsForGuestUsers,
-} from 'components/tours';
+} from "components/tours";
 import {
     CustomizeYourExperienceTour,
     useShowOnboardingTutorialStep,
-} from 'components/tours/onboarding_tour';
+} from "components/tours/onboarding_tour";
 
-import Pluggable from 'plugins/pluggable';
-import {isChannels} from 'utils/products';
+import Pluggable from "plugins/pluggable";
+import { isChannels } from "utils/products";
 
-import type {GlobalState} from 'types/store';
+import type { GlobalState } from "types/store";
 
-import PlanUpgradeButton from './plan_upgrade_button';
-import PreviousGPTsButton from './previous_gpts_button/previous_gpts_button';
-import SavedPostsButton from './saved_posts_button/saved_posts_button';
-import SettingsButton from './settings_button';
+import PlanUpgradeButton from "./plan_upgrade_button";
+import PreviousGPTsButton from "./previous_gpts_button/previous_gpts_button";
+import SavedPostsButton from "./saved_posts_button/saved_posts_button";
+import SettingsButton from "./settings_button";
 
-import storeIcon from '../../../images/store.png';
+import storeIcon from "../../../images/store.png";
 
-import './right_controls.scss';
+import "./right_controls.scss";
 
 const RightControlsContainer = styled.div`
     display: flex;
@@ -62,57 +62,50 @@ export type Props = {
     productId?: ProductIdentifier;
 };
 
-const RightControls = ({productId = null}: Props): JSX.Element => {
+const RightControls = ({ productId = null }: Props): JSX.Element => {
     // guest validation to see which point the messaging tour tip starts
     const isGuestUser = useSelector((state: GlobalState) =>
-        isCurrentUserGuestUser(state),
+        isCurrentUserGuestUser(state)
     );
-    const tourStep = isGuestUser ? OnboardingTourStepsForGuestUsers.CUSTOMIZE_EXPERIENCE : OnboardingTourSteps.CUSTOMIZE_EXPERIENCE;
-    const {pathname} = useLocation();
-    const urlParts = pathname.split('/');
-    const teamName = urlParts.length > 1 ? `/${urlParts[1]}` : '';
+    const tourStep = isGuestUser
+        ? OnboardingTourStepsForGuestUsers.CUSTOMIZE_EXPERIENCE
+        : OnboardingTourSteps.CUSTOMIZE_EXPERIENCE;
+    const { pathname } = useLocation();
+    const urlParts = pathname.split("/");
+    const teamName = urlParts.length > 1 ? `/${urlParts[1]}` : "";
 
     const showCustomizeTip = useShowOnboardingTutorialStep(tourStep);
 
     return (
-        <RightControlsContainer id={'RightControlsContainer'}>
-            <Link to={`${teamName}/shop`}>
-                <img
-                    src={storeIcon}
-                    height={15}
-                    style={{marginRight: '7px'}}
-                />
-            </Link>
+        <RightControlsContainer id={"RightControlsContainer"}>
             <Link
-                className='membership-right-control'
+                className="membership-right-control"
                 to={`${teamName}/membership`}
             >
-                {'Membership'}
+                {"Membership"}
             </Link>
-            <PlanUpgradeButton/>
+            <PlanUpgradeButton />
             {isChannels(productId) ? (
                 <>
-                    <PreviousGPTsButton/>
-                    <SavedPostsButton/>
+                    <PreviousGPTsButton />
+                    <SavedPostsButton />
                 </>
             ) : (
                 <Pluggable
-                    pluggableName={'Product'}
-                    subComponentName={'headerRightComponent'}
+                    pluggableName={"Product"}
+                    subComponentName={"headerRightComponent"}
                     pluggableId={productId}
                 />
             )}
-            <StyledCustomizeYourExperienceTour id='CustomizeYourExperienceTour'>
+            <StyledCustomizeYourExperienceTour id="CustomizeYourExperienceTour">
                 {isChannels(productId) ? (
                     <>
-                        <SettingsButton/>
-                        {showCustomizeTip && (
-                            <CustomizeYourExperienceTour/>
-                        )}
+                        <SettingsButton />
+                        {showCustomizeTip && <CustomizeYourExperienceTour />}
                     </>
                 ) : null}
                 <StyledStatusDropdown>
-                    <StatusDropdown/>
+                    <StatusDropdown />
                 </StyledStatusDropdown>
             </StyledCustomizeYourExperienceTour>
         </RightControlsContainer>

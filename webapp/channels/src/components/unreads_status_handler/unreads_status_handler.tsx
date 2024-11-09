@@ -108,40 +108,13 @@ export class UnreadsStatusHandlerClass extends React.PureComponent<Props> {
                     currentChannelName = currentTeammate.display_name;
                 }
             }
-            document.title = `${mentionTitle}${unreadTitle}${currentChannelName} - ${currentTeam.display_name} Infogito`;
+            document.title = `Infogito`;
         } else if (currentTeam && inGlobalThreads) {
-            document.title = formatMessage(
-                {
-                    id: "globalThreads.title",
-                    defaultMessage:
-                        "{prefix}Threads - {displayName} {siteName}",
-                },
-                {
-                    prefix: `${mentionTitle}${unreadTitle}`,
-                    displayName: currentTeam.display_name,
-                    siteName: currentSiteName,
-                }
-            );
+            document.title = "Infogito";
         } else if (currentTeam && inDrafts) {
-            document.title = formatMessage(
-                {
-                    id: "drafts.title",
-                    defaultMessage: "{prefix}Drafts - {displayName} {siteName}",
-                },
-                {
-                    prefix: `${mentionTitle}${unreadTitle}`,
-                    displayName: currentTeam.display_name,
-                    siteName: currentSiteName,
-                }
-            );
+            document.title = "Infogito";
         } else {
-            document.title = formatMessage(
-                {
-                    id: "sidebar.team_select",
-                    defaultMessage: "Infogito - Join a team",
-                },
-                { siteName: currentSiteName || "Infogito" }
-            );
+            document.title = "Infogito";
         }
     };
 

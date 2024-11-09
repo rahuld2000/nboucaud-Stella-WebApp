@@ -143,11 +143,7 @@ class AdminSidebar extends React.PureComponent<Props, State> {
             currentSiteName = " - " + this.props.siteName;
         }
 
-        document.title =
-            this.props.intl.formatMessage({
-                id: "sidebar_right_menu.console",
-                defaultMessage: "System Console",
-            }) + "Infogito";
+        document.title = "Infogito";
     };
 
     visibleSections = () => {

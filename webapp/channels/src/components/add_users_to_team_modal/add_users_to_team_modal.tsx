@@ -1,25 +1,25 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React from 'react';
-import {Modal} from 'react-bootstrap';
-import type {IntlShape} from 'react-intl';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import React from "react";
+import { Modal } from "react-bootstrap";
+import type { IntlShape } from "react-intl";
+import { injectIntl, FormattedMessage } from "react-intl";
 
-import type {Team} from '@mattermost/types/teams';
-import type {UserProfile} from '@mattermost/types/users';
+import type { Team } from "@mattermost/types/teams";
+import type { UserProfile } from "@mattermost/types/users";
 
-import {Client4} from 'mattermost-redux/client';
-import type {ActionResult} from 'mattermost-redux/types/actions';
-import {isGuest} from 'mattermost-redux/utils/user_utils';
+import { Client4 } from "mattermost-redux/client";
+import type { ActionResult } from "mattermost-redux/types/actions";
+import { isGuest } from "mattermost-redux/utils/user_utils";
 
-import MultiSelect from 'components/multiselect/multiselect';
-import type {Value} from 'components/multiselect/multiselect';
-import ProfilePicture from 'components/profile_picture';
-import BotTag from 'components/widgets/tag/bot_tag';
-import GuestTag from 'components/widgets/tag/guest_tag';
+import MultiSelect from "components/multiselect/multiselect";
+import type { Value } from "components/multiselect/multiselect";
+import ProfilePicture from "components/profile_picture";
+import BotTag from "components/widgets/tag/bot_tag";
+import GuestTag from "components/widgets/tag/guest_tag";
 
-import {displayEntireNameForUser, localizeMessage} from 'utils/utils';
+import { displayEntireNameForUser, localizeMessage } from "utils/utils";
 
 const USERS_PER_PAGE = 50;
 const MAX_SELECTABLE_VALUES = 20;
@@ -37,10 +37,19 @@ type Props = {
     onExited?: () => void;
 
     actions: {
-        getProfilesNotInTeam: (teamId: string, groupConstrained: boolean, page: number, perPage?: number, options?: Record<string, any>) => Promise<ActionResult<UserProfile[]>>;
-        searchProfiles: (term: string, options?: Record<string, any>) => Promise<ActionResult<UserProfile[]>>;
+        getProfilesNotInTeam: (
+            teamId: string,
+            groupConstrained: boolean,
+            page: number,
+            perPage?: number,
+            options?: Record<string, any>
+        ) => Promise<ActionResult<UserProfile[]>>;
+        searchProfiles: (
+            term: string,
+            options?: Record<string, any>
+        ) => Promise<ActionResult<UserProfile[]>>;
     };
-}
+};
 
 type State = {
     searchResults: UserProfile[];
@@ -50,8 +59,8 @@ type State = {
     saving: boolean;
     addError: null;
     loading: boolean;
-    filterOptions: {[key: string]: any};
-}
+    filterOptions: { [key: string]: any };
+};
 
 export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
     selectedItemRef: React.RefObject<HTMLDivElement>;
@@ -61,7 +70,7 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
 
         let filterOptions = {};
         if (props.filterExcludeGuests) {
-            filterOptions = {role: 'system_user'};
+            filterOptions = { role: "system_user" };
         }
 
         this.state = {
@@ -78,29 +87,43 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
         this.selectedItemRef = React.createRef();
     }
     public componentDidMount = async () => {
-        await this.props.actions.getProfilesNotInTeam(this.props.team.id, false, 0, USERS_PER_PAGE * 2);
+        await this.props.actions.getProfilesNotInTeam(
+            this.props.team.id,
+            false,
+            0,
+            USERS_PER_PAGE * 2
+        );
         this.setUsersLoadingState(false);
     };
 
     private setUsersLoadingState = (loading: boolean) => {
-        this.setState({loading});
+        this.setState({ loading });
     };
 
     public search = async (term: string) => {
         this.setUsersLoadingState(true);
         let searchResults: UserProfile[] = [];
-        const search = term !== '';
+        const search = term !== "";
         if (search) {
-            const {data} = await this.props.actions.searchProfiles(term, {not_in_team_id: this.props.team.id, replace: true, ...this.state.filterOptions});
+            const { data } = await this.props.actions.searchProfiles(term, {
+                not_in_team_id: this.props.team.id,
+                replace: true,
+                ...this.state.filterOptions,
+            });
             searchResults = data!;
         } else {
-            await this.props.actions.getProfilesNotInTeam(this.props.team.id, false, 0, USERS_PER_PAGE * 2);
+            await this.props.actions.getProfilesNotInTeam(
+                this.props.team.id,
+                false,
+                0,
+                USERS_PER_PAGE * 2
+            );
         }
-        this.setState({loading: false, searchResults, search});
+        this.setState({ loading: false, searchResults, search });
     };
 
     public handleHide = () => {
-        this.setState({show: false});
+        this.setState({ show: false });
     };
 
     private handleExit = () => {
@@ -109,36 +132,44 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
         }
     };
 
-    private renderOption = (option: UserProfileValue, isSelected: boolean, onAdd: (user: UserProfileValue) => void, onMouseMove: (user: UserProfileValue) => void) => {
-        let rowSelected = '';
+    private renderOption = (
+        option: UserProfileValue,
+        isSelected: boolean,
+        onAdd: (user: UserProfileValue) => void,
+        onMouseMove: (user: UserProfileValue) => void
+    ) => {
+        let rowSelected = "";
         if (isSelected) {
-            rowSelected = 'more-modal__row--selected';
+            rowSelected = "more-modal__row--selected";
         }
 
         return (
             <div
                 key={option.id}
                 ref={isSelected ? this.selectedItemRef : option.id}
-                className={'more-modal__row clickable ' + rowSelected}
+                className={"more-modal__row clickable " + rowSelected}
                 onClick={() => onAdd(option)}
                 onMouseMove={() => onMouseMove(option)}
             >
                 <ProfilePicture
-                    src={Client4.getProfilePictureUrl(option.id, option.last_picture_update)}
-                    size='md'
+                    src={Client4.getProfilePictureUrl(
+                        option.id,
+                        option.last_picture_update
+                    )}
+                    size="md"
                 />
-                <div className='more-modal__details'>
-                    <div className='more-modal__name'>
+                <div className="more-modal__details">
+                    <div className="more-modal__name">
                         {displayEntireNameForUser(option)}
-                        {option.is_bot && <BotTag/>}
-                        {isGuest(option.roles) && <GuestTag className='popoverlist'/>}
+                        {option.is_bot && <BotTag />}
+                        {isGuest(option.roles) && (
+                            <GuestTag className="popoverlist" />
+                        )}
                     </div>
                 </div>
-                <div className='more-modal__actions'>
-                    <div className='more-modal__actions--round'>
-                        <i
-                            className='icon icon-plus'
-                        />
+                <div className="more-modal__actions">
+                    <div className="more-modal__actions--round">
+                        <i className="icon icon-plus" />
                     </div>
                 </div>
             </div>
@@ -146,11 +177,11 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
     };
 
     private renderValue = (value: { data: UserProfileValue }): string => {
-        return value.data?.username || '';
+        return value.data?.username || "";
     };
 
     private renderAriaLabel = (option: UserProfileValue): string => {
-        return option?.username || '';
+        return option?.username || "";
     };
 
     private handleAdd = (value: UserProfileValue) => {
@@ -158,19 +189,26 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
         if (!values.includes(value)) {
             values.push(value);
         }
-        this.setState({values});
+        this.setState({ values });
     };
 
     private handleDelete = (values: UserProfileValue[]) => {
-        this.setState({values});
+        this.setState({ values });
     };
 
     private handlePageChange = (page: number, prevPage: number) => {
         if (page > prevPage) {
-            const needMoreUsers = (this.props.users.length / USERS_PER_PAGE) <= page + 1;
+            const needMoreUsers =
+                this.props.users.length / USERS_PER_PAGE <= page + 1;
             this.setUsersLoadingState(needMoreUsers);
-            this.props.actions.getProfilesNotInTeam(this.props.team.id, false, page, USERS_PER_PAGE * 2).
-                then(() => this.setUsersLoadingState(false));
+            this.props.actions
+                .getProfilesNotInTeam(
+                    this.props.team.id,
+                    false,
+                    page,
+                    USERS_PER_PAGE * 2
+                )
+                .then(() => this.setUsersLoadingState(false));
         }
     };
 
@@ -181,10 +219,10 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
 
     public render = (): JSX.Element => {
         const numRemainingText = (
-            <div id='numPeopleRemaining'>
+            <div id="numPeopleRemaining">
                 <FormattedMessage
-                    id='multiselect.numPeopleRemaining'
-                    defaultMessage='Use ↑↓ to browse, ↵ to select. You can add {num, number} more {num, plural, one {person} other {people}}. '
+                    id="multiselect.numPeopleRemaining"
+                    defaultMessage="Use ↑↓ to browse, ↵ to select. You can add upto 30 more {num, plural, one {person} other {people}}. "
                     values={{
                         num: MAX_SELECTABLE_VALUES - this.state.values.length,
                     }}
@@ -192,18 +230,30 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
             </div>
         );
 
-        const buttonSubmitText = localizeMessage('multiselect.add', 'Add');
-        const buttonSubmitLoadingText = localizeMessage('multiselect.adding', 'Adding...');
+        const buttonSubmitText = localizeMessage("multiselect.add", "Add");
+        const buttonSubmitLoadingText = localizeMessage(
+            "multiselect.adding",
+            "Adding..."
+        );
 
         let addError = null;
         if (this.state.addError) {
-            addError = (<div className='has-error col-sm-12'><label className='control-label font-weight--normal'>{this.state.addError}</label></div>);
+            addError = (
+                <div className="has-error col-sm-12">
+                    <label className="control-label font-weight--normal">
+                        {this.state.addError}
+                    </label>
+                </div>
+            );
         }
 
         let usersToDisplay: UserProfile[] = [];
-        usersToDisplay = this.state.search ? this.state.searchResults : this.props.users;
+        usersToDisplay = this.state.search
+            ? this.state.searchResults
+            : this.props.users;
         if (this.props.excludeUsers) {
-            const hasUser = (user: UserProfile) => !this.props.excludeUsers[user.id];
+            const hasUser = (user: UserProfile) =>
+                !this.props.excludeUsers[user.id];
             usersToDisplay = usersToDisplay.filter(hasUser);
         }
         if (this.props.includeUsers) {
@@ -212,22 +262,22 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
         }
 
         const options = usersToDisplay.map((user) => {
-            return {label: user.username, value: user.id, ...user};
+            return { label: user.username, value: user.id, ...user };
         });
 
         return (
             <Modal
-                id='addUsersToTeamModal'
-                dialogClassName={'a11y__modal more-modal more-direct-channels'}
+                id="addUsersToTeamModal"
+                dialogClassName={"a11y__modal more-modal more-direct-channels"}
                 show={this.state.show}
                 onHide={this.handleHide}
                 onExited={this.handleExit}
             >
                 <Modal.Header closeButton={true}>
-                    <Modal.Title componentClass='h1'>
+                    <Modal.Title componentClass="h1">
                         <FormattedMessage
-                            id='add_users_to_team.title'
-                            defaultMessage='Add New Members to {teamName} Team'
+                            id="add_users_to_team.title"
+                            defaultMessage="Add New Members to {teamName} Team"
                             values={{
                                 teamName: (
                                     <strong>{this.props.team.name}</strong>
@@ -239,7 +289,7 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
                 <Modal.Body>
                     {addError}
                     <MultiSelect
-                        key='addUsersToTeamKey'
+                        key="addUsersToTeamKey"
                         options={options}
                         optionRenderer={this.renderOption}
                         intl={this.props.intl}
@@ -259,7 +309,10 @@ export class AddUsersToTeamModal extends React.PureComponent<Props, State> {
                         buttonSubmitLoadingText={buttonSubmitLoadingText}
                         saving={this.state.saving}
                         loading={this.state.loading}
-                        placeholderText={localizeMessage('multiselect.placeholder', 'Search and add members')}
+                        placeholderText={localizeMessage(
+                            "multiselect.placeholder",
+                            "Search and add members"
+                        )}
                     />
                 </Modal.Body>
             </Modal>

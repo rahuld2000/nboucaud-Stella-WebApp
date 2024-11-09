@@ -22,6 +22,11 @@ import render from "./apps-icon/render.png";
 import scribe from "./apps-icon/scribe.png";
 import prevarrow from "./prev-arrow.svg";
 import nxtarrow from "./nxt-arrow.svg";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+// Import Swiper styles
+import "swiper/css";
+
 import "./browse_app.scss";
 
 // Interfaces
@@ -178,8 +183,8 @@ const AppLibraryModal: React.FC<AppLibraryModalProps> = ({ onClose }) => {
     const productivityCardWrapperRef = useRef<HTMLDivElement>(null);
     const designCardWrapperRef = useRef<HTMLDivElement>(null);
 
-    const CARDS_PER_VIEW = 4;
-    const CARD_WIDTH = 270;
+    const CARDS_PER_VIEW = 3;
+    const CARD_WIDTH = 250;
 
     useEffect(() => {
         const storedApps = localStorage.getItem("installedApps");
@@ -270,6 +275,7 @@ const AppLibraryModal: React.FC<AppLibraryModalProps> = ({ onClose }) => {
             setInstallingApps((prev) => ({ ...prev, [appTitle]: false }));
         }, 2000);
     };
+    const sliderRef = useRef();
 
     return (
         <div className="modal-overlay">
@@ -282,124 +288,141 @@ const AppLibraryModal: React.FC<AppLibraryModalProps> = ({ onClose }) => {
                 </div>
 
                 {/* Productivity Section */}
-                <div className="app-category">
-                    <div className="app-heading-wrapper">
-                        <h3>Productivity</h3>
-                        <div className="nav-btn">
-                            <button
-                                className="arrow left-arrow"
-                                onClick={previousProductivitySlide}
-                            >
-                                <img src={prevarrow} alt="Previous" />
-                            </button>
-                            <button
-                                className="arrow right-arrow"
-                                onClick={nextProductivitySlide}
-                            >
-                                <img src={nxtarrow} alt="Next" />
-                            </button>
+                <div className="app-category-wrapper">
+                    <div className="app-category">
+                        <div className="app-heading-wrapper">
+                            <h3>Productivity</h3>
+                            <div className="nav-btn">
+                                <div className=" image-swiper-button-prev arrow ">
+                                    <img src={prevarrow} alt="Previous" />
+                                </div>
+                                <div className="image-swiper-button-next arrow ">
+                                    <img src={nxtarrow} alt="Next" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="app-grid">
+                            <div className="app-card-wrapper">
+                                <Swiper
+                                    modules={[Navigation]}
+                                    spaceBetween={18}
+                                    slidesPerView={1}
+                                    loop={true}
+                                    navigation={{
+                                        nextEl: ".image-swiper-button-next",
+                                        prevEl: ".image-swiper-button-prev",
+                                    }}
+                                    breakpoints={{
+                                        768: {
+                                            slidesPerView: 2,
+                                            spaceBetween: 18,
+                                        },
+                                        900: {
+                                            slidesPerView: 3,
+                                            spaceBetween: 18,
+                                        },
+                                    }}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                    {wrappedProductivityApps.map(
+                                        (app, index) => (
+                                            <SwiperSlide
+                                                key={`${app.id}-${index}`}
+                                            >
+                                                <AppCard
+                                                    title={app.title}
+                                                    description={
+                                                        app.description
+                                                    }
+                                                    img={app.img}
+                                                    isInstalled={
+                                                        installedApps[
+                                                            app.title
+                                                        ] || false
+                                                    }
+                                                    isInstalling={
+                                                        installingApps[
+                                                            app.title
+                                                        ] || false
+                                                    }
+                                                    onInstall={() =>
+                                                        handleInstall(app.title)
+                                                    }
+                                                    onOpen={() =>
+                                                        handleOpenApp(app)
+                                                    }
+                                                />
+                                            </SwiperSlide>
+                                        )
+                                    )}
+                                </Swiper>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="app-grid">
-                        <div
-                            className="app-card-wrapper"
-                            ref={productivityCardWrapperRef}
-                            style={{
-                                transform: `translateX(-${
-                                    (currentProductivitySlide +
-                                        CARDS_PER_VIEW) *
-                                    CARD_WIDTH
-                                }px)`,
-                                transition: isTransitioning
-                                    ? "transform 0.5s ease"
-                                    : "none",
-                            }}
-                            onTransitionEnd={() =>
-                                handleTransitionEnd(
-                                    "productivity",
-                                    currentProductivitySlide,
-                                    setCurrentProductivitySlide
-                                )
-                            }
-                        >
-                            {wrappedProductivityApps.map((app, index) => (
-                                <AppCard
-                                    key={`${app.id}-${index}`}
-                                    title={app.title}
-                                    description={app.description}
-                                    img={app.img}
-                                    isInstalled={
-                                        installedApps[app.title] || false
-                                    }
-                                    isInstalling={
-                                        installingApps[app.title] || false
-                                    }
-                                    onInstall={() => handleInstall(app.title)}
-                                    onOpen={() => handleOpenApp(app)}
-                                />
-                            ))}
+                    {/* Design Section */}
+                    <div className="app-category">
+                        <div className="app-heading-wrapper">
+                            <h3>Design</h3>
+                            <div className="nav-btn">
+                                <div className="button-prev arrow ">
+                                    <img src={prevarrow} alt="Previous" />
+                                </div>
+                                <div className="button-next arrow ">
+                                    <img src={nxtarrow} alt="Next" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                {/* Design Section */}
-                <div className="app-category">
-                    <div className="app-heading-wrapper">
-                        <h3>Design</h3>
-                        <div className="nav-btn">
-                            <button
-                                className="arrow left-arrow"
-                                onClick={previousDesignSlide}
-                            >
-                                <img src={prevarrow} alt="Previous" />
-                            </button>
-                            <button
-                                className="arrow right-arrow"
-                                onClick={nextDesignSlide}
-                            >
-                                <img src={nxtarrow} alt="Next" />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="app-grid">
-                        <div
-                            className="app-card-wrapper"
-                            ref={designCardWrapperRef}
-                            style={{
-                                transform: `translateX(-${
-                                    (currentDesignSlide + CARDS_PER_VIEW) *
-                                    CARD_WIDTH
-                                }px)`,
-                                transition: isTransitioning
-                                    ? "transform 0.5s ease"
-                                    : "none",
-                            }}
-                            onTransitionEnd={() =>
-                                handleTransitionEnd(
-                                    "design",
-                                    currentDesignSlide,
-                                    setCurrentDesignSlide
-                                )
-                            }
-                        >
-                            {wrappedDesignApps.map((app, index) => (
-                                <AppCard
-                                    key={`${app.id}-${index}`}
-                                    title={app.title}
-                                    description={app.description}
-                                    img={app.img}
-                                    isInstalled={
-                                        installedApps[app.title] || false
-                                    }
-                                    isInstalling={
-                                        installingApps[app.title] || false
-                                    }
-                                    onInstall={() => handleInstall(app.title)}
-                                    onOpen={() => handleOpenApp(app)}
-                                />
-                            ))}
+                        <div className="app-grid">
+                            <div className="app-card-wrapper">
+                                <Swiper
+                                    modules={[Navigation]}
+                                    spaceBetween={18}
+                                    slidesPerView={3}
+                                    breakpoints={{
+                                        768: {
+                                            slidesPerView: 2,
+                                            spaceBetween: 18,
+                                        },
+                                        900: {
+                                            slidesPerView: 3,
+                                            spaceBetween: 18,
+                                        },
+                                    }}
+                                    loop={true}
+                                    navigation={{
+                                        nextEl: ".button-next",
+                                        prevEl: ".button-prev",
+                                    }}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                >
+                                    {wrappedDesignApps.map((app, index) => (
+                                        <SwiperSlide key={`${app.id}-${index}`}>
+                                            <AppCard
+                                                title={app.title}
+                                                description={app.description}
+                                                img={app.img}
+                                                isInstalled={
+                                                    installedApps[app.title] ||
+                                                    false
+                                                }
+                                                isInstalling={
+                                                    installingApps[app.title] ||
+                                                    false
+                                                }
+                                                onInstall={() =>
+                                                    handleInstall(app.title)
+                                                }
+                                                onOpen={() =>
+                                                    handleOpenApp(app)
+                                                }
+                                            />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            </div>
                         </div>
                     </div>
                 </div>

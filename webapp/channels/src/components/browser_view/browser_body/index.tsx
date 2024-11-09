@@ -40,11 +40,7 @@ const BrowserBody = () => {
                             required
                         />
                     </form>
-
-                    <i className="icon icon-microphone" />
-                    <CameraOutlineIcon className="icon" color="black" />
                 </div>
-                <img className="logo" src={logoImage} />
             </div>
         </div>
     );

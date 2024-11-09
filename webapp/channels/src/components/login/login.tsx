@@ -363,15 +363,7 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
     }, []);
 
     const configureTitle = useCallback(() => {
-        document.title = sessionExpired
-            ? formatMessage(
-                  {
-                      id: "login.session_expired.title",
-                      defaultMessage: "* Infogito - Session Expired",
-                  },
-                  { siteName }
-              )
-            : siteName;
+        document.title = "Infogito";
     }, [sessionExpired, siteName]);
 
     const showSessionExpiredNotificationIfNeeded = useCallback(() => {
@@ -1123,9 +1115,6 @@ const Login = ({ onCustomizeHeader }: LoginProps) => {
                                             disabled={isWaiting}
                                         />
                                         {getResetPasswordLink()}
-                                        <div className="text-with-lines">
-                                            {"or"}
-                                        </div>
 
                                         {/* <div className='icons_div'>
                                             <img

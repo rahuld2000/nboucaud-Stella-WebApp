@@ -151,7 +151,7 @@ func RenderMobileMessage(w http.ResponseWriter, message string) {
 					}
 					a:focus, a:hover {
 						color: #23527c;
-						text-decoration: underline;
+				
 					}
 					h2 {
 						font-size: 30px;

@@ -52,7 +52,7 @@ const SideBarLeftRight = (props: Props) => {
     };
 
     const handleCaptureClick = async () => {
-        const rootElement = document.getElementById("root");
+        const rootElement = document.getElementById("channel_view");
         console.log("click");
 
         if (rootElement) {
@@ -90,9 +90,6 @@ const SideBarLeftRight = (props: Props) => {
                             <img src={notebookIcon} />
                         </button>
                     </Link>
-                    <button>
-                        <img src={messageIcon} />
-                    </button>
 
                     <img
                         style={{ cursor: "pointer" }}

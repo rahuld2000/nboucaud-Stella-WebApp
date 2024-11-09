@@ -13,11 +13,7 @@ import {
     setActiveApp,
 } from "../../packages/mattermost-redux/src/actions/tabAction";
 import "./app_tabs.scss";
-import {
-    IDENTIFIER_PATH_PATTERN,
-    ID_PATH_PATTERN,
-    TEAM_NAME_PATH_PATTERN,
-} from "utils/path";
+
 import { Link, useRouteMatch } from "react-router-dom";
 interface Tab {
     id: string;

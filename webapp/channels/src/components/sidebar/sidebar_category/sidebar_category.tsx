@@ -388,24 +388,20 @@ class SidebarCategory extends React.PureComponent<Props, State> {
                 disableInteractiveElementBlocking={true}
             >
                 {(provided, snapshot) => {
+                    let inviteMembersButton = null;
+                    if (
+                        category.type === "direct_messages" &&
+                        !category.collapsed
+                    ) {
+                        inviteMembersButton = <></>;
+                    }
+
                     let addChannelsCtaButton = null;
-                    if (category.type == "channels" && !category.collapsed) {
+                    if (category.type === "channels" && !category.collapsed) {
                         addChannelsCtaButton = (
                             <>
-                                <Tabs />
-                                {/* <button
-                                    className='open-modal-button'
-                                    onClick={this.handleOpenModal}
-                                >
-                                    <span>
-                                        <img
-                                            src={layerIcon}
-                                            alt='layers-app-icon'
-                                        />
-                                        {'MarketPlace'}
-                                    </span>
-                                </button>
-                                <InternetBrowserLink/> */}
+                                {" "}
+                                <AddChannelsCtaButton /> <Tabs />
                             </>
                         );
                     }
@@ -460,7 +456,7 @@ class SidebarCategory extends React.PureComponent<Props, State> {
                                                 {directMessagesModalButton}
                                                 {categoryMenu}
                                             </SidebarCategoryHeader>
-                                            {/* <div
+                                            <div
                                                 className={classNames(
                                                     "SidebarChannelGroup_content"
                                                 )}
@@ -477,11 +473,12 @@ class SidebarCategory extends React.PureComponent<Props, State> {
                                                         ? droppableProvided.placeholder
                                                         : null}
                                                 </ul>
-                                            </div> */}
+                                            </div>
                                         </div>
                                     );
                                 }}
                             </Droppable>
+                            {inviteMembersButton}
                             {addChannelsCtaButton}
                         </div>
                     );

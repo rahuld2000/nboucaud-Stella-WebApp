@@ -133,7 +133,7 @@ describe('Team Settings', () => {
                     cy.apiLogin(user);
 
                     // # Go to Town Square
-                    cy.visit(`/${otherTeam.name}/channels/town-square`);
+                    // cy.visit(`/${otherTeam.name}/channels/town-square`);
 
                     // # Open team menu and click 'Join Another Team'
                     cy.uiOpenTeamMenu('Join Another Team');

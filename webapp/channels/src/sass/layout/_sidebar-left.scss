@@ -36,7 +36,7 @@ $sidebarOpacityAnimationDuration: 0.15s;
 
     @media screen and (min-width: 769px) {
         width: var(--overrideLhsWidth, 264px);
-        min-width: 200px;
+        min-width: 250px;
         max-width: 264px;
         background: none;
     }
@@ -1379,6 +1379,7 @@ $sidebarOpacityAnimationDuration: 0.15s;
         }
     }
 }
+
 
 /* context menu shown when right-clicking on a channel in the LHS when using the desktop app */
 .react-contextmenu--visible {

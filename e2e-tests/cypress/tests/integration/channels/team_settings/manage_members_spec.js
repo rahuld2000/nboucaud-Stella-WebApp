@@ -31,7 +31,7 @@ describe('Manage Members', () => {
 
     it('MM-T2331 System Admin can promote Member to Team Admin', () => {
         // # Go to Town Square
-        cy.visit(`/${testTeam.name}/channels/town-square`);
+        // cy.visit(`/${testTeam.name}/channels/town-square`);
 
         // # Open team menu and click 'Manage Members'
         cy.uiOpenTeamMenu('Manage Members');
@@ -58,7 +58,7 @@ describe('Manage Members', () => {
                 cy.apiLogin(testUser);
 
                 // # Go to Town Square
-                cy.visit(`/${testTeam.name}/channels/town-square`);
+                // cy.visit(`/${testTeam.name}/channels/town-square`);
 
                 // # Open team menu and click 'Manage Members'
                 cy.uiOpenTeamMenu('Manage Members');
@@ -91,7 +91,7 @@ describe('Manage Members', () => {
                         cy.apiLogin(testUser);
 
                         // # Go to Town Square
-                        cy.visit(`/${testTeam.name}/channels/town-square`);
+                        // cy.visit(`/${testTeam.name}/channels/town-square`);
 
                         // # Open team menu and click 'Manage Members'
                         cy.uiOpenTeamMenu('Manage Members');
@@ -136,7 +136,7 @@ describe('Manage Members', () => {
                 cy.apiLogin(testUser);
 
                 // # Go to Town Square
-                cy.visit(`/${testTeam.name}/channels/town-square`);
+                // cy.visit(`/${testTeam.name}/channels/town-square`);
 
                 // # Open team menu and click 'Manage Members'
                 cy.uiOpenTeamMenu('Manage Members');

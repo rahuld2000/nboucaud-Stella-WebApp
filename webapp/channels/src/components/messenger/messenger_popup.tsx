@@ -1,85 +1,90 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
-// See LICENSE.txt for license information.
-
 import { useSpring, animated } from "@react-spring/web";
 import React, { useState } from "react";
+import type { IntlShape } from "react-intl";
 
-import Messenger from "./messenger"; // Ensure your Messenger component is correctly imported
-
+import Messenger from "./messenger";
 import messengerIcon from "../../images/messenger.png";
 
-const MESSENGER_WIDTH = 300; // Set the width of each Messenger popup
+const MESSENGER_WIDTH = 320; // Match the MINIMUM_WIDTH from Messenger component
 
-const MessengerPopup = () => {
-    const [popupOpen, setPopupOpen] = useState(false);
-    const [messengers, setMessengers] = useState([{ id: 0 }]); // Initial Messenger state
+type Props = {
+    intl: IntlShape;
+};
 
-    const [popupBtnAnimStyles] = useSpring(() => {
-        if (popupOpen) {
-            return {
-                from: { translateY: 0 },
-                to: { translateY: 150 },
-                config: {
-                    bounce: 0.8,
-                },
-            };
-        }
+const MessengerPopup = ({ intl }: Props) => {
+    const [isButtonVisible, setIsButtonVisible] = useState(true);
+    const [messengers, setMessengers] = useState<Array<{ id: number }>>([]);
 
-        return {
-            from: { translateY: 150 },
-            to: { translateY: 0 },
-            config: {
-                bounce: 0.8,
-            },
-        };
-    }, [popupOpen]);
+    // Button animation
+    const buttonAnimation = useSpring({
+        opacity: isButtonVisible ? 1 : 0,
+        transform: `translateY(${isButtonVisible ? 0 : 150}px)`,
+        config: {
+            tension: 180,
+            friction: 12,
+        },
+    });
 
-    // Function to toggle the popup visibility
+    // Handle button click
     const handlePopupToggle = () => {
-        setPopupOpen(true); // Open the popup when clicking the button
+        if (isButtonVisible) {
+            setMessengers([{ id: 0 }]);
+            setIsButtonVisible(false);
+        }
     };
 
-    const closePopup = (id: any) => {
+    // Handle popup close
+    const closePopup = (id: number) => {
         setMessengers((prev) =>
             prev.filter((messenger) => messenger.id !== id)
         );
-        // Close the popup if no messengers are left
+
+        // If closing the last messenger, show the button again
         if (messengers.length === 1) {
-            setPopupOpen(false);
+            setTimeout(() => {
+                setIsButtonVisible(true);
+            }, 300);
         }
     };
 
-    const cloneMessenger = (id: any) => {
-        const newId = messengers.length; // Generate a new ID
-        setMessengers((prev) => [...prev, { id: newId }]); // Add new Messenger with the new ID
+    // Clone messenger
+    const cloneMessenger = () => {
+        const newId =
+            messengers.length > 0
+                ? Math.max(...messengers.map((m) => m.id)) + 1
+                : 0;
+        setMessengers((prev) => [...prev, { id: newId }]);
     };
 
     return (
-        <div id="messenger_popup" style={{ position: "relative" }}>
-            <animated.div
-                style={{ ...popupBtnAnimStyles, position: "relative" }}
-            >
-                <button id="messenger_popup_button" onClick={handlePopupToggle}>
-                    <img src={messengerIcon} alt="Messenger" />
-                </button>
+        <div
+            id="messenger_popup"
+            className="fixed bottom-4 right-4"
+            style={{ zIndex: 1000 }}
+        >
+            {/* Button */}
+            <animated.div style={buttonAnimation}>
+                {isButtonVisible && (
+                    <button
+                        id="messenger_popup_button"
+                        onClick={handlePopupToggle}
+                    >
+                        <img src={messengerIcon} alt="Messenger" />
+                    </button>
+                )}
             </animated.div>
 
-            {popupOpen &&
-                messengers.map((messenger, index) => (
-                    <animated.div
+            {/* Messengers Container */}
+            <div className="absolute bottom-0 right-0 flex gap-4">
+                {messengers.map((messenger) => (
+                    <Messenger
                         key={messenger.id}
-                        style={{
-                            position: "absolute",
-                            left: `${index * MESSENGER_WIDTH}px`, // Position each messenger based on its index
-                            top: 0, // Adjust vertical position if needed
-                        }}
-                    >
-                        <Messenger
-                            onClose={() => closePopup(messenger.id)}
-                            onClone={() => cloneMessenger(messenger.id)} // Pass the onClone function
-                        />
-                    </animated.div>
+                        intl={intl}
+                        onClose={() => closePopup(messenger.id)}
+                        onClone={cloneMessenger}
+                    />
                 ))}
+            </div>
         </div>
     );
 };

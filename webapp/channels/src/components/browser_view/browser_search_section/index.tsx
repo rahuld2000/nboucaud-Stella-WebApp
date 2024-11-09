@@ -3,7 +3,6 @@ import "./browser-search-section.scss";
 import { LiaAngleLeftSolid } from "react-icons/lia";
 import { LiaAngleRightSolid } from "react-icons/lia";
 import { IoRefresh } from "react-icons/io5";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { CiLock } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabUrl } from "../browser/browser-state";
@@ -45,8 +44,6 @@ const Browser_Search_Section = () => {
                     />
                 </form>
             </div>
-
-            <RxHamburgerMenu className="hamburg-icon" />
         </div>
     );
 };

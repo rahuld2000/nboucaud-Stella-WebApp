@@ -1,15 +1,15 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 
-import {trackEvent} from 'actions/telemetry_actions.jsx';
+import { trackEvent } from "actions/telemetry_actions.jsx";
 
-import Markdown from 'components/markdown';
+import Markdown from "components/markdown";
 
-import AnnouncementBar from './default_announcement_bar';
+import AnnouncementBar from "./default_announcement_bar";
 
-const localStoragePrefix = '__announcement__';
+const localStoragePrefix = "__announcement__";
 
 type AnnouncementBarProps = React.ComponentProps<typeof AnnouncementBar>;
 
@@ -25,7 +25,8 @@ const options = {
     mentionHighlight: false,
 };
 
-const getDismissed = (text?: React.ReactNode) => localStorage.getItem(localStoragePrefix + text?.toString()) === 'true';
+const getDismissed = (text?: React.ReactNode) =>
+    localStorage.getItem(localStoragePrefix + text?.toString()) === "true";
 
 const TextDismissableBar = ({
     allowDismissal,
@@ -33,7 +34,9 @@ const TextDismissableBar = ({
     onDismissal,
     ...extraProps
 }: Props) => {
-    const [dismissed, setDismissed] = useState<boolean>(() => getDismissed(text));
+    const [dismissed, setDismissed] = useState<boolean>(() =>
+        getDismissed(text)
+    );
 
     useEffect(() => {
         setDismissed(getDismissed(text));
@@ -43,9 +46,9 @@ const TextDismissableBar = ({
         if (!allowDismissal) {
             return;
         }
-        trackEvent('signup', 'click_dismiss_bar');
+        trackEvent("signup", "click_dismiss_bar");
 
-        localStorage.setItem(localStoragePrefix + text?.toString(), 'true');
+        localStorage.setItem(localStoragePrefix + text?.toString(), "true");
         setDismissed(true);
         onDismissal?.();
     }, [allowDismissal, onDismissal, text]);
@@ -61,13 +64,11 @@ const TextDismissableBar = ({
             handleClose={handleDismiss}
             message={
                 <>
-                    <i className='icon icon-information-outline'/>
-                    {typeof text === 'string' ? (
-                        <Markdown
-                            message={text}
-                            options={options}
-                        />
-                    ) : text}
+                    {typeof text === "string" ? (
+                        <Markdown message={text} options={options} />
+                    ) : (
+                        text
+                    )}
                 </>
             }
         />

@@ -53,15 +53,7 @@ export default function EmojiPage({
     }, [siteName]);
 
     const updateTitle = () => {
-        document.title =
-            intl.formatMessage({
-                id: "custom_emoji.header",
-                defaultMessage: "Custom Emoji",
-            }) +
-            " - " +
-            teamDisplayName +
-            " " +
-            "Infogito";
+        document.title = "Infogito";
     };
 
     return (

@@ -53,6 +53,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 40px;
 }
 
 .app-modal-header h2 {
@@ -60,6 +61,7 @@
     font-family: "Inter", sans-serif !important;
     font-weight: 600;
     color: #3f4350;
+    margin: 0px;
 }
 
 .close-button {
@@ -74,6 +76,7 @@
     font-family: "Inter", sans-serif !important;
     font-weight: 600;
     color: #3f4350;
+    margin: 0px !important;
 }
 
 /* App Grid */
@@ -81,7 +84,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .app-card {
@@ -94,7 +97,8 @@
     justify-content: space-between;
     background-color: #fff;
     flex-shrink: 0;
-    width: 250px;
+    width: 100%;
+    height: 100%;
 }
 
 .app-icon img {
@@ -192,7 +196,7 @@
 
 .app-card-wrapper {
     display: flex;
-    gap: 18px;
+
 }
 
 .app-heading-wrapper {
@@ -212,6 +216,7 @@
 .arrow {
     background-color: transparent;
     border: none;
+    cursor: pointer;
 }
 
 .loader-05 {
@@ -292,3 +297,15 @@
     will-change: transform;
 }
 
+.swiper{
+    padding: 5px;
+}
+
+
+.app-category-wrapper{
+    display: flex;
+    flex-direction:column;
+    width: 100%;
+    height: 100%;
+    gap:2rem;
+}
