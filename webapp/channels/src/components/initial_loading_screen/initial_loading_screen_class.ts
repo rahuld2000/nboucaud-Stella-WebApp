@@ -14,18 +14,23 @@ const LOADING_CLASS_FOR_ANIMATION = STATIC_CLASS_FOR_ANIMATION + ' LoadingAnimat
 const LOADING_COMPLETE_CLASS_FOR_ANIMATION = STATIC_CLASS_FOR_ANIMATION + ' LoadingAnimation--spinning LoadingAnimation--loaded';
 
 const DESTROY_DELAY_AFTER_ANIMATION_END = 1000;
+const MINIMUM_LOADING_DURATION = 2000; // 3 seconds minimum duration
 
 export class InitialLoadingScreenClass {
     private isLoading: boolean | null = true;
+    private startTime: number | null = null;
+    private stopRequested: boolean = false;
 
     private loadingScreenElement: HTMLElement | null;
     private loadingAnimationElement: HTMLElement | null;
+    private loadingVideo: HTMLVideoElement | null;
 
     private initialLoadingScreenCSS: HTMLLinkElement | null;
 
     constructor() {
         this.loadingScreenElement = document.getElementById('initialPageLoadingScreen');
         this.loadingAnimationElement = document.getElementById('initialPageLoadingAnimation');
+        this.loadingVideo = document.getElementById('loadingVideo') as HTMLVideoElement;
         this.initialLoadingScreenCSS = document.getElementById('initialLoadingScreenCSS') as HTMLLinkElement | null;
 
         this.handleAnimationEndEvent = this.handleAnimationEndEvent.bind(this);
@@ -35,15 +40,11 @@ export class InitialLoadingScreenClass {
 
     private init() {
         if (isDesktopApp()) {
-            // Let Mattermost desktop handle the loading screen
             this.destroy();
             return;
         }
 
         this.addAnimationEndListener();
-
-        // Starting automatically in the constructor instead of waiting for call from the code base
-        // as per the latest UX recommendation
         this.start();
     }
 
@@ -52,12 +53,11 @@ export class InitialLoadingScreenClass {
             return;
         }
 
-        if (event.animationName === ANIMATION_CLASS_FOR_MATTERMOST_LOGO_HIDE || event.animationName === ANIMATION_CLASS_FOR_COMPLETE_LOADER_HIDE) {
+        if (event.animationName === ANIMATION_CLASS_FOR_MATTERMOST_LOGO_HIDE || 
+            event.animationName === ANIMATION_CLASS_FOR_COMPLETE_LOADER_HIDE) {
             if (!this.isLoading) {
                 this.loadingAnimationElement.className = STATIC_CLASS_FOR_ANIMATION;
 
-                // Automatically destroy the loading screen after the animation has finished.
-                // Should be changed if we want to loading animation to start again.
                 setTimeout(() => {
                     this.destroy();
                 }, DESTROY_DELAY_AFTER_ANIMATION_END);
@@ -94,36 +94,68 @@ export class InitialLoadingScreenClass {
             this.loadingAnimationElement = null;
         }
 
+        if (this.loadingVideo) {
+            this.loadingVideo.pause();
+            this.loadingVideo = null;
+        }
+
         this.isLoading = null;
+        this.startTime = null;
     }
 
-    /**
-     * The loading animations are always started as soon as the loading indicator is shown in the screen for the first time.
-     * But we still want to have this start method incase we need to start the loading animations manually any time.
-     * If we do want to do that then we should remove the set timeout destroy call doing above.
-     */
-    public start() {
-        if (!this.loadingScreenElement || !this.loadingAnimationElement) {
-            // eslint-disable-next-line no-console
-            console.error('InitialLoadingScreen: No loading screen or animation element found');
+    private checkAndExecuteStop() {
+        if (!this.startTime) {
             return;
         }
 
-        this.isLoading = true;
-
-        this.loadingScreenElement.className = LOADING_CLASS_FOR_SCREEN;
-        this.loadingAnimationElement.className = LOADING_CLASS_FOR_ANIMATION;
+        const elapsedTime = Date.now() - this.startTime;
+        
+        if (elapsedTime >= MINIMUM_LOADING_DURATION) {
+            this.executeStop();
+        } else {
+            // Wait for the remaining time before stopping
+            const remainingTime = MINIMUM_LOADING_DURATION - elapsedTime;
+            setTimeout(() => {
+                this.executeStop();
+            }, remainingTime);
+        }
     }
 
-    public stop() {
+    private executeStop() {
         if (!this.loadingScreenElement || !this.loadingAnimationElement) {
             return;
         }
 
         this.isLoading = false;
-
         this.loadingScreenElement.className = LOADING_COMPLETE_CLASS_FOR_SCREEN;
         this.loadingAnimationElement.className = LOADING_COMPLETE_CLASS_FOR_ANIMATION;
     }
-}
 
+    public start() {
+        if (!this.loadingScreenElement || !this.loadingAnimationElement) {
+            console.error('InitialLoadingScreen: No loading screen or animation element found');
+            return;
+        }
+
+        this.isLoading = true;
+        this.startTime = Date.now();
+        this.stopRequested = false;
+
+        this.loadingScreenElement.className = LOADING_CLASS_FOR_SCREEN;
+        this.loadingAnimationElement.className = LOADING_CLASS_FOR_ANIMATION;
+
+        if (this.loadingVideo) {
+            this.loadingVideo.currentTime = 0;
+            this.loadingVideo.play();
+        }
+    }
+
+    public stop() {
+        if (this.stopRequested) {
+            return;
+        }
+        
+        this.stopRequested = true;
+        this.checkAndExecuteStop();
+    }
+}

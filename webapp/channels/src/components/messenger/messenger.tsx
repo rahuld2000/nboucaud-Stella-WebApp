@@ -10,11 +10,13 @@ import ChatBubble from './chat_bubble';
 
 import userImage from '../../images/messenger.png';
 
+
 type Props = {
     intl: IntlShape;
     onClose: () => void;
-    onClone: () => void; 
-}
+    onClone: () => void;
+    mergedCount?: number;
+};
 
 const MINIMUM_WIDTH = 320;
 const MINIMUM_HEIGHT = 350;
@@ -32,98 +34,19 @@ const getWindowSize = () => {
     }
 };
 
-const Messenger = ({intl, onClose, onClone}: Props) => {
+const Messenger = ({ intl, onClose, onClone }: Props) => {
     const [initialWidth, initialHeight] = getWindowSize();
-
     const animStyle = useSpring({
-        from: {scaleY: 0, opacity: 0},
-        to: {scaleY: 1, opacity: 1},
-        config: {
-            duration: 100,
-        },
+        from: { scaleY: 0, opacity: 0 },
+        to: { scaleY: 1, opacity: 1 },
+        config: { duration: 100 },
     });
+
     const ref = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!ref.current) {
-            return;
-        }
-
-        const element = ref.current;
-
-        let mouseX = 0;
-        let mouseY = 0;
-        const BORDER_SIZE = 10;
-
-        const handleResizeWidth = (ev: MouseEvent) => {
-            ev.stopPropagation();
-            ev.preventDefault();
-            const dx = ev.x - mouseX;
-            mouseX = ev.x;
-            let width = (parseInt(getComputedStyle(element, '').width, 10) + dx);
-            if (width < MINIMUM_WIDTH) {
-                width = MINIMUM_WIDTH;
-            }
-            element.style.width = `${width}px`;
-        };
-
-        const handleResizeHeight = (ev: MouseEvent) => {
-            ev.stopPropagation();
-            ev.preventDefault();
-            const dy = mouseY - ev.y;
-            mouseY = ev.y;
-            let height = (parseInt(getComputedStyle(element, '').height, 10) + dy);
-            if (height < MINIMUM_HEIGHT) {
-                height = MINIMUM_HEIGHT;
-            }
-            element.style.height = `${height}px`;
-        };
-
-        const handleMousedown = (ev: MouseEvent) => {
-            if (ev.offsetX >= element.clientWidth - BORDER_SIZE) {
-                element.classList.add('no-select');
-                mouseX = ev.x;
-                window.addEventListener('mousemove', handleResizeWidth, {
-                    capture: true,
-                });
-            } else if (ev.offsetY <= BORDER_SIZE) {
-                element.classList.add('no-select');
-                mouseY = ev.y;
-                window.addEventListener('mousemove', handleResizeHeight, {
-                    capture: true,
-                });
-            }
-        };
-
-        const handleMouseup = () => {
-            window.removeEventListener('mousemove', handleResizeWidth, {capture: true});
-            window.removeEventListener('mousemove', handleResizeHeight, {capture: true});
-
-            const style = getComputedStyle(element, '');
-            const width = parseInt(style.width, 10);
-            const height = parseInt(style.height, 10);
-
-            localStorage.setItem(DIMENSION_KEY, JSON.stringify([width, height]));
-            element.classList.remove('no-select');
-        };
-
-        element.addEventListener('mousedown', handleMousedown);
-        window.addEventListener('mouseup', handleMouseup);
-
-        // eslint-disable-next-line consistent-return
-        return () => {
-            element.removeEventListener('mousedown', handleMousedown);
-            window.removeEventListener('mouseup', handleMouseup);
-            window.removeEventListener('mousemove', handleResizeWidth);
-            window.removeEventListener('mousemove', handleResizeHeight);
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!headerRef.current || !ref.current) {
-            return;
-        }
+        if (!headerRef.current || !ref.current) return;
 
         const container = ref.current;
         const element = headerRef.current;
@@ -131,46 +54,38 @@ const Messenger = ({intl, onClose, onClone}: Props) => {
         let mouseY = 0;
 
         const handlePosition = (ev: MouseEvent) => {
-            const dx = ev.x - mouseX;
-            const dy = mouseY - ev.y;
-            mouseX = ev.x;
-            mouseY = ev.y;
+            const dx = ev.clientX - mouseX;
+            const dy = ev.clientY - mouseY;
+            mouseX = ev.clientX;
+            mouseY = ev.clientY;
 
             const style = getComputedStyle(container, '');
-
-            const previousBottom = parseInt(style.bottom, 10);
-            const previousLeft = parseInt(style.left, 10);
-            const newBottom = previousBottom + dy;
-            const newLeft = previousLeft + dx;
+            const newBottom = parseInt(style.bottom, 10) - dy;
+            const newLeft = parseInt(style.left, 10) + dx;
 
             container.style.left = `${newLeft}px`;
             container.style.bottom = `${newBottom}px`;
         };
 
         const handleMousedown = (ev: MouseEvent) => {
-            ev.stopPropagation();
             ev.preventDefault();
+            mouseX = ev.clientX;
+            mouseY = ev.clientY;
             container.classList.add('no-select');
-            mouseX = ev.x;
-            mouseY = ev.y;
-            window.addEventListener('mousemove', handlePosition, {
-                capture: true,
-            });
+            window.addEventListener('mousemove', handlePosition, { capture: true });
         };
 
         const handleMouseup = () => {
-            window.removeEventListener('mousemove', handlePosition, {capture: true});
+            window.removeEventListener('mousemove', handlePosition, { capture: true });
             container.classList.remove('no-select');
         };
 
         element.addEventListener('mousedown', handleMousedown);
         window.addEventListener('mouseup', handleMouseup);
 
-        // eslint-disable-next-line consistent-return
         return () => {
             element.removeEventListener('mousedown', handleMousedown);
             window.removeEventListener('mouseup', handleMouseup);
-            window.removeEventListener('mousemove', handlePosition, {capture: true});
         };
     }, []);
 

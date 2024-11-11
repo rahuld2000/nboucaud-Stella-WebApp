@@ -20,10 +20,6 @@
     cursor: pointer;
 }
 
-// .active{
-//    background-color: #28427b;
-
-// }
 
 .app-tab-wrap:hover {
     background-color: #02B9B554;
@@ -43,4 +39,8 @@
 .iframe-container {
     width: 100%;
     height: 100%;
+}
+
+.drag-placeholder {
+    width: 0px;
 }

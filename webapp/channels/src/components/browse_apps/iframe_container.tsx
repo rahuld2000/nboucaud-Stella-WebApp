@@ -18,20 +18,20 @@ import {
 } from "./apps_iframe";
 
 const iframeMap: { [key: string]: React.FC } = {
-    Office,
+    office: Office,
     vscode: code,
     notes: notable,
-    motion,
-    viewerjs,
-    imageeditor,
-    lumen,
-    dawg,
-    amphion,
-    losslesscut,
-    omniclip,
-    playbook,
-    plexocore,
-    online3dviewer,
+    motion: motion,
+    viewerjs: viewerjs,
+    imageeditor: imageeditor,
+    lumen: lumen,
+    dawg: dawg,
+    amphion: amphion,
+    losslesscut: losslesscut,
+    omniclip: omniclip,
+    playbook: playbook,
+    plexocore: plexocore,
+    online3dviewer: online3dviewer,
 };
 
 interface AppState {

@@ -1,21 +1,28 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
-import React, {useCallback, useState} from 'react';
-import {FormattedMessage} from 'react-intl';
-import {useSelector} from 'react-redux';
+import React, { useCallback, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { useSelector } from "react-redux";
 
-import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
+import { getCurrentUserId } from "mattermost-redux/selectors/entities/users";
 
-import AnnouncementBar from 'components/announcement_bar/default_announcement_bar';
+import AnnouncementBar from "components/announcement_bar/default_announcement_bar";
 
-import {AnnouncementBarTypes} from 'utils/constants';
-import {requestNotificationPermission, isNotificationAPISupported} from 'utils/notifications';
+import { AnnouncementBarTypes } from "utils/constants";
+import {
+    requestNotificationPermission,
+    isNotificationAPISupported,
+} from "utils/notifications";
 
 export default function NotificationPermissionBar() {
     const isLoggedIn = Boolean(useSelector(getCurrentUserId));
 
-    const [show, setShow] = useState(isNotificationAPISupported() ? Notification.permission === 'default' : false);
+    const [show, setShow] = useState(
+        isNotificationAPISupported()
+            ? Notification.permission === "default"
+            : false
+    );
 
     const handleClick = useCallback(async () => {
         await requestNotificationPermission();
@@ -39,19 +46,16 @@ export default function NotificationPermissionBar() {
             type={AnnouncementBarTypes.ANNOUNCEMENT}
             message={
                 <FormattedMessage
-                    id='announcement_bar.notification.needs_permission'
-                    defaultMessage='We need your permission to show desktop notifications.'
+                    id="announcement_bar.notification.needs_permission"
+                    defaultMessage="We need your permission to show desktop notifications."
                 />
             }
             ctaText={
                 <FormattedMessage
-                    id='announcement_bar.notification.enable_notifications'
-                    defaultMessage='Enable notifications'
+                    id="announcement_bar.notification.enable_notifications"
+                    defaultMessage="Enable notifications"
                 />
             }
-            showCTA={true}
-            showLinkAsButton={true}
-            onButtonClick={handleClick}
         />
     );
 }

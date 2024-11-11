@@ -46,5 +46,3 @@ export const notable = () => (
 export const plexocore = () => (
     <iframe width="100%" height="100%" src="http://plexo-core.infogito.com" />
 );
-
-// Add more iframes as needed

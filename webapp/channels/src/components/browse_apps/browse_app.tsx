@@ -99,13 +99,6 @@ const productivityApps: AppData[] = [
         description: "Design stunning 2D and 3D visuals with ease.",
         img: render,
     },
-    {
-        id: "Bookclub",
-        title: "bookclub",
-        description:
-            "Form a book club. Read books and documents collaboratively.",
-        img: bookclub,
-    },
 ];
 
 const designApps: AppData[] = [
@@ -158,12 +151,6 @@ const designApps: AppData[] = [
         title: "Scribe",
         description: "Turn voice into text, quickly and accurately.",
         img: scribe,
-    },
-    {
-        id: "picAsk",
-        title: "PicAsk",
-        description: "Snap a photo, extract text, crunch numbers, and more.",
-        img: picask,
     },
 ];
 

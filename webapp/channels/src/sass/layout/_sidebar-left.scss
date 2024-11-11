@@ -25,7 +25,7 @@ $sidebarOpacityAnimationDuration: 0.15s;
 
 #SidebarContainer {
     position: relative;
-    z-index: 16;
+    z-index: 16 !important;
     left: 0;
     display: flex;
     min-width: 240px;
